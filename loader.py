@@ -15,7 +15,7 @@ def load_map(world, filename):
 		for room_obj in room.get('contents', {}):
 			for obj_name, coords in room_obj.iteritems():
 				coords = tuple(coords)
-				room_objects[coords] =	 GameObject(**objects[obj_name])
+				room_objects[coords] =	 GameObject(world=world, position=coords, **objects[obj_name])
 		room['contents'] = room_objects
 		rooms.append(Room(world=world, **room))
 	map = Map(rooms=rooms)

@@ -1,5 +1,6 @@
 import events
 import game
+import loader
 import player
 import sound
 import window
@@ -11,6 +12,7 @@ def main():
 	game.sound_manager = sound.SoundManager()
 	game.world = world.World()
 	game.player = player.Player(world=game.world)
+	game.map = loader.load_map(game.world, 'map.yml')
 	game.clock = pygame.time.Clock()
 	game.window = window.GameWindow(title="Shooter")
 	main_loop()

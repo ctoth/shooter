@@ -1,6 +1,6 @@
 objects:
   - name: Clock
-    sound: clock
+    sound: clock.ogg
     size: [1, 1]
     fixed: true
 

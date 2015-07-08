@@ -9,12 +9,14 @@ class SoundManager(object):
 		self.sim = libaudioverse.Simulation()
 		self.sim.set_output_device(output_device)
 		self.world = libaudioverse.SimpleEnvironmentNode(self.sim, "default")
+		self.world.default_panning_strategy.value=libaudioverse.PanningStrategies.hrtf
+		self.world.output_channels.value= 2
+		self.world.default_max_distance.value = 20
 		self.world.connect_simulation(0)
-		self.listener = libaudioverse.SourceNode(self.sim, self.world)
 		self.sounds = {}
 		self.sounds_path = sounds_path
 
-	def play(self, filename, looping=False):
+	def play(self, filename, source, looping=False, position=(0, 0, 0)):
 		filename = os.path.join(self.sounds_path, filename)
 		sound = self.sounds.get(filename)
 		if not sound:
@@ -22,7 +24,7 @@ class SoundManager(object):
 			sound_buffer = libaudioverse.Buffer(self.sim)
 			sound_buffer.load_from_file(filename)
 			sound.buffer.value = sound_buffer
-		sound.connect(0, self.listener, 0)
+		sound.connect(0, source, 0)
 		sound.looping.value = looping
 		return sound
 
@@ -33,3 +35,6 @@ class SoundManager(object):
 			if fname.lower().endswith(self.SUPPORTED_EXTENSIONS):
 				res.append(fname)
 		return res
+
+	def create_source(self):
+		return libaudioverse.SourceNode(self.sim, self.world)
