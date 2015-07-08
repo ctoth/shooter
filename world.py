@@ -4,7 +4,7 @@ class World(object):
 
 	def __init__(self, framerate=60):
 		self.framerate = framerate
-		self.world = b2.world(doSleep=True)
+		self.world = b2.world(doSleep=True, gravity=(0, 0))
 
 	def tick(self):
 		self.world.Step(1.0 / self.framerate, 10, 10)
