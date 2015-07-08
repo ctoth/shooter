@@ -1,0 +1,20 @@
+objects:
+  - name: Clock
+    sound: clock
+    size: [1, 1]
+    fixed: true
+
+rooms:
+  - name: Starting Room
+    size: [8, 8]
+    floor: carpet
+    contents:
+      - Clock: [8, 1]
+    exits:
+      - Main Hallway: [8, 8]
+
+  - name: Main Hallway
+    size: [6, 30]
+    floor: concrete
+    exits:
+      - Starting Room: [1, 8]

@@ -1,8 +1,9 @@
 
 class Room(object):
 
-	def __init__(self, world, size=(1, 1), exits=None, floor=None):
+	def __init__(self, world, name=None, size=(1, 1), exits=None, floor=None, contents=None):
 		self.world = world
+		self.name = name
 		corners = [
 			(1, 1),
 			(1, size[0]),
@@ -13,4 +14,7 @@ class Room(object):
 		if exits is None:
 			exits = []
 		exits.sort()
-		
+		#dictionary of {coords: object}
+		if contents is None:
+			contents = {}
+		self.contents = contents
