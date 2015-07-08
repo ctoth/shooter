@@ -1,3 +1,4 @@
+from Box2D import b2
 
 class Room(object):
 
@@ -13,4 +14,6 @@ class Room(object):
 		if exits is None:
 			exits = []
 		exits.sort()
-		
+		vertices = [b2.vec2(*i) for i in corners]
+		self.shape = b2.chainShape(vertices=vertices)
+		self.ground_body = self.world.world.CreateStaticBody(position=(1, 1,) shapes=self.shape)
