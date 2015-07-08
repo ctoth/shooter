@@ -5,9 +5,11 @@ import player
 import sound
 import window
 import world
+import libaudioverse
 import pygame
 
 def main():
+	libaudioverse.initialize()
 	pygame.init()
 	game.sound_manager = sound.SoundManager()
 	game.world = world.World()
@@ -16,6 +18,8 @@ def main():
 	game.clock = pygame.time.Clock()
 	game.window = window.GameWindow(title="Shooter")
 	main_loop()
+	pygame.quit()
+	libaudioverse.shutdown()
 
 def main_loop():
 	running = True
