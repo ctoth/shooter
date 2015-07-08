@@ -32,6 +32,7 @@ def main_loop():
 			elif event.type == pygame.KEYUP:
 				events.keyup.send(key=event.key)
 		game.world.tick()
+		game.player.set_sound_position()
 		game.clock.tick(game.world.framerate)
 
 if __name__ == '__main__':

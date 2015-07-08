@@ -3,7 +3,6 @@ import entity
 import game
 
 class Player(entity.Entity):
-	pass
 
 	def set_sound_position(self):
 		super(Player, self).set_sound_position()
