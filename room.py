@@ -17,7 +17,7 @@ class Room(object):
 		exits.sort()
 		vertices = [b2.vec2(*i) for i in corners]
 		self.shape = b2.chainShape(vertices=vertices)
-		self.ground_body = self.world.world.CreateStaticBody(position=(1, 1), shapes=self.shape)
+		self.ground_body = self.world.world.CreateStaticBody(shapes=self.shape)
 		#dictionary of {coords: object}
 		if contents is None:
 			contents = {}
