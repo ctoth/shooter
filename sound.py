@@ -23,7 +23,7 @@ class SoundManager(object):
 			sound = libaudioverse.BufferNode(self.sim)
 			sound_buffer = libaudioverse.Buffer(self.sim)
 			sound_buffer.load_from_file(filename)
-			sound.buffer.value = sound_buffer
+			sound.set_buffer(sound_buffer)
 		sound.connect(0, source, 0)
 		sound.looping.value = looping
 		return sound
