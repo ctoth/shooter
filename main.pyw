@@ -38,6 +38,9 @@ def on_key_press(symbol, modifiers):
 		game.player.turn_left()
 	elif symbol == pyglet.window.key.RIGHT:
 		game.player.turn_right()
+	elif modifiers == pyglet.window.key.MOD_CTRL:
+		game.player.start_attacking()
+
 
 @game.window.event
 def on_key_release(symbol, modifiers):
@@ -45,6 +48,9 @@ def on_key_release(symbol, modifiers):
 		game.player.stop_moving()
 	elif symbol == pyglet.window.key.LEFT or symbol == pyglet.window.key.RIGHT:
 		game.player.stop_turning()
+	elif modifiers == pyglet.window.key.MOD_CTRL:
+		game.player.stop_attacking()
+
 
 if __name__ == '__main__':
 	main()

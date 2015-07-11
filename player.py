@@ -63,5 +63,11 @@ class Player(entity.Entity):
 	def stop_turning(self):
 		self.turning = None
 
+	def start_attacking(self):
+		pass
+
+	def stop_attacking(self):
+		pass
+
 def magnitude(*v):
 	return math.sqrt(sum([i**2 for i in v]))
