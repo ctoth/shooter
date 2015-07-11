@@ -18,7 +18,7 @@ class Player(entity.Entity):
 
 	def set_sound_position(self):
 		position = self.position
-		game.sound_manager.world.position.value = [position[1], 0, position[0]]
+		game.sound_manager.world.position.value = [position[0], 0, position[1]]
 		orientation = list(game.sound_manager.world.orientation.value)
 		orientation[0] = math.cos(math.radians(self.facing))
 		orientation[2] = math.sin(math.radians(self.facing))
