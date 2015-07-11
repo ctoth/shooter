@@ -38,6 +38,9 @@ class Player(entity.Entity):
 			if self.last_footstep_time + self.FOOTSTEP_DELAY <= game.clock.time():
 				self.footstep_sound = game.sound_manager.play('footstep.wav', source=self.sound_source)
 				self.last_footstep_time = game.clock.time()
+		else:
+			self.body.linearVelocity = (0, 0)
+
 		if self.moving == 'forward':
 			self.body.linearVelocity = math.cos(math.radians(self.facing)), math.sin(math.radians(self.facing))
 		elif self.moving == 'backward':
