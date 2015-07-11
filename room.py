@@ -7,9 +7,9 @@ class Room(object):
 		self.name = name
 		corners = [
 			(1, 1),
-			(1, size[0]),
-			(size[1], size[0]),
-			(size[1], 1)
+			(1, size[0] + 2),
+			(size[1] + 2, size[0] + 2),
+			(size[1] + 2, 1)
 		]
 		exit_coords = [tuple(i.values()[0]) for i in exits]
 		filled_tiles = []
@@ -17,7 +17,6 @@ class Room(object):
 		filled_tiles.extend(tiles_for_wall(corners[1], corners[2], exit_coords))
 		filled_tiles.extend(tiles_for_wall(corners[2], corners[3], exit_coords))
 		filled_tiles.extend(tiles_for_wall(corners[3], corners[0], exit_coords))
-		self.exit_coords = exit_coords
 		self.filled_tiles = filled_tiles
 		self.floor = floor
 		if exits is None:
@@ -35,6 +34,7 @@ class Room(object):
 			contents = {}
 		self.contents = contents
 
+
 def point_on_line(point, line_start, line_end):
 	line_start, line_end = sorted([line_start, line_end])
 	if line_start[0] == line_end[0]:
@@ -48,10 +48,10 @@ def point_on_line(point, line_start, line_end):
 def points_for_line(line_start, line_end):
 	line_start, line_end = sorted([line_start, line_end])
 	if line_start[0] == line_end[0]:
-		for i in xrange(line_start[1], line_end[1] ):
+		for i in xrange(line_start[1], line_end[1] + 1):
 			yield (line_start[0], i)
 	elif line_start[1] == line_end[1]:
-		for i in xrange(line_start[0], line_end[0] ):
+		for i in xrange(line_start[0], line_end[0] + 1):
 			yield (i, line_start[1])
 	else:
 		raise ValueError("Only generates strait lines")

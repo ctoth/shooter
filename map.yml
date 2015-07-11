@@ -9,6 +9,7 @@ rooms:
     size: [8, 8]
     floor: carpet
     contents:
-      - Clock: [8, 1]
+      - Clock: [8, 8]
     exits:
-      - Main Hallway: [8, 8]
+      - Main Hallway: [7, 8]
+

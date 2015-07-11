@@ -40,6 +40,7 @@ class GameObject(object):
 	def set_sound_position(self):
 		position = [float(i) for i in self.position]
 		position.insert(1, 0.0)
+		position.reverse()
 		self.sound_source.position.value = position
 
 	@property

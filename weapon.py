@@ -1,5 +1,5 @@
 import attr
-import time
+import game
 
 @attr.s
 class Weapon(object):
@@ -9,4 +9,4 @@ class Weapon(object):
 	last_used = attr.ib(default=0)
 
 	def can_use(self):
-		return self.last_used + self.cooldown < time.time()
+		return self.last_used + self.cooldown < game.clock.time()
