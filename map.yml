@@ -12,9 +12,3 @@ rooms:
       - Clock: [8, 1]
     exits:
       - Main Hallway: [8, 8]
-
-  - name: Main Hallway
-    size: [6, 30]
-    floor: concrete
-    exits:
-      - Starting Room: [1, 8]

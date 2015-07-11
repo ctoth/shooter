@@ -9,7 +9,7 @@ class GameObject(object):
 	world = attr.ib(default=None)
 	fixed = attr.ib(default=False)
 
-	def __init__(self, world=None, name="", size=(1, 1), position=(1, 1), facing=0, fixed=True, sound=None, *args, **kwargs):
+	def __init__(self, world=None, name="", size=(1, 1), position=(2, 2), facing=0, fixed=True, sound=None, *args, **kwargs):
 		super(GameObject, self).__init__(*args, **kwargs)
 		self.name = name
 		self.world = world

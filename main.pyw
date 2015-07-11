@@ -13,7 +13,7 @@ def main():
 	pygame.init()
 	game.sound_manager = sound.SoundManager()
 	game.world = world.World()
-	game.player = player.Player(world=game.world)
+	game.player = player.Player(world=game.world, position=(4, 4))
 	game.map = loader.load_map(game.world, 'map.yml')
 	game.clock = pygame.time.Clock()
 	game.window = window.GameWindow(title="Shooter")
