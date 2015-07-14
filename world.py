@@ -1,4 +1,5 @@
 from Box2D import b2
+import game
 
 class World(object):
 
@@ -7,4 +8,5 @@ class World(object):
 		self.world = b2.world(doSleep=True, gravity=(0, 0))
 
 	def tick(self):
-		self.world.Step(1.0 / self.framerate, 10, 10)
+		with game.sound_manager.sim:
+			self.world.Step(1.0 / self.framerate, 10, 10)
