@@ -42,7 +42,9 @@ def on_key_press(symbol, modifiers):
 		game.player.turn_right()
 	if symbol == pyglet.window.key.C:
 		game.player.read_coordinates()
-	elif modifiers == pyglet.window.key.MOD_CTRL:
+	if symbol == pyglet.window.key.F:
+		game.player.read_facing()
+	if modifiers == pyglet.window.key.MOD_CTRL:
 		game.player.start_attacking()
 
 

@@ -77,5 +77,8 @@ class Player(entity.Entity):
 	def read_coordinates(self):
 		game.output.output("%.2f, %.2f" % (self.position[0], self.position[1]))
 
+	def read_facing(self):
+		game.output.output("%d degrees" % self.facing)
+
 def magnitude(*v):
 	return math.sqrt(sum([i**2 for i in v]))
