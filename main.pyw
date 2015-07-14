@@ -34,13 +34,13 @@ def main_loop():
 def on_key_press(symbol, modifiers):
 	if symbol == pyglet.window.key.UP:
 		game.player.start_forward()
-	elif symbol == pyglet.window.key.DOWN:
+	if symbol == pyglet.window.key.DOWN:
 		game.player.start_backward()
-	elif symbol == pyglet.window.key.LEFT:
+	if symbol == pyglet.window.key.LEFT:
 		game.player.turn_left()
-	elif symbol == pyglet.window.key.RIGHT:
+	if symbol == pyglet.window.key.RIGHT:
 		game.player.turn_right()
-	elif symbol == pyglet.window.key.C:
+	if symbol == pyglet.window.key.C:
 		game.player.read_coordinates()
 	elif modifiers == pyglet.window.key.MOD_CTRL:
 		game.player.start_attacking()
@@ -50,9 +50,9 @@ def on_key_press(symbol, modifiers):
 def on_key_release(symbol, modifiers):
 	if symbol == pyglet.window.key.UP or symbol == pyglet.window.key.DOWN:
 		game.player.stop_moving()
-	elif symbol == pyglet.window.key.LEFT or symbol == pyglet.window.key.RIGHT:
+	if symbol == pyglet.window.key.LEFT or symbol == pyglet.window.key.RIGHT:
 		game.player.stop_turning()
-	elif modifiers == pyglet.window.key.MOD_CTRL:
+	if modifiers == pyglet.window.key.MOD_CTRL:
 		game.player.stop_attacking()
 
 
