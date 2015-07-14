@@ -36,6 +36,9 @@ class Player(entity.Entity):
 		if self.moving is None:
 			self.body.linearVelocity = (0, 0)
 		if magnitude(*self.body.linearVelocity) >= self.FOOTSTEP_SPEED:
+			if self.body.contacts and self.body.contacts[0].contact.fixtureB.body.userData:
+				print "hit a wall"
+				return
 			if self.last_footstep_time + self.FOOTSTEP_DELAY <= game.clock.time():
 				self.footstep_sound = game.sound_manager.play('footstep.wav', source=self.sound_source)
 				self.last_footstep_time = game.clock.time()
@@ -55,7 +58,6 @@ class Player(entity.Entity):
 
 	def start_backward(self):
 		self.moving = 'backward'
-
 
 	def turn_left(self):
 		self.turning = 'left'
