@@ -9,6 +9,7 @@ class Player(entity.Entity):
 	TURN_RATE = 1.0
 	FOOTSTEP_SPEED = 0.5
 	FOOTSTEP_DELAY = 0.3
+	footstep_multiplier = 3.0
 
 	def __init__(self, size=(0.5, 0.5), *args, **kwargs):
 		super(Player, self).__init__(size=size, *args, **kwargs)
@@ -40,12 +41,11 @@ class Player(entity.Entity):
 				self.last_footstep_time = game.clock.time()
 		else:
 			self.body.linearVelocity = (0, 0)
-
 		if self.moving == 'forward':
-			self.body.linearVelocity = math.cos(math.radians(self.facing)), math.sin(math.radians(self.facing))
+			self.body.linearVelocity = self.footstep_multiplier * math.cos(math.radians(self.facing)), self.footstep_multiplier * math.sin(math.radians(self.facing))
 		elif self.moving == 'backward':
 			facing = (self.facing - 180) % 360
-			self.body.linearVelocity = math.cos(math.radians(facing)), math.sin(math.radians(facing))
+			self.body.linearVelocity = self.footstep_multiplier * math.cos(math.radians(facing)), self.footstep_multiplier * math.sin(math.radians(facing))
 
 	def start_forward(self):
 		self.moving = 'forward'
