@@ -40,6 +40,8 @@ def on_key_press(symbol, modifiers):
 		game.player.turn_left()
 	elif symbol == pyglet.window.key.RIGHT:
 		game.player.turn_right()
+	elif symbol == pyglet.window.key.C:
+		game.player.read_coordinates()
 	elif modifiers == pyglet.window.key.MOD_CTRL:
 		game.player.start_attacking()
 
