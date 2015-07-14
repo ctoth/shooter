@@ -17,5 +17,4 @@ class Weapon(game_object.GameObject):
 		return self.last_used + self.cooldown < game.clock.time()
 
 	def use(self):
-		if self.use_sound:
-			self.use_sound.play()
+		pass
