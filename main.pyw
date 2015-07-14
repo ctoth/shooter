@@ -25,10 +25,7 @@ def main():
 
 def main_loop():
 	framerate = 1/60.0
-	pyglet.clock.schedule_interval(lambda dt: game.world.tick(), framerate)
-	pyglet.clock.schedule_interval(lambda dt: game.player.tick(), framerate)
-	pyglet.clock.schedule_interval(lambda dt: game.player.set_sound_position(), framerate)
-
+	pyglet.clock.schedule_interval(tick, framerate)
 	pyglet.app.run()
 
 @game.window.event
@@ -65,6 +62,13 @@ def on_key_release(symbol, modifiers):
 		game.player.stop_strafing()
 	if modifiers == key.MOD_CTRL:
 		game.player.stop_attacking()
+
+def tick(dt):
+	with game.sound_manager.sim:
+		game.world.tick()
+		game.player.tick()
+		game.player.set_sound_position()
+
 
 
 if __name__ == '__main__':
