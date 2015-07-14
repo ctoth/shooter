@@ -32,8 +32,8 @@ class Player(entity.Entity):
 		elif self.turning == 'right':
 			self.facing += self.TURN_RATE
 		self.facing %= 360
-		if not self.moving:
-			return
+		if self.moving is None:
+			self.body.linearVelocity = (0, 0)
 		if magnitude(*self.body.linearVelocity) >= self.FOOTSTEP_SPEED:
 			if self.last_footstep_time + self.FOOTSTEP_DELAY <= game.clock.time():
 				self.footstep_sound = game.sound_manager.play('footstep.wav', source=self.sound_source)
