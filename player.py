@@ -1,6 +1,7 @@
 import math
 import attr
 import entity
+import weapon
 import game
 import libaudioverse
 
@@ -16,6 +17,8 @@ class Player(entity.Entity):
 		self.moving = False
 		self.turning = None
 		self.last_footstep_time = 0
+		self.weapon = weapon.Weapon(name="Knife")
+		self.attacking = False
 
 	def set_sound_position(self):
 		position = self.position
@@ -28,6 +31,9 @@ class Player(entity.Entity):
 
 
 	def tick(self):
+		if self.attacking:
+			if self.weapon.can_use():
+				self.weapon.use()
 		if self.turning == 'left':
 			self.facing -= self.TURN_RATE
 		elif self.turning == 'right':
@@ -69,10 +75,12 @@ class Player(entity.Entity):
 		self.turning = None
 
 	def start_attacking(self):
-		pass
+		self.attacking = True
+
 
 	def stop_attacking(self):
-		pass
+		self.attacking = False
+
 
 	def read_coordinates(self):
 		game.output.output("%.2f, %.2f" % (self.position[0], self.position[1]))
