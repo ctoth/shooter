@@ -7,8 +7,8 @@ import libaudioverse
 
 class Player(entity.Entity):
 	TURN_RATE = 1.0
-	FOOTSTEP_SPEED = 1.0
-	FOOTSTEP_DELAY = 0.31
+	FOOTSTEP_SPEED = 0.5
+	FOOTSTEP_DELAY = 0.3
 
 	def __init__(self, size=(0.5, 0.5), *args, **kwargs):
 		super(Player, self).__init__(size=size, *args, **kwargs)
