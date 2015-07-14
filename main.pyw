@@ -7,12 +7,14 @@ import sound
 import world
 import libaudioverse
 import ingress
+from accessible_output2.outputs import auto
 
 
 def main():
 	libaudioverse.initialize()
 	game.clock = pyglet.clock.get_default()
 	game.sound_manager = sound.SoundManager()
+	game.output = auto.Auto()
 	game.world = world.World()
 	game.player = player.Player(world=game.world, position=(4, 4))
 	game.map = loader.load_map(game.world, 'map.yml')
