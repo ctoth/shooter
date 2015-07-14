@@ -6,10 +6,10 @@ class Room(object):
 		self.world = world
 		self.name = name
 		corners = [
-			(1, 1),
-			(1, size[0] + 2),
-			(size[1] + 2, size[0] + 2),
-			(size[1] + 2, 1)
+			(0, 0),
+			(0, size[0] + 1),
+			(size[1] + 1, size[0] + 1),
+			(size[1] + 1, 0)
 		]
 		exit_coords = [tuple([j+1 for j in i.values()[0]]) for i in exits]
 		filled_tiles = []
@@ -26,7 +26,7 @@ class Room(object):
 		self.exits = exits
 		bodies = []
 		for tile in filled_tiles:
-			position = (tile[0], tile[1])
+			position = (tile[0] - 0.5, tile[1] - 0.5)
 			shape = b2.polygonShape(box=(0.5, 0.5))
 			bodies.append(self.world.world.CreateStaticBody(shapes=shape, position=position, userData='wall'))
 		self.bodies = bodies
@@ -50,7 +50,8 @@ def points_for_line(line_start, line_end):
 	line_start, line_end = sorted([line_start, line_end])
 	if line_start[0] == line_end[0]:
 		for i in xrange(line_start[1], line_end[1] + 1):
-			yield (line_start[0], i)
+			yield (line_start[0]+0.5, i+0.5)
+			yield (line_start[0]+0.5, i+0.5)
 	elif line_start[1] == line_end[1]:
 		for i in xrange(line_start[0], line_end[0] + 1):
 			yield (i, line_start[1])
