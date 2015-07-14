@@ -50,10 +50,15 @@ class Player(entity.Entity):
 				self.last_footstep_time = game.clock.time()
 		else:
 			self.body.linearVelocity = (0, 0)
-		if self.moving == 'forward':
-			self.body.linearVelocity = self.footstep_multiplier * math.cos(math.radians(self.facing)), self.footstep_multiplier * math.sin(math.radians(self.facing))
-		elif self.moving == 'backward':
-			facing = (self.facing - 180) % 360
+		if self.moving:
+			if self.moving == 'forward':
+				facing = self.facing
+			elif self.moving == 'right':
+				facing = self.facing + 90 % 360
+			elif self.moving == 'left':
+				facing = self.facing - 90 % 360
+			elif self.moving == 'backward':
+				facing = (self.facing - 180) % 360
 			self.body.linearVelocity = self.footstep_multiplier * math.cos(math.radians(facing)), self.footstep_multiplier * math.sin(math.radians(facing))
 
 	def start_forward(self):
@@ -81,6 +86,14 @@ class Player(entity.Entity):
 	def stop_attacking(self):
 		self.attacking = False
 
+	def strafe_left(self):
+		self.moving = 'left'
+
+	def strafe_right(self):
+		self.moving = 'right'
+
+	def stop_strafing(self):
+		self.moving = None
 
 	def read_coordinates(self):
 		game.output.output("%.2f, %.2f" % (self.position[0], self.position[1]))

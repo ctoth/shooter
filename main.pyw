@@ -1,6 +1,7 @@
 import game
 import pyglet
 game.window = pyglet.window.Window()
+from pyglet.window import key
 import loader
 import player
 import sound
@@ -32,29 +33,37 @@ def main_loop():
 
 @game.window.event
 def on_key_press(symbol, modifiers):
-	if symbol == pyglet.window.key.UP:
+	if symbol == key.UP:
 		game.player.start_forward()
-	if symbol == pyglet.window.key.DOWN:
+	if symbol == key.DOWN:
 		game.player.start_backward()
-	if symbol == pyglet.window.key.LEFT:
-		game.player.turn_left()
-	if symbol == pyglet.window.key.RIGHT:
-		game.player.turn_right()
-	if symbol == pyglet.window.key.C:
+	if symbol == key.LEFT:
+		if modifiers == key.MOD_SHIFT:
+			game.player.strafe_left()
+		else:
+			game.player.turn_left()
+	if symbol == key.RIGHT:
+		if modifiers == key.MOD_SHIFT:
+			game.player.strafe_right()
+		else:
+			game.player.turn_right()
+	if symbol == key.C:
 		game.player.read_coordinates()
-	if symbol == pyglet.window.key.F:
+	if symbol == key.F:
 		game.player.read_facing()
-	if modifiers == pyglet.window.key.MOD_CTRL:
+	if modifiers == key.MOD_CTRL:
 		game.player.start_attacking()
 
 
 @game.window.event
 def on_key_release(symbol, modifiers):
-	if symbol == pyglet.window.key.UP or symbol == pyglet.window.key.DOWN:
+	if symbol == key.UP or symbol == key.DOWN:
 		game.player.stop_moving()
-	if symbol == pyglet.window.key.LEFT or symbol == pyglet.window.key.RIGHT:
+	if symbol == key.LEFT or symbol == key.RIGHT:
 		game.player.stop_turning()
-	if modifiers == pyglet.window.key.MOD_CTRL:
+	if modifiers == key.MOD_SHIFT:
+		game.player.stop_strafing()
+	if modifiers == key.MOD_CTRL:
 		game.player.stop_attacking()
 
 
