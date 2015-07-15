@@ -1,3 +1,4 @@
+import random
 import os
 import libaudioverse
 libaudioverse.initialize()
@@ -18,6 +19,8 @@ class SoundManager(object):
 
 	def play(self, filename, source, looping=False, position=(0, 0, 0)):
 		filename = os.path.join(self.sounds_path, filename)
+		if os.path.isdir(filename):
+			filename = os.path.join(filename, random.choice(self.list_sounds_in_directory(filename)))
 		sound = self.sounds.get(filename)
 		if not sound:
 			sound = libaudioverse.BufferNode(self.sim)
@@ -30,7 +33,8 @@ class SoundManager(object):
 
 	def list_sounds_in_directory(self, directory):
 		res = []
-		directory = os.path.join(self.sounds_path, directory)
+		if not directory.startswith(self.sounds_path):
+			directory = os.path.join(self.sounds_path, directory)
 		for fname in os.listdir(directory):
 			if fname.lower().endswith(self.SUPPORTED_EXTENSIONS):
 				res.append(fname)
