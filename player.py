@@ -3,6 +3,7 @@ import entity
 import weapon
 import game
 import libaudioverse
+from math_utils import *
 
 
 class Player(entity.Entity):
@@ -37,10 +38,8 @@ class Player(entity.Entity):
 		if self.turning == 'left':
 			self.facing -= self.TURN_RATE
 		elif self.turning == 'right':
-			self.facing += self.TURN_RATE
-		self.facing %= 360
-		if self.moving is None:
-			self.body.linearVelocity = (0, 0)
+			self.facing += self.TURN_RATE	
+		self		.facing %= 360
 		if magnitude(*self.body.linearVelocity) >= self.FOOTSTEP_SPEED:
 			if self.body.contacts and self.body.contacts[0].contact.fixtureB.body.userData:
 				print "hit a wall"
@@ -59,7 +58,10 @@ class Player(entity.Entity):
 				facing = self.facing - 90 % 360
 			elif self.moving == 'backward':
 				facing = (self.facing - 180) % 360
-			self.body.linearVelocity = self.footstep_multiplier * math.cos(math.radians(facing)), self.footstep_multiplier * math.sin(math.radians(facing))
+			self.body.linearVelocity = vec_mul(angle_to_vec(facing), self.footstep_multiplier)
+		else:
+			self.body.linearVelocity = (0, 0)
+
 
 	def start_forward(self):
 		self.moving = 'forward'
