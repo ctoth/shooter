@@ -23,11 +23,11 @@ class GameObject(object):
 
 	@property
 	def position(self):
-		return self.body.position
+		return tuple(self.body.position)
 
 	@position.setter
 	def position(self, position):
-		self.body.position = position
+		self.body.position = tuple(position)
 		self.set_sound_position()
 
 
