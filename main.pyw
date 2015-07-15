@@ -48,12 +48,14 @@ def on_key_press(symbol, modifiers):
 		game.player.read_coordinates()
 	if symbol == key.F:
 		game.player.read_facing()
-	if modifiers == key.MOD_CTRL:
+	if symbol in (key.LCTRL, key.RCTRL):
 		game.player.start_attacking()
 
 
 @game.window.event
 def on_key_release(symbol, modifiers):
+	if symbol in (key.LCTRL, key.RCTRL):
+		game.player.stop_attacking()
 	if symbol == key.UP or symbol == key.DOWN:
 		game.player.stop_moving()
 	if symbol == key.LEFT or symbol == key.RIGHT:
