@@ -8,5 +8,5 @@ class Entity(game_object.GameObject):
 		self.speed = speed
 
 	def create_body(self):
-		self.body = self.world.world.CreateDynamicBody()
+		self.body = self.world.world.CreateDynamicBody(userData=self)
 		self.box= self.body.CreatePolygonFixture(box=self.size, density=1, friction=1.0, restitution=0.0)

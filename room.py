@@ -28,7 +28,7 @@ class Room(object):
 		for tile in filled_tiles:
 			position = (tile[0] - 0.5, tile[1] - 0.5)
 			shape = b2.polygonShape(box=(0.5, 0.5))
-			bodies.append(self.world.world.CreateStaticBody(shapes=shape, position=position, userData='wall'))
+			bodies.append(self.world.world.CreateStaticBody(shapes=shape, position=position, userData=self))
 		self.bodies = bodies
 		#dictionary of {coords: object}
 		if contents is None:

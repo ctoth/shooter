@@ -19,7 +19,7 @@ class GameObject(object):
 
 	def create_body(self):
 		self.shape = b2.polygonShape(box=self.size)
-		self.body = self.world.world.CreateStaticBody(shapes=self.shape)
+		self.body = self.world.world.CreateStaticBody(shapes=self.shape, userData=self)
 
 	@property
 	def position(self):
