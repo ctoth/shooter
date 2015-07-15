@@ -21,14 +21,15 @@ class SoundManager(object):
 		filename = os.path.join(self.sounds_path, filename)
 		if os.path.isdir(filename):
 			filename = os.path.join(filename, random.choice(self.list_sounds_in_directory(filename)))
-		sound = self.sounds.get(filename)
-		if not sound:
-			sound = libaudioverse.BufferNode(self.sim)
+		sound = libaudioverse.BufferNode(self.sim)
+		sound_buffer = self.sounds.get(filename)
+		if not sound_buffer:
 			sound_buffer = libaudioverse.Buffer(self.sim)
 			sound_buffer.load_from_file(filename)
-			sound.set_buffer(sound_buffer)
+		sound.set_buffer(sound_buffer)
 		sound.connect(0, source, 0)
 		sound.looping.value = looping
+		self.sounds[filename] = sound_buffer
 		return sound
 
 	def list_sounds_in_directory(self, directory):
