@@ -1,6 +1,6 @@
 objects:
   - name: Clock
-    sound: clock.ogg
+    sound: clock.wav
     damage_sound: glass.wav
     size: [0.25, 0.25]
     fixed: true
