@@ -58,3 +58,7 @@ class GameObject(object):
 
 	def handle_colision(self, other):
 		print "colision", self, other
+
+	def use(self):
+		if self.use_sound is not None:
+			game.sound_manager.play(self.use_sound, source=self.sound_source)
