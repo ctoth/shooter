@@ -1,9 +1,10 @@
 import attr
+import entity
 import game
 import game_object
 
 @attr.s
-class Weapon(game_object.GameObject):
+class Weapon(entity.Entity):
 	base_damage = attr.ib(default=1.0)
 	range = attr.ib(default=0.5)
 	cooldown = attr.ib(default=1.0)

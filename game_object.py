@@ -1,13 +1,7 @@
-import attr
 import game
 from Box2D import b2
 
-@attr.s(init=False)
 class GameObject(object):
-	name = attr.ib(default="")
-	size = attr.ib(default=attr.Factory(lambda: (1, 1)))
-	world = attr.ib(default=None)
-	fixed = attr.ib(default=False)
 
 	def __init__(self, world=None, name="", size=(1, 1), position=(2, 2), facing=0, fixed=True, sound=None, *args, **kwargs):
 		super(GameObject, self).__init__(*args, **kwargs)

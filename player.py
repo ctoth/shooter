@@ -1,5 +1,4 @@
 import math
-import attr
 import entity
 import weapon
 import game
