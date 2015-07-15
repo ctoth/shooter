@@ -11,8 +11,8 @@ class Player(entity.Entity):
 	FOOTSTEP_DELAY = 0.3
 	footstep_multiplier = 3.0
 
-	def __init__(self, size=(0.5, 0.5), *args, **kwargs):
-		super(Player, self).__init__(size=size, *args, **kwargs)
+	def __init__(self, size=(0.5, 0.5), mass=100, *args, **kwargs):
+		super(Player, self).__init__(size=size, mass=mass, *args, **kwargs)
 		self.moving = False
 		self.turning = None
 		self.last_footstep_time = 0
