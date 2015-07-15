@@ -1,6 +1,7 @@
+import Box2D
 from Box2D import b2
 import game
-import box2d
+
 
 class World(object):
 
