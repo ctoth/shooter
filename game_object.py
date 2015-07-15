@@ -55,3 +55,6 @@ class GameObject(object):
 		self.world.destroy(self)
 		if self.sound is not None:
 			self.sound.states = libaudioverse.NodeStates.stopped
+
+	def handle_colision(self, other):
+		print "colision", self, other

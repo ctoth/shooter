@@ -35,6 +35,8 @@ class Room(object):
 			contents = {}
 		self.contents = contents
 
+	def handle_colision(self, other):
+		pass
 
 def point_on_line(point, line_start, line_end):
 	line_start, line_end = sorted([line_start, line_end])
