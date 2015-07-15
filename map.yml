@@ -5,12 +5,17 @@ objects:
     size: [0.25, 0.25]
     fixed: true
 
+  - name: Refrigerator
+    fixed: true
+    sound: fridge.wav
+
 rooms:
   - name: Starting Room
-    size: [8, 8]
+    size: [8, 30]
     floor: carpet
     contents:
       - Clock: [8, 1]
+      - Refrigerator: [20, 7]
     exits:
       - Main Hallway: [7, 8]
 

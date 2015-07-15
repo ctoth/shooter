@@ -42,7 +42,8 @@ class Projectile(entity.Entity):
 		self.set_sound_position()
 		print other
 		hit_sound = other.damage_sound
-		game.sound_manager.play(hit_sound, source=self.sound_source)
+		if hit_sound is not None:
+			game.sound_manager.play(hit_sound, source=self.sound_source)
 		self.destroy()
 
 
