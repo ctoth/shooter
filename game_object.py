@@ -49,3 +49,6 @@ class GameObject(object):
 	@facing.setter
 	def facing(self, facing):
 		self.body.angle = facing
+
+	def destroy(self):
+		self.world.destroy(self)
