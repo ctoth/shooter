@@ -6,8 +6,7 @@ class GameObject(object):
 	def __init__(self, world=None, name="", size=(1, 1), position=(2, 2), facing=0, fixed=True, sound=None, *args, **kwargs):
 		super(GameObject, self).__init__(*args, **kwargs)
 		self.name = name
-		self.world = world
-		self.size = size
+		self.size = tuple(size)
 		self.fixed = fixed
 		self.create_body()
 		self.sound_source = game.sound_manager.create_source()
