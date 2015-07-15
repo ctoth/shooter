@@ -59,7 +59,7 @@ def on_key_release(symbol, modifiers):
 		game.player.stop_moving()
 	if symbol == key.LEFT or symbol == key.RIGHT:
 		game.player.stop_turning()
-	if modifiers == key.MOD_SHIFT:
+	if symbol in (key.LSHIFT, key.RSHIFT):
 		game.player.stop_strafing()
 	if modifiers == key.MOD_CTRL:
 		game.player.stop_attacking()
