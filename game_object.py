@@ -3,8 +3,9 @@ from Box2D import b2
 
 class GameObject(object):
 
-	def __init__(self, world=None, name="", size=(1, 1), position=(2, 2), facing=0, fixed=True, sound=None, *args, **kwargs):
+	def __init__(self, name="", world=None, size=(1, 1), position=(2, 2), facing=0, mass=1, fixed=True, sound_source=None, sound=None, use_sound=None, damage_sound=None, *args, **kwargs):
 		super(GameObject, self).__init__(*args, **kwargs)
+		self.world = world
 		self.name = name
 		self.size = tuple(size)
 		self.fixed = fixed
@@ -16,6 +17,8 @@ class GameObject(object):
 		if sound is not None:
 			sound = game.sound_manager.play(sound, source=self.sound_source, looping=True)
 		self.sound = sound
+		self.damage_sound = damage_sound
+		self.use_sound = use_sound
 		self.position = position
 		self.facing = facing
 
