@@ -35,7 +35,6 @@ class GameObject(object):
 		self.body.position = tuple(position)
 		self.set_sound_position()
 
-
 	def set_sound_position(self):
 		if self.sound_source.head_relative.value:
 			return

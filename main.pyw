@@ -51,7 +51,6 @@ def on_key_press(symbol, modifiers):
 	if symbol in (key.LCTRL, key.RCTRL):
 		game.player.start_attacking()
 
-
 @game.window.event
 def on_key_release(symbol, modifiers):
 	if symbol in (key.LCTRL, key.RCTRL):
