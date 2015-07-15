@@ -15,9 +15,10 @@ class Player(entity.Entity):
 	def __init__(self, size=(0.5, 0.5), mass=100, *args, **kwargs):
 		super(Player, self).__init__(size=size, mass=mass, *args, **kwargs)
 		self.moving = False
+		gun = weapon.ProjectileWeapon(world=self.world, name="Gun", ammo_type="bullet", use_sound='rifle', size=(1, 0.1), position=self.position)
+		self.equip(gun)
 		self.turning = None
 		self.last_footstep_time = 0
-		self.weapon = weapon.Weapon(name="Knife")
 		self.attacking = False
 		self.sound_source.head_relative = True
 
@@ -62,6 +63,11 @@ class Player(entity.Entity):
 		else:
 			self.body.linearVelocity = (0, 0)
 
+	def equip(self, item):
+		self.weapon = item
+		self.world.world.CreateRevoluteJoint(bodyA=self.body, bodyB=item.body, anchorPOint=self.body.worldCenter)
+		item.sound_source.head_relative = True
+		item.sound_source.position = (0, 0, 0)
 
 	def start_forward(self):
 		self.moving = 'forward'
