@@ -42,8 +42,7 @@ class Player(entity.Entity):
 			self.facing += self.TURN_RATE	
 		self		.facing %= 360
 		if magnitude(*self.body.linearVelocity) >= self.FOOTSTEP_SPEED:
-			if self.body.contacts and self.body.contacts[0].contact.fixtureB.body.userData:
-				print "hit a wall"
+			if self.body.contacts and self.body.contacts[0].contact.fixtureB.body.userData == 'wall':
 				return
 			if self.last_footstep_time + self.FOOTSTEP_DELAY <= game.clock.time():
 				self.footstep_sound = game.sound_manager.play('footstep.wav', source=self.sound_source)
@@ -89,7 +88,6 @@ class Player(entity.Entity):
 
 	def start_attacking(self):
 		self.attacking = True
-
 
 	def stop_attacking(self):
 		self.attacking = False
