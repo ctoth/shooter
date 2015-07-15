@@ -9,7 +9,9 @@ class GameObject(object):
 		self.size = tuple(size)
 		self.fixed = fixed
 		self.create_body()
-		self.sound_source = game.sound_manager.create_source()
+		if sound_source is None:
+			sound_source = game.sound_manager.create_source()
+		self.sound_source = sound_source
 		if sound is not None:
 			sound = game.sound_manager.play(sound, source=self.sound_source, looping=True)
 		self.sound = sound
