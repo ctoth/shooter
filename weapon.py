@@ -4,14 +4,16 @@ import game
 import game_object
 from math_utils import *
 
-@attr.s
 class Weapon(entity.Entity):
-	base_damage = attr.ib(default=1.0)
-	range = attr.ib(default=1.0)
-	cooldown = attr.ib(default=0.5)
-	last_used = attr.ib(default=0)
-	max_uses = attr.ib(default=0)
-	current_uses = attr.ib(default=0)
+
+	def __init__(self, base_damage=1.0, range=1.0, cooldown=1.0, last_used=0, max_uses=0, current_uses=0, *args, **kwargs):
+		super(Weapon, self).__init__(*args, **kwargs)
+		self.base_damage = base_damage
+		self.range = range
+		self.cooldown = cooldown
+		self.last_used = last_used
+		self.max_uses = max_uses
+		self.current_uses = current_uses
 
 	def can_use(self):
 		if self.max_uses and self.current_uses >= self.max_uses:
@@ -22,9 +24,9 @@ class Weapon(entity.Entity):
 		super(Weapon, self).use()
 		self.last_used = game.clock.time()
 
-@attr.s
 class Ammunition(game_object.GameObject):
-	shots = attr.ib(default=1)
+	pass
+
 
 class Projectile(entity.Entity):
 
