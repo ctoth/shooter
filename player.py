@@ -101,6 +101,27 @@ class Player(entity.Entity):
 	def stop_strafing(self):
 		self.moving = None
 
+	def snap_left(self):
+		if self.facing > 0 and self.facing <= 90:
+			self.facing = 0
+		elif self.facing > 90 and self.facing <= 180:
+			self.facing = 90
+		elif self.facing > 180 and self.facing <= 270:
+			self.facing = 180
+		elif self.facing > 270 or self.facing <= 0:
+			self.facing = 270
+
+	def snap_right(self):
+		if self.facing < 90:
+			self.facing = 90
+		elif self.facing < 180:
+			self.facing = 180
+		elif self.facing < 270:
+			self.facing = 270
+		elif self.facing < 360:
+			self.facing = 0
+
+
 	def read_coordinates(self):
 		game.output.output("%.2f, %.2f" % (self.position[0], self.position[1]))
 
