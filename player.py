@@ -18,6 +18,7 @@ class Player(entity.Entity):
 		self.last_footstep_time = 0
 		self.weapon = weapon.Weapon(name="Knife")
 		self.attacking = False
+		self.sound_source.head_relative = True
 
 	def set_sound_position(self):
 		position = self.position
