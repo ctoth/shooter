@@ -21,14 +21,12 @@ class Player(entity.Entity):
 		self.sound_source.head_relative = True
 
 	def set_sound_position(self):
-		position = self.position
-		game.sound_manager.world.position.value = [position[0], 0, position[1]]
+		position = list(self.position)
+		position = [position[0], 0, position[1]]
+		game.sound_manager.world.position.value = position
 		orientation = list(game.sound_manager.world.orientation.value)
-		orientation[0] = math.cos(math.radians(self.facing))
-		orientation[2] = math.sin(math.radians(self.facing))
-		game.sound_manager.world.orientation.value = orientation
-		super(Player, self).set_sound_position()
-
+		orientation[0], orientation[2] = angle_to_vec(self.facing)
+		game.sound_manager.world.orientation = orientation
 
 	def tick(self):
 		if self.attacking:
