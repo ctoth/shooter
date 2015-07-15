@@ -61,15 +61,13 @@ def on_key_release(symbol, modifiers):
 		game.player.stop_turning()
 	if symbol in (key.LSHIFT, key.RSHIFT):
 		game.player.stop_strafing()
-	if modifiers == key.MOD_CTRL:
-		game.player.stop_attacking()
+
 
 def tick(dt):
 	with game.sound_manager.sim:
 		game.world.tick()
 		game.player.tick()
 		game.player.set_sound_position()
-
 
 
 if __name__ == '__main__':
