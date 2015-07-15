@@ -31,6 +31,8 @@ class Player(entity.Entity):
 	def tick(self):
 		if self.attacking:
 			if self.weapon.can_use():
+				self.weapon.position = self.position
+				self.weapon.facing = self.facing
 				self.weapon.use()
 		if self.turning == 'left':
 			self.facing -= self.TURN_RATE
