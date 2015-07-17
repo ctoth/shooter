@@ -64,7 +64,7 @@ class Player(entity.Entity):
 
 	def equip(self, item):
 		self.weapon = item
-		self.world.world.CreateRevoluteJoint(bodyA=self.body, bodyB=item.body, anchorPOint=self.body.worldCenter)
+		self.world.world.CreateRevoluteJoint(bodyA=self.body, bodyB=item.body, anchorPoint=self.body.worldCenter)
 		item.sound_source.head_relative = True
 		item.sound_source.position = (0, 0, 0)
 
