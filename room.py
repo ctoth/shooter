@@ -1,7 +1,7 @@
 from Box2D import b2
 
 class Room(object):
-	damage_sound = 'ricochet'
+	destructable = False
 
 	def __init__(self, world, name=None, size=(1, 1), exits=None, floor=None, contents=None):
 		self.world = world
