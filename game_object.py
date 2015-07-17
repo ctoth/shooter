@@ -1,6 +1,5 @@
 import game
 from Box2D import b2
-import libaudioverse
 
 class GameObject(object):
 
@@ -53,8 +52,6 @@ class GameObject(object):
 
 	def destroy(self):
 		self.world.destroy(self)
-		if self.sound is not None:
-			self.sound.states = libaudioverse.NodeStates.stopped
 
 	def handle_colision(self, other):
 		print "colision", self, other
