@@ -1,6 +1,7 @@
 import entity
 import game
 import game_object
+import room
 from math_utils import *
 
 class Weapon(entity.Entity):
@@ -28,6 +29,7 @@ class Ammunition(game_object.GameObject):
 
 
 class Projectile(entity.Entity):
+	ricochet_sound = 'ricochet'
 
 	def __init__(self, weapon=None, size=(0.01, 0.01), *args, **kwargs):
 		super(Projectile, self).__init__(size=size, *args, **kwargs)
@@ -39,14 +41,18 @@ class Projectile(entity.Entity):
 		self.box.friction = 0
 
 	def handle_colision(self, other):
-		print self.position
 		self.set_sound_position()
 		print other
-		hit_sound = other.damage_sound
-		if hit_sound is not None:
-			game.sound_manager.play(hit_sound, source=self.sound_source)
-		self.destroy()
 
+		if other.destructable and hasattr(other, 'destroy'):
+			other.destroy()
+		elif isinstance(other, room.Room):
+			game.sound_manager.play_async(self.ricochet_sound, *self.position)
+		try:
+			self.weapon.fired.remove(self)
+		except KeyError: #happens because of double colisions sometimes
+			pass
+		self.destroy()
 
 class ProjectileWeapon(Weapon):
 	BULLET_DISCARD_DELAY = 10
@@ -70,5 +76,4 @@ class ProjectileWeapon(Weapon):
 		velocity = vec_mul(direction, self.speed)
 		bullet.body.ApplyLinearImpulse(velocity, self.body.worldCenter, True)
 		self.fired.add(bullet)
-
 
