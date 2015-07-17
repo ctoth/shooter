@@ -13,6 +13,7 @@ class SoundManager(object):
 		self.world.default_panning_strategy.value=libaudioverse.PanningStrategies.hrtf
 		self.world.output_channels.value= 2
 		self.world.connect_simulation(0)
+		self.world.orientation=(0,1,0,0,0,1)
 		self.sounds = {}
 		self.sounds_path = sounds_path
 
@@ -50,9 +51,8 @@ class SoundManager(object):
 		return sound_buffer
 
 	def play_async(self, filename, x=0, y=0, z=0):
-		position = (x, z, y)
 		buffer = self.get_buffer(filename)
-		self.world.play_async(buffer, *position)
+		self.world.play_async(buffer, x=x, y=y, z=z)
 
 
 def _disconnecter(node):

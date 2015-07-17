@@ -12,10 +12,10 @@ objects:
 
 rooms:
   - name: Starting Room
-    size: [8, 30]
+    size: [30, 8]
     floor: carpet
     contents:
-      - Clock: [8, 1]
+      - Clock: [1, 8]
     exits:
       - Main Hallway: [7, 8]
 

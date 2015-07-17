@@ -42,8 +42,8 @@ class GameObject(object):
 		if self.sound_source.head_relative.value:
 			return
 		position = [float(i) for i in self.position]
-		position.insert(1, 0.0)
-		self.sound_source.position.value = position
+		position.append(0.0)
+		self.sound_source.position = position
 
 	@property
 	def facing(self):
