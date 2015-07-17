@@ -19,7 +19,7 @@ def main():
 	game.world = world.World()
 	game.player = player.Player(world=game.world, position=(4, 4))
 	game.map = loader.load_map(game.world, 'map.yml')
-	ingress.install(port=4263, env={'game': game})
+	ingress.install(port=4263, env=game.__dict__)
 	main_loop()
 	libaudioverse.shutdown()
 
