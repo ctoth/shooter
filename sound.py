@@ -16,6 +16,7 @@ class SoundManager(object):
 		self.world.orientation=(0,1,0,0,0,1)
 		self.sounds = {}
 		self.sounds_path = sounds_path
+		self.last_random = {}
 
 	def play(self, filename, source, looping=False, position=(0, 0, 0)):
 		sound = libaudioverse.BufferNode(self.sim)
@@ -43,12 +44,26 @@ class SoundManager(object):
 	def get_buffer(self, filename):
 		filename = os.path.join(self.sounds_path, filename)
 		if os.path.isdir(filename):
-			filename = os.path.join(filename, random.choice(self.list_sounds_in_directory(filename)))
+			filename = self.select_random_sound(filename)
 		sound_buffer = self.sounds.get(filename)
 		if not sound_buffer:
 			sound_buffer = libaudioverse.Buffer(self.sim)
 			sound_buffer.load_from_file(filename)
 		return sound_buffer
+
+	def select_random_sound(self, folder):
+		last_played = self.last_random.get(folder)
+		files = self.list_sounds_in_directory(folder)
+		print files, last_played
+		if last_played and len(files) > 1:
+
+			try:
+				files.remove(last_played)
+			except ValueError:
+				pass
+		to_play = random.choice(files)
+		self.last_random[folder] = to_play
+		return os.path.join(folder, to_play)
 
 	def play_async(self, filename, x=0, y=0, z=0):
 		buffer = self.get_buffer(filename)
