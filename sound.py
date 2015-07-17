@@ -12,7 +12,6 @@ class SoundManager(object):
 		self.world = libaudioverse.EnvironmentNode(self.sim, "default")
 		self.world.default_panning_strategy.value=libaudioverse.PanningStrategies.hrtf
 		self.world.output_channels.value= 2
-		self.world.default_max_distance.value = 20
 		self.world.connect_simulation(0)
 		self.sounds = {}
 		self.sounds_path = sounds_path
