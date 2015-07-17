@@ -1,4 +1,3 @@
-import attr
 import entity
 import game
 import game_object
