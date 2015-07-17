@@ -54,7 +54,6 @@ class SoundManager(object):
 	def select_random_sound(self, folder):
 		last_played = self.last_random.get(folder)
 		files = self.list_sounds_in_directory(folder)
-		print files, last_played
 		if last_played and len(files) > 1:
 
 			try:
