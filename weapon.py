@@ -55,7 +55,6 @@ class Projectile(entity.Entity):
 		self.destroy()
 
 class ProjectileWeapon(Weapon):
-	BULLET_DISCARD_DELAY = 10
 
 	def __init__(self, ammo_type="", speed=300, *args, **kwargs):
 		super(ProjectileWeapon, self).__init__(*args, **kwargs)
