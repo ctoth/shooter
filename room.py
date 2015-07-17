@@ -34,7 +34,14 @@ class Room(object):
 		#dictionary of {coords: object}
 		if contents is None:
 			contents = {}
+		for i in contents.values():
+			i.location = self
 		self.contents = contents
+
+	def remove_item(self, item):
+		for key, val in dict(self.contents).iteritems():
+			if val is item:
+				del self.contents[key]
 
 	def handle_colision(self, other):
 		pass
