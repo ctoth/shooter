@@ -60,8 +60,8 @@ class GameObject(object):
 			self.location.remove_item(self)
 		self.world.destroy(self)
 
-	def handle_colision(self, other):
-		print "colision", self, other
+	def handle_collision(self, other):
+		print "collision", self, other
 
 	def use(self):
 		if self.use_sound is not None:

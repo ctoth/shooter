@@ -43,7 +43,7 @@ class Room(object):
 			if val is item:
 				del self.contents[key]
 
-	def handle_colision(self, other):
+	def handle_collision(self, other):
 		pass
 
 def point_on_line(point, line_start, line_end):

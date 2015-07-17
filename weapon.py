@@ -38,9 +38,10 @@ class Projectile(entity.Entity):
 	def create_body(self):
 		super(Projectile, self).create_body()
 		self.body.bullet = True
+		self.box.restitution = 0.4
 		self.box.friction = 0
 
-	def handle_colision(self, other):
+	def handle_collision(self, other):
 		self.set_sound_position()
 		print other
 
@@ -50,7 +51,7 @@ class Projectile(entity.Entity):
 			game.sound_manager.play_async(self.ricochet_sound, *self.position)
 		try:
 			self.weapon.fired.remove(self)
-		except KeyError: #happens because of double colisions sometimes
+		except KeyError: #happens because of double collisions sometimes
 			pass
 		self.destroy()
 
