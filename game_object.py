@@ -3,11 +3,12 @@ from Box2D import b2
 
 class GameObject(object):
 
-	def __init__(self, name="", world=None, size=(1, 1), position=(2, 2), facing=0, mass=1, fixed=True, sound_source=None, sound=None, use_sound=None, damage_sound=None, *args, **kwargs):
+	def __init__(self, name="", world=None, size=(1, 1), location=None, position=(2, 2), facing=0, mass=1, fixed=True, sound_source=None, sound=None, use_sound=None, destroy_sound=None, destructable=True, *args, **kwargs):
 		super(GameObject, self).__init__(*args, **kwargs)
 		self.world = world
 		self.name = name
 		self.size = tuple(size)
+		self.location = location
 		self.fixed = fixed
 		self.create_body()
 		self.body.mass = mass
@@ -17,10 +18,12 @@ class GameObject(object):
 		if sound is not None:
 			sound = game.sound_manager.play(sound, source=self.sound_source, looping=True)
 		self.sound = sound
-		self.damage_sound = damage_sound
+		self.destroy_sound = destroy_sound
 		self.use_sound = use_sound
 		self.position = position
 		self.facing = facing
+		self.destructable = destructable
+
 
 	def create_body(self):
 		self.shape = b2.polygonShape(box=self.size)
@@ -51,6 +54,10 @@ class GameObject(object):
 		self.body.angle = facing
 
 	def destroy(self):
+		if self.destroy_sound is not None:
+			game.sound_manager.play_async(self.destroy_sound, *self.position)
+		if self.location is not None:
+			self.location.remove_item(self)
 		self.world.destroy(self)
 
 	def handle_colision(self, other):
