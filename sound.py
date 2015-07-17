@@ -11,6 +11,7 @@ class SoundManager(object):
 		self.sim.set_output_device(output_device)
 		self.world = libaudioverse.EnvironmentNode(self.sim, "default")
 		self.world.default_panning_strategy.value=libaudioverse.PanningStrategies.hrtf
+		self.world.default_distance_model = libaudioverse.DistanceModels.exponential
 		self.world.output_channels.value= 2
 		self.world.connect_simulation(0)
 		self.world.orientation=(0,1,0,0,0,1)
