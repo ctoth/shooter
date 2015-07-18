@@ -17,5 +17,5 @@ rooms:
     contents:
       - Clock: [1, 8]
     exits:
-      - Main Hallway: [7, 8]
+      - Main Hallway: [8, 4]
 
