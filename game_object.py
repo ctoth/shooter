@@ -1,3 +1,4 @@
+from __future__ import division
 import game
 from Box2D import b2
 
@@ -26,7 +27,8 @@ class GameObject(object):
 
 
 	def create_body(self):
-		self.shape = b2.polygonShape(box=self.size)
+		size = self.size[0] / 2, self.size[1] / 2
+		self.shape = b2.polygonShape(box=size)
 		self.body = self.world.world.CreateStaticBody(shapes=self.shape, userData=self)
 
 	@property

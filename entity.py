@@ -1,3 +1,4 @@
+from __future__ import division
 import game_object
 
 class Entity(game_object.GameObject):
@@ -8,5 +9,7 @@ class Entity(game_object.GameObject):
 		self.speed = speed
 
 	def create_body(self):
+
 		self.body = self.world.world.CreateDynamicBody(userData=self)
-		self.box= self.body.CreatePolygonFixture(box=self.size, density=1, friction=1.0, restitution=0.0)
+		size = self.size[0] / 2, self.size[1] / 2
+		self.box= self.body.CreatePolygonFixture(box=size, density=1, friction=1.0, restitution=0.0)
