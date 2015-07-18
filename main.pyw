@@ -37,17 +37,19 @@ def on_key_press(symbol, modifiers):
 	if symbol == key.DOWN:
 		game.player.start_backward()
 	if symbol == key.LEFT:
-		if key.MOD_SHIFT & modifiers:
-			game.player.strafe_left()
-		if key.MOD_ALT & modifiers:
-			game.player.snap_left()
+		if key.MOD_SHIFT & modifiers or key.MOD_ALT & modifiers:
+			if key.MOD_ALT & modifiers:
+				game.player.snap_left()
+			if key.MOD_SHIFT & modifiers:
+				game.player.strafe_left()
 		else:
 			game.player.turn_left()
 	if symbol == key.RIGHT:
-		if key.MOD_SHIFT & modifiers:
-			game.player.strafe_right()
-		if key.MOD_ALT & modifiers:
-			game.player.snap_right()
+		if key.MOD_SHIFT & modifiers or key.MOD_ALT & modifiers:
+			if key.MOD_ALT & modifiers:
+				game.player.snap_right()
+			if key.MOD_SHIFT & modifiers:
+				game.player.strafe_right()
 		else:
 			game.player.turn_right()
 	if symbol == key.C:
