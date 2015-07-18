@@ -58,6 +58,8 @@ def on_key_press(symbol, modifiers):
 		game.player.read_coordinates()
 	if symbol == key.F:
 		game.player.read_facing()
+	if symbol == key.P:
+		game.player.do_ping()
 	if symbol in (key.LCTRL, key.RCTRL):
 		game.player.start_attacking()
 

@@ -2,6 +2,7 @@ import math
 import entity
 import weapon
 import game
+import room
 import libaudioverse
 from math_utils import *
 
@@ -12,6 +13,7 @@ class Player(entity.Entity):
 	FOOTSTEP_DELAY = 0.3
 	footstep_multiplier = 3.0
 	running_multiplier = 1.5
+	ping_distance = 50
 
 	def __init__(self, size=(0.5, 0.5), mass=100, *args, **kwargs):
 		super(Player, self).__init__(size=size, mass=mass, *args, **kwargs)
@@ -139,6 +141,15 @@ class Player(entity.Entity):
 
 	def read_facing(self):
 		game.output.output("%d degrees" % self.facing)
+
+	def do_ping(self):
+		los = self.world.ray_cast(self.position, direction=self.facing, length=self.ping_distance)
+		for item in los:
+			if isinstance(item.userData, room.Room):
+				name = "room"
+			else:
+				name = item.userData.name
+			game.output.output(name, interrupt=False)
 
 def magnitude(*v):
 	return math.sqrt(sum([i**2 for i in v]))
