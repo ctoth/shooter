@@ -1,7 +1,8 @@
+from __future__ import division
 import game
 import pyglet
 game.window = pyglet.window.Window()
-from pyglet.window import key
+from pyglet.window import key, mouse
 import loader
 import player
 import sound
@@ -9,11 +10,12 @@ import world
 import libaudioverse
 import sys
 from accessible_output2.outputs import auto
-
+MOUSE_SENSETIVITY = 100
 
 def main():
 	libaudioverse.initialize()
 	game.clock = pyglet.clock.get_default()
+	game.window.set_exclusive_mouse(True)
 	game.sound_manager = sound.SoundManager()
 	game.output = auto.Auto()
 	game.world = world.World()
@@ -81,6 +83,21 @@ def tick(dt):
 		game.world.tick()
 		game.player.tick()
 		game.player.set_sound_position()
+
+@game.window.event
+def on_mouse_motion(x, y, dx, dy):
+	dx /= MOUSE_SENSETIVITY
+	game.player.facing += dx
+
+@game.window.event
+def on_mouse_press(x, y, button, modifiers):
+	if button == mouse.LEFT:
+		game.player.start_attacking()
+
+@game.window.event
+def on_mouse_release(x, y, button, modifiers):
+	if button == mouse.LEFT:
+		game.player.stop_attacking()
 
 
 if __name__ == '__main__':
