@@ -1,7 +1,7 @@
 import Box2D
 from Box2D import b2
 import game
-
+import math_utils
 
 class World(object):
 
@@ -26,6 +26,13 @@ class World(object):
 				self.destroy_body(obj.body)
 		self.to_destroy.clear()
 
+	def ray_cast(self, start, direction, length):
+		end = math_utils.vec_mul(math_utils.angle_to_vec(direction), length)
+		end = math_utils.vec_add(list(start), end)
+		callback = RayCastCallback()
+		self.world.RayCast(callback, start, end)
+		callback.fixtures.sort()
+		return [i[1].body for i in callback.fixtures]
 
 #This class allows us to detect collisions. With it, we can build a list.
 class CollisionCallback(Box2D.b2ContactListener):
@@ -58,3 +65,14 @@ class CollisionCallback(Box2D.b2ContactListener):
 			del self.for_object.collisions[(a, b)]
 		except KeyError as e:
 			pass
+
+class RayCastCallback(Box2D.b2RayCastCallback):
+
+	def __init__(self):
+		super(RayCastCallback, self).__init__()
+		self.fixtures = []
+
+	def ReportFixture(self, fixture, point, normal, fraction):
+		result = (fraction, fixture)
+		self.fixtures.append(result)
+		return 1
