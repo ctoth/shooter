@@ -7,7 +7,7 @@ import player
 import sound
 import world
 import libaudioverse
-import ingress
+import sys
 from accessible_output2.outputs import auto
 
 
@@ -19,7 +19,9 @@ def main():
 	game.world = world.World()
 	game.player = player.Player(world=game.world, position=(4, 4))
 	game.map = loader.load_map(game.world, 'map.yml')
-	ingress.install(port=4263, env=game.__dict__)
+	if not getattr(sys, 'frozen', False):
+		import ingress
+		ingress.install(port=4263, env=game.__dict__)
 	main_loop()
 	libaudioverse.shutdown()
 

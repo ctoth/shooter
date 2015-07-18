@@ -6,10 +6,6 @@ objects:
     size: [0.25, 0.25]
     fixed: true
 
-  - name: Refrigerator
-    fixed: true
-    sound: fridge.wav
-
 rooms:
   - name: Starting Room
     size: [30, 8]
