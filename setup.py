@@ -17,7 +17,7 @@ setup(
 	options = {
 		'py2exe': {
 			'compressed': False,
-			'excludes': ['ingress', 'Tkinter', 'IPython', 'zmq'],
+			'excludes': ['win32com.gen_py', 'ingress', 'Tkinter', 'IPython', 'zmq'],
 		},
 	},
 	windows = [{
