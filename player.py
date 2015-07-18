@@ -44,7 +44,8 @@ class Player(entity.Entity):
 		if magnitude(*self.body.linearVelocity) >= self.FOOTSTEP_SPEED:
 			if self.body.contacts and self.body.contacts[0].contact.fixtureB.body.userData == 'wall':
 				return
-			if self.last_footstep_time + self.FOOTSTEP_DELAY <= game.clock.time():
+			slowdown_multiplier = inverse_percentage(self.speed, 100)
+			if self.last_footstep_time + (self.FOOTSTEP_DELAY*slowdown_multiplier) <= game.clock.time():
 				self.footstep_sound = game.sound_manager.play('footstep.wav', source=self.sound_source)
 				self.last_footstep_time = game.clock.time()
 		else:
@@ -58,7 +59,7 @@ class Player(entity.Entity):
 				facing = self.facing - 90 % 360
 			elif self.moving == 'backward':
 				facing = (self.facing - 180) % 360
-			self.body.linearVelocity = vec_mul(angle_to_vec(facing), self.footstep_multiplier)
+			self.body.linearVelocity = vec_mul(angle_to_vec(facing), percentage(self.footstep_multiplier, self.speed))
 		else:
 			self.body.linearVelocity = (0, 0)
 
