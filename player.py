@@ -11,6 +11,7 @@ class Player(entity.Entity):
 	FOOTSTEP_SPEED = 0.5
 	FOOTSTEP_DELAY = 0.3
 	footstep_multiplier = 3.0
+	running_multiplier = 1.5
 
 	def __init__(self, size=(0.5, 0.5), mass=100, *args, **kwargs):
 		super(Player, self).__init__(size=size, mass=mass, *args, **kwargs)
@@ -18,6 +19,7 @@ class Player(entity.Entity):
 		gun = weapon.ProjectileWeapon(world=self.world, name="Gun", ammo_type="bullet", use_sound='rifle', size=(1, 0.1), position=self.position, cooldown=0.5)
 		self.equip(gun)
 		self.turning = None
+		self.running = False
 		self.last_footstep_time = 0
 		self.attacking = False
 		self.sound_source.head_relative = True
@@ -41,10 +43,13 @@ class Player(entity.Entity):
 		elif self.turning == 'right':
 			self.facing += self.TURN_RATE	
 		self		.facing %= 360
+		speed = self.speed
+		if self.running:
+			speed *= self.running_multiplier
 		if magnitude(*self.body.linearVelocity) >= self.FOOTSTEP_SPEED:
 			if self.body.contacts and self.body.contacts[0].contact.fixtureB.body.userData == 'wall':
 				return
-			slowdown_multiplier = inverse_percentage(self.speed, 100)
+			slowdown_multiplier = inverse_percentage(speed, 100)
 			if self.last_footstep_time + (self.FOOTSTEP_DELAY*slowdown_multiplier) <= game.clock.time():
 				self.footstep_sound = game.sound_manager.play('footstep.wav', source=self.sound_source)
 				self.last_footstep_time = game.clock.time()
@@ -59,7 +64,7 @@ class Player(entity.Entity):
 				facing = self.facing - 90 % 360
 			elif self.moving == 'backward':
 				facing = (self.facing - 180) % 360
-			self.body.linearVelocity = vec_mul(angle_to_vec(facing), percentage(self.footstep_multiplier, self.speed))
+			self.body.linearVelocity = vec_mul(angle_to_vec(facing), percentage(self.footstep_multiplier, speed))
 		else:
 			self.body.linearVelocity = (0, 0)
 
@@ -101,6 +106,12 @@ class Player(entity.Entity):
 
 	def stop_strafing(self):
 		self.moving = None
+
+	def start_running(self):
+		self.running = True
+
+	def stop_running(self):
+		self.running = False
 
 	def snap_left(self):
 		if self.facing > 0 and self.facing <= 90:

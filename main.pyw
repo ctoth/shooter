@@ -31,6 +31,8 @@ def main_loop():
 @game.window.event
 def on_key_press(symbol, modifiers):
 	if symbol == key.UP:
+		if key.MOD_SHIFT & modifiers:
+			game.player.start_running()
 		game.player.start_forward()
 	if symbol == key.DOWN:
 		game.player.start_backward()
@@ -65,6 +67,7 @@ def on_key_release(symbol, modifiers):
 		game.player.stop_turning()
 	if symbol in (key.LSHIFT, key.RSHIFT):
 		game.player.stop_strafing()
+		game.player.stop_running()
 
 
 def tick(dt):
