@@ -7,7 +7,7 @@ from math_utils import *
 
 
 class Player(entity.Entity):
-	TURN_RATE = 1.0
+	TURN_RATE = 0.5
 	FOOTSTEP_SPEED = 0.5
 	FOOTSTEP_DELAY = 0.3
 	footstep_multiplier = 3.0
