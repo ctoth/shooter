@@ -145,9 +145,12 @@ class Player(entity.Entity):
 
 	def do_ping(self):
 		los = self.world.ray_cast(self.position, direction=self.facing, length=self.ping_distance)
+		visible = []
 		for item in los:
-			if isinstance(item.userData, room.Room):
-				name = "room"
+			if isinstance(item.userData, world.World):
+				message = "wall: %.2f, %.2f" % (item.position[0], item.position[1])
+				game.output.output(message)
+				break
 			else:
 				name = item.userData.name
 			game.output.output(name, interrupt=False)
