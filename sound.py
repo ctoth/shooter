@@ -21,6 +21,9 @@ class SoundManager(object):
 		self.last_random = {}
 
 	def play(self, filename, source, looping=False, position=(0, 0, 0)):
+		if len(position) == 2:
+			position = list(position)
+			position.append(0)
 		sound = libaudioverse.BufferNode(self.sim)
 		sound_buffer = self.get_buffer(filename)
 		sound.buffer = sound_buffer
