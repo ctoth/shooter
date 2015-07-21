@@ -153,7 +153,24 @@ class Player(entity.Entity):
 				break
 			else:
 				name = item.userData.name
-			game.output.output(name, interrupt=False)
+			game.output.output(name + " %.2f, %.2f" % (item.position[0], item.position[1]), interrupt=False)
+
+	def detect_exits(self):
+		position = vec_div(self.position, 2)
+		room = find_room_containing(position)
+		exits = find_exits_for_room(room)
+		for exit in exits:
+			pos = vec_mul(exit, 2)
+			game.sound_manager.play_async('exit.wav', *pos)
+
+def find_exits_for_room(room):
+	exits=[k for k, v in game.map.items() if v == 'e']
+	return [exit for exit in exits if tiles.exit_on_wall(room, exit)]
+
+def find_room_containing(position):
+	for room in game.room_coords:
+		if tiles.point_in_room(position, room):
+			return room
 
 def magnitude(*v):
 	return math.sqrt(sum([i**2 for i in v]))
