@@ -22,7 +22,7 @@ def main():
 	game.sound_manager = sound.SoundManager()
 	game.output = auto.Auto()
 	game.world = world.World()
-	start_pos = dungeon_loader.load_dungeon(game.world, 8, 8, 8)
+	start_pos = dungeon_loader.load_dungeon(game.world, 4, 2, 8)
 	game.player = player.Player(world=game.world, position=start_pos)
 	#game.map = loader.load_map(game.world, 'map.yml')
 	if not getattr(sys, 'frozen', False):

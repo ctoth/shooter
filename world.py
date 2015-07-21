@@ -60,8 +60,10 @@ class CollisionCallback(Box2D.b2ContactListener):
 		if (a, b) in self.for_object.collisions:
 			return #already handled
 		self.for_object.collisions[(a, b)] = contact.worldManifold.points[0]
-		a.handle_collision(b)
-		b.handle_collision(a)
+		if hasattr(a, 'handle_collision'):
+			a.handle_collision(b)
+		if hasattr(b, 'handle_collision'):
+			b.handle_collision(a)
 
 	def EndContact(self, contact):
 		a, b = contact.fixtureA.body.userData, contact.fixtureB.body.userData
