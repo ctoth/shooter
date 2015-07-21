@@ -7,8 +7,14 @@ def angle_to_vec(angle):
 def vec_mul(vec, amount):
 	return [i*amount for i in vec]
 
+def vec_div(vec1, amount):
+	return [i/amount for i in vec1]
+
 def vec_add(vec1, vec2):
 	return [i+j for i, j in zip(vec1, vec2)]
+
+def vec_sub(vec1, vec2):
+	return [i-j for i, j in zip(vec1, vec2)]
 
 def percentage(what, percent):
 	return (what / 100.0) * percent
