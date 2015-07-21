@@ -13,6 +13,7 @@ import libloader.com
 libloader.com.prepare_gencache()
 from accessible_output2.outputs import auto
 MOUSE_SENSETIVITY = 100
+import dungeon_loader
 
 def main():
 	libaudioverse.initialize()
@@ -21,8 +22,9 @@ def main():
 	game.sound_manager = sound.SoundManager()
 	game.output = auto.Auto()
 	game.world = world.World()
-	game.player = player.Player(world=game.world, position=(4, 4))
-	game.map = loader.load_map(game.world, 'map.yml')
+	start_pos = dungeon_loader.load_dungeon(game.world, 8, 8, 8)
+	game.player = player.Player(world=game.world, position=start_pos)
+	#game.map = loader.load_map(game.world, 'map.yml')
 	if not getattr(sys, 'frozen', False):
 		import ingress
 		ingress.install(port=4263, env=game.__dict__)

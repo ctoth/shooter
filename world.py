@@ -12,6 +12,8 @@ class World(object):
 		self.collisions =dict()
 		self.collision_callback = CollisionCallback(self)
 		self.world.contactListener = self.collision_callback
+		self.bodies = []
+
 
 	def destroy(self, obj):
 		self.to_destroy.add(obj)
@@ -25,6 +27,10 @@ class World(object):
 			for obj in self.to_destroy:
 				self.destroy_body(obj.body)
 		self.to_destroy.clear()
+
+	def create_wall_tile(self, position, size=(0.5, 0.5)):
+		shape = b2.polygonShape(box=size)
+		self.bodies.append(self.world.CreateStaticBody(shapes=shape, position=position, userData=self))
 
 	def ray_cast(self, start, direction, length):
 		end = math_utils.vec_mul(math_utils.angle_to_vec(direction), length)
