@@ -3,7 +3,6 @@ import game
 import pyglet
 game.window = pyglet.window.Window()
 from pyglet.window import key, mouse
-import dungeon_loader
 import map
 import player
 import sound
