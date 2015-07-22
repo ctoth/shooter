@@ -3,6 +3,11 @@ import itertools
 import sys
 
 
+def neighbors(n):
+    x, y = n
+    return (x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)
+
+    
 def _AStar(start, goal):
     def heuristic(a, b):
         ax, ay = a
@@ -13,10 +18,6 @@ def _AStar(start, goal):
         if n == start:
             return [n]
         return reconstructPath(cameFrom[n]) + [n]
-
-    def neighbors(n):
-        x, y = n
-        return (x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)
 
     closed = set()
     open = set()
