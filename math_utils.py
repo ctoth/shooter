@@ -28,3 +28,15 @@ def inverse_percentage(what, percent):
 
 def vec_round(vec):
 	return [int(i) for i in vec]
+
+def vec_dot(v1, v2):
+  return sum([i*j for i,j in zip(v1, v2)])
+
+def magnitude(*v):
+	return math.sqrt(sum([i**2 for i in v]))
+
+def vec_magnitude(v):
+	return magnitude(*v)
+
+def distance(v1, v2):
+	return vec_magnitude(vec_sub(v2, v1))
