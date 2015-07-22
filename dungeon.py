@@ -136,9 +136,9 @@ def generate(cellsX, cellsY, cellSize=5):
         y = (cell.y * cellSize) + random.randint(1, cellSize - height - 1)
         room_size = (
             (x, y),
-            (x, y + height),
             (x + width, y),
             (x + width, y + height),
+            (x, y + height),
         )
         room_coords.append(room_size)
         print "Creating room at %d, %d of size %d by %d" % (x, y, width, height)
