@@ -128,6 +128,7 @@ def generate(cellsX, cellsY, cellSize=5):
     rooms = []
     room_coords = []
     exits= set()
+    corridors = []
     for cell in cells.values():
         width = random.randint(3, cellSize - 2)
         height = random.randint(3, cellSize - 2)
@@ -165,6 +166,8 @@ def generate(cellsX, cellsY, cellSize=5):
         rooms.append(corridor)
         exits.add(corridor[0])
         exits.add(corridor[-1])
+        print corridor[0], corridor[-1]
+        corridors.append(corridor)
     # 8. Place staircases in the cell picked in step 2 and the lest cell visited in step 3b.
     stairsUp = random.choice(firstCell.room)
     stairsDown = random.choice(lastCell.room)
@@ -196,7 +199,7 @@ def generate(cellsX, cellsY, cellSize=5):
             tiles[xy] = "w"
     tiles[stairsUp] = "u"
     tiles[stairsDown] = "d"
-    return tiles, room_coords
+    return tiles, room_coords, corridors
 
 
 if __name__ == "__main__":
