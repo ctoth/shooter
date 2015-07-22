@@ -29,8 +29,8 @@ def tiles_for_wall(wall_start, wall_end, exits):
 def point_in_room(point, room_corners):
 	x, y = point
 	min_x, min_y = room_corners[0]
-	max_x, max_y = room_corners[3]
-	return min_x < x < max_x and min_y < y < max_y
+	max_x, max_y = room_corners[2]
+	return min_x <= x <= max_x and min_y <= y <= max_y
 
 def exit_on_wall(room, exit):
 	return any([point_on_line(exit, room[0], room[1]), point_on_line(exit, room[1], room[2]), point_on_line(exit, room[2], room[3]), point_on_line(exit, room[3], room[0])])
