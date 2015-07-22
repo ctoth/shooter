@@ -2,11 +2,13 @@ import random
 import dungeon
 import game	
 import math_utils
+import npc
 import tiles
+
 
 class Map(object):
 
-	def __init__(self, world, name="", x_cells=8, y_cells=5, cell_size=8, size_ratio=1.0, ambience=None, random_state=None):
+	def __init__(self, world, name="", x_cells=8, y_cells=5, cell_size=8, size_ratio=1.0, npc_density=0.0, ambience=None, random_state=None):
 		self.world = world
 		self.name = name
 		self.x_cells, self.y_cells = x_cells, y_cells
@@ -14,12 +16,15 @@ class Map(object):
 		self.size_ratio = size_ratio
 		self.ambience = ambience
 		self.ambience_sound = None
+		self.npc_density = npc_density
 		self.random = random.Random()
 		if random_state is not None:
 			self.random.setstate(random_state)
 		self.map, self.room_vertices, self.corridors = dungeon.generate(x_cells, y_cells, cell_size)
 		self.starting_coordinates = None
+		self.npcs = []
 		self.fill_wall_tiles()
+		self.place_npcs()
 
 	def fill_wall_tiles(self):
 		tile_size=(0.5, 0.5)
@@ -34,6 +39,15 @@ class Map(object):
 					if self.map[neighbor] == 'r':
 						self.starting_coordinates = self.get_physical_coordinates(neighbor)
 						break
+
+	def place_npcs(self):
+		for num, room in enumerate(self.room_vertices):
+			center = tiles.center_of_room(room)
+			chance = self.random.random()
+			if chance > self.npc_density:
+				continue
+			new_npc = npc.NPC(world=self.world, name="NPC %d" % num, position=center, facing=self.random.randint(0, 359), aggressive=bool(random.randint(0, 1)))
+			self.npcs.append(new_npc)
 
 	def get_physical_coordinates(self, coordinates):
 		return math_utils.vec_mul(coordinates, self.size_ratio)
@@ -68,3 +82,8 @@ class Map(object):
 			for tile in corridor:
 				if position == tile:
 					return corridor
+
+	def tick(self):
+		for npc in self.npcs:
+			if math_utils.distance(npc.position, game.player.position) <= 10:
+				npc.tick()

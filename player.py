@@ -167,7 +167,7 @@ class Player(entity.Entity):
 			exits = find_exits_for_room(room)
 		else:
 			exits = game.map.corridor_exits(position)
-		delay = 0
+		delay = 0.0
 		for exit in exits:
 			pos = game.map.get_physical_coordinates(exit)
 			game.output.output(str(pos), interrupt=False)
