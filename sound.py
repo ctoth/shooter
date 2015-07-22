@@ -83,7 +83,6 @@ class SoundManager(object):
 		buffer = self.get_buffer(filename)
 		self.world.play_async(buffer, x=x, y=y, z=z)
 
-
 def _disconnecter(node):
 	node.disconnect(0)
 
@@ -94,3 +93,12 @@ class Sound(object):
 
 	def stop(self):
 		self.buffer_node.state = libaudioverse.NodeStates.stop
+
+	def is_playing(self):
+		return self.buffer_node.state == libaudioverse.NodeStates.playing
+
+	def pause(self):
+		self.buffer_node.state = libaudioverse.NodeStates.paused
+
+	def play(self):
+		self.buffer_node.state = libaudioverse.NodeStates.playing
