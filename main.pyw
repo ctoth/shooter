@@ -22,7 +22,7 @@ def main():
 	game.sound_manager = sound.SoundManager()
 	game.output = auto.Auto()
 	game.world = world.World()
-	game.map = map.Map(world=game.world, name="Deck 13", ambience='ambience.ogg', x_cells=3, y_cells=10, cell_size=8, npc_density=0.5)
+	game.map = map.Map(world=game.world, name="Deck 13", ambience='ambience.ogg', x_cells=3, y_cells=10, cell_size=8, npc_density=1.0)
 	game.player = player.Player(world=game.world, position=game.map.starting_coordinates)
 	game.map.enter(game.player)
 	if not getattr(sys, 'frozen', False):
@@ -68,6 +68,8 @@ def on_key_press(symbol, modifiers):
 		game.player.do_ping()
 	if symbol == key.D:
 		game.player.detect_exits()
+	if symbol == key.TAB:
+		game.player.radar.read_next()
 	if symbol in (key.LCTRL, key.RCTRL):
 		game.player.start_attacking()
 

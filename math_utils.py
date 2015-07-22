@@ -5,7 +5,8 @@ def angle_to_vec(angle):
 	return math.sin(math.radians(angle)), math.cos(math.radians(angle))
 
 def vec_to_angle(vec):
-	return math.degrees(math.atan2(*vec))
+	res = math.degrees(math.atan2(*vec))
+	return res % 360
 
 
 def vec_mul(vec, amount):
@@ -40,3 +41,6 @@ def vec_magnitude(v):
 
 def distance(v1, v2):
 	return vec_magnitude(vec_sub(v2, v1))
+
+def angle_between(v1, v2):
+	return vec_to_angle(vec_sub(v1, v2))

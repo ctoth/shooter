@@ -1,6 +1,7 @@
 import math
 import entity
 import game
+import radar
 import room
 import tiles
 import weapon
@@ -26,6 +27,7 @@ class Player(entity.Entity):
 		self.last_footstep_time = 0
 		self.attacking = False
 		self.sound_source.head_relative = True
+		self.radar = radar.Radar(looker=self)
 
 	def set_sound_position(self):
 		position = list(self.position)
@@ -175,7 +177,7 @@ class Player(entity.Entity):
 			delay += 0.55
 
 	def play_exit_sound(self, t, x, y):
-		game.sound_manager.play_async('exit.wav', x, y)
+		game.sound_manager.play_async('beep.wav', x, y)
 
 def find_exits_for_room(room):
 	exits = game.map.get_exits()
