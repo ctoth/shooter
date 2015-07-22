@@ -34,6 +34,16 @@ class SoundManager(object):
 		self.sounds[filename] = sound_buffer
 		return Sound(sound)
 
+	def play_ambient(self, filename):
+		sound = libaudioverse.BufferNode(self.sim)
+		sound_buffer = self.get_buffer(filename)
+		sound.buffer = sound_buffer
+		self.sounds[filename] = sound_buffer
+		sound.looping.value = True
+		sound.connect_simulation(0)
+		return Sound(sound)
+
+
 	def list_sounds_in_directory(self, directory):
 		res = []
 		if not directory.startswith(self.sounds_path):
