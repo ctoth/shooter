@@ -178,13 +178,13 @@ class Player(entity.Entity):
 		game.sound_manager.play_async('exit.wav', x, y)
 
 def find_exits_for_room(room):
-	exits=[k for k, v in game.map.items() if v == 'e']
-	return [exit for exit in exits if tiles.exit_on_wall(room, exit)]
-
-def find_room_containing(position):
-	for room in game.room_coords:
-		if tiles.point_in_room(position, room):
-			return room
+	exits = game.map.get_exits()
+	working = []
+	working.append((room[0][0] - 1, room[0][1] - 1))
+	working.append((room[1][0] + 1, room[1][1] - 1))
+	working.append((room[2][0] - 1, room[2][1] + 1))
+	working.append((room[3][0] - 1, room[3][1] + 1))
+	return [exit for exit in exits if tiles.point_in_room(exit, working)]
 
 def magnitude(*v):
 	return math.sqrt(sum([i**2 for i in v]))
