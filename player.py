@@ -54,7 +54,7 @@ class Player(entity.Entity):
 				return
 			slowdown_multiplier = inverse_percentage(speed, 100)
 			if self.last_footstep_time + (self.FOOTSTEP_DELAY*slowdown_multiplier) <= game.clock.time():
-				self.footstep_sound = game.sound_manager.play('footstep.wav', source=self.sound_source)
+				self.footstep_sound = game.sound_manager.play(self.get_footstep_sound(), source=self.sound_source)
 				self.last_footstep_time = game.clock.time()
 		else:
 			self.body.linearVelocity = (0, 0)
@@ -76,6 +76,9 @@ class Player(entity.Entity):
 		self.world.world.CreateRevoluteJoint(bodyA=self.body, bodyB=item.body, anchorPoint=self.body.worldCenter)
 		item.sound_source.head_relative = True
 		item.sound_source.position = (0, 0, 0)
+
+	def get_footstep_sound(self):
+		return 'footsteps/metal'
 
 	def start_forward(self):
 		self.moving = 'forward'
