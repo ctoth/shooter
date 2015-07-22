@@ -1,3 +1,4 @@
+import math_utils
 
 def point_on_line(point, line_start, line_end):
 	line_start, line_end = sorted([line_start, line_end])
@@ -35,3 +36,9 @@ def point_in_room(point, room_corners):
 def exit_on_wall(room, exit):
 	return any([point_on_line(exit, room[0], room[1]), point_on_line(exit, room[1], room[2]), point_on_line(exit, room[2], room[3]), point_on_line(exit, room[3], room[0])])
 
+def center_of_room(room):
+	room_base = room[0]
+	relative = room[1][0] - room[0][0], room[2][1] - room[0][1]
+	relative_center = math_utils.vec_div(relative, 2)
+	center = math_utils.vec_add(room_base, relative_center)
+	return center
