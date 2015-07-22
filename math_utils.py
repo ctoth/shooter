@@ -4,6 +4,10 @@ import math
 def angle_to_vec(angle):
 	return math.sin(math.radians(angle)), math.cos(math.radians(angle))
 
+def vec_to_angle(vec):
+	return math.degrees(math.atan2(*vec))
+
+
 def vec_mul(vec, amount):
 	return [i*amount for i in vec]
 
