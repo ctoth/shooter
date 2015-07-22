@@ -59,6 +59,15 @@ class World(object):
 				return False
 			return True
 
+	def query(self, lower, upper):
+		callback = QueryCallback()
+		AABB = Box2D.b2AABB()
+		AABB.lowerBound = lower
+		AABB.upperBound = upper
+		self.world.QueryAABB(callback, AABB)
+		return callback
+
+
 #This class allows us to detect collisions. With it, we can build a list.
 class CollisionCallback(Box2D.b2ContactListener):
 	"""Used to listen for collisions.
@@ -103,3 +112,13 @@ class RayCastCallback(Box2D.b2RayCastCallback):
 		result = (fraction, fixture)
 		self.fixtures.append(result)
 		return 1
+
+class QueryCallback(Box2D.b2QueryCallback):
+
+	def __init__(self):
+		super(QueryCallback, self).__init__()
+		self.fixtures = list()
+
+	def ReportFixture(self, fixture):
+		self.fixtures.append(fixture)
+		return True
