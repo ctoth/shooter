@@ -21,3 +21,6 @@ def percentage(what, percent):
 
 def inverse_percentage(what, percent):
 	return 100.0 / 100.0 / what * percent
+
+def vec_round(vec):
+	return [int(i) for i in vec]
