@@ -69,7 +69,10 @@ def on_key_press(symbol, modifiers):
 	if symbol == key.D:
 		game.player.detect_exits()
 	if symbol == key.TAB:
-		game.player.radar.read_next()
+		if key.MOD_SHIFT & modifiers:
+			game.player.radar.read_previous()
+		else:
+			game.player.radar.read_next()
 	if symbol in (key.LCTRL, key.RCTRL):
 		game.player.start_attacking()
 
