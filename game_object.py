@@ -63,7 +63,7 @@ class GameObject(object):
 		self.world.destroy(self)
 
 	def handle_collision(self, other):
-		print "collision", self, other
+		print "collision", self.position, self, other
 
 	def use(self):
 		if self.use_sound is not None:
