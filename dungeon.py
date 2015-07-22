@@ -178,7 +178,7 @@ def generate(cellsX, cellsY, cellSize=5):
     tilesY = cellsY * cellSize
     for x in xrange(tilesX):
         for y in xrange(tilesY):
-            tiles[(x, y)] = " "
+            tiles[(x, y)] = "w"
     for xy in itertools.chain.from_iterable(rooms):
         tiles[xy] = "r"
         if xy in exits:
