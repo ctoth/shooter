@@ -163,12 +163,7 @@ class Player(entity.Entity):
 			game.output.output(name + ": %.2f meters. %.2f, %.2f" % (distance, item.position[0], item.position[1]), interrupt=False)
 
 	def detect_exits(self):
-		position = game.map.get_real_coordinates(self.position)
-		room = game.map.find_room_containing(position)
-		if room is not None:	
-			exits = find_exits_for_room(room)
-		else:
-			exits = game.map.corridor_exits(position)
+		exits = game.map.nearby_exits(self.position)
 		delay = 0.0
 		for exit in exits:
 			pos = game.map.get_physical_coordinates(exit)
@@ -178,12 +173,3 @@ class Player(entity.Entity):
 
 	def play_exit_sound(self, t, x, y):
 		game.sound_manager.play_async('beep.wav', x, y)
-
-def find_exits_for_room(room):
-	exits = game.map.get_exits()
-	working = []
-	working.append((room[0][0] - 1, room[0][1] - 1))
-	working.append((room[1][0] + 1, room[1][1] - 1))
-	working.append((room[2][0] - 1, room[2][1] + 1))
-	working.append((room[3][0] - 1, room[3][1] + 1))
-	return [exit for exit in exits if tiles.point_in_room(exit, working)]
