@@ -150,13 +150,15 @@ class Player(entity.Entity):
 		los = self.world.ray_cast(self.position, direction=self.facing, length=self.ping_distance)
 		visible = []
 		for item in los:
+			position = item.position
+			distance = magnitude(*vec_sub(self.position, position))
 			if isinstance(item.userData, world.World):
-				message = "wall: %.2f, %.2f" % (item.position[0], item.position[1])
+				message = "wall: %.2f meters. %.2f, %.2f" % (distance, item.position[0], item.position[1])
 				game.output.output(message)
 				break
 			else:
 				name = item.userData.name
-			game.output.output(name + " %.2f, %.2f" % (item.position[0], item.position[1]), interrupt=False)
+			game.output.output(name + ": %.2f meters. %.2f, %.2f" % (distance, item.position[0], item.position[1]), interrupt=False)
 
 	def detect_exits(self):
 		position = vec_div(self.position, 2)
