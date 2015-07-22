@@ -3,6 +3,7 @@ import game
 import pyglet
 game.window = pyglet.window.Window()
 from pyglet.window import key, mouse
+import dungeon_loader
 import map
 import player
 import sound
@@ -12,8 +13,8 @@ import sys
 import libloader.com
 libloader.com.prepare_gencache()
 from accessible_output2.outputs import auto
-MOUSE_SENSETIVITY = 100
-import dungeon_loader
+
+MOUSE_SENSITIVITY = 20
 
 def main():
 	libaudioverse.initialize()
@@ -92,7 +93,7 @@ def tick(dt):
 
 @game.window.event
 def on_mouse_motion(x, y, dx, dy):
-	dx /= MOUSE_SENSETIVITY
+	dx /= MOUSE_SENSITIVITY
 	game.player.facing += dx
 
 @game.window.event
