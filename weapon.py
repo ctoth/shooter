@@ -63,6 +63,7 @@ class ProjectileWeapon(Weapon):
 		self.ammo_type = ammo_type
 		self.speed = speed
 		self.fired = set()
+		self.body.fixtures[0].sensor = True
 
 	def use(self):
 		super(ProjectileWeapon, self).use()
