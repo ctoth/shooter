@@ -194,7 +194,7 @@ def generate(cellsX, cellsY, cellSize=5):
             except KeyError:
                 continue
 
-    for xy, tile in tiles.iteritems():
+    for xy, tile in dict(tiles).iteritems():
         if not tile in ('r', 'e') and "r" in getNeighborTiles(xy):
             tiles[xy] = "w"
     tiles[stairsUp] = "u"
