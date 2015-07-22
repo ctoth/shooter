@@ -41,6 +41,24 @@ class World(object):
 		callback.fixtures.sort()
 		return [i[1].body for i in callback.fixtures]
 
+	def is_visible(self, looker, target, max_distance=0):
+		start_point = looker.position
+		angle = looker.facing
+		end_point = target.position
+		if max_distance and math_utils.distance(start_point, end_point) > max_distance:
+			return False
+		position_vector = math_utils.vec_sub(end_point, start_point) 
+		if math_utils.vec_dot(math_utils.angle_to_vec(angle), position_vector) < 0:
+			return False
+		length = max_distance
+		if length == 0:
+			length = 2**32-1
+		los = self.ray_cast(start_point, direction=angle, length=length)
+		for item in los:
+			if isinstance(item, World):
+				return False
+			return True
+
 #This class allows us to detect collisions. With it, we can build a list.
 class CollisionCallback(Box2D.b2ContactListener):
 	"""Used to listen for collisions.
