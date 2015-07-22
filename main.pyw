@@ -3,7 +3,7 @@ import game
 import pyglet
 game.window = pyglet.window.Window()
 from pyglet.window import key, mouse
-import loader
+import map
 import player
 import sound
 import world
@@ -22,9 +22,9 @@ def main():
 	game.sound_manager = sound.SoundManager()
 	game.output = auto.Auto()
 	game.world = world.World()
-	start_pos = dungeon_loader.load_dungeon(game.world, 4, 2, 8)
-	game.player = player.Player(world=game.world, position=start_pos)
-	#game.map = loader.load_map(game.world, 'map.yml')
+	game.map = map.Map(world=game.world, name="Deck 7", ambience='ambience.ogg', x_cells=3, y_cells=8, cell_size=10)
+	game.player = player.Player(world=game.world, position=game.map.starting_coordinates)
+	game.map.enter(game.player)
 	if not getattr(sys, 'frozen', False):
 		import ingress
 		ingress.install(port=4263, env=game.__dict__)
