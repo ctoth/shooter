@@ -86,8 +86,8 @@ def on_key_release(symbol, modifiers):
 
 def tick(dt):
 	with game.sound_manager.sim:
-		game.world.tick()
 		game.player.tick()
+		game.world.tick()
 		game.player.set_sound_position()
 
 @game.window.event
