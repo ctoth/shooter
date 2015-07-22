@@ -161,12 +161,21 @@ class Player(entity.Entity):
 			game.output.output(name + ": %.2f meters. %.2f, %.2f" % (distance, item.position[0], item.position[1]), interrupt=False)
 
 	def detect_exits(self):
-		position = vec_div(self.position, 2)
-		room = find_room_containing(position)
-		exits = find_exits_for_room(room)
+		position = game.map.get_real_coordinates(self.position)
+		room = game.map.find_room_containing(position)
+		if room is not None:	
+			exits = find_exits_for_room(room)
+		else:
+			exits = game.map.corridor_exits(position)
+		delay = 0
 		for exit in exits:
-			pos = vec_mul(exit, 2)
-			game.sound_manager.play_async('exit.wav', *pos)
+			pos = game.map.get_physical_coordinates(exit)
+			game.output.output(str(pos), interrupt=False)
+			game.clock.schedule_once(self.play_exit_sound, delay=delay, x=pos[0], y=pos[1])
+			delay += 0.55
+
+	def play_exit_sound(self, t, x, y):
+		game.sound_manager.play_async('exit.wav', x, y)
 
 def find_exits_for_room(room):
 	exits=[k for k, v in game.map.items() if v == 'e']
