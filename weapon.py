@@ -2,6 +2,7 @@ import entity
 import game
 import game_object
 import room
+import world
 from math_utils import *
 
 class Weapon(entity.Entity):
@@ -45,9 +46,9 @@ class Projectile(entity.Entity):
 		self.set_sound_position()
 		print other
 
-		if other.destructable and hasattr(other, 'destroy'):
+		if getattr(other, 'destructable', False)  and hasattr(other, 'destroy'):
 			other.destroy()
-		elif isinstance(other, room.Room):
+		elif isinstance(other, world.World):
 			game.sound_manager.play_async(self.ricochet_sound, *self.position)
 		try:
 			self.weapon.fired.remove(self)
