@@ -33,6 +33,7 @@ class World(object):
 		self.bodies.append(self.world.CreateStaticBody(shapes=shape, position=position, userData=self))
 
 	def ray_cast(self, start, direction, length):
+		"""Returns the list of game objects in order of distance from the given start at the given direction up to the given length"""
 		end = math_utils.vec_mul(math_utils.angle_to_vec(direction), length)
 		end = math_utils.vec_add(list(start), end)
 		callback = RayCastCallback()
