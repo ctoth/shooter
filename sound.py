@@ -9,12 +9,17 @@ class SoundManager(object):
 	def __init__(self, output_device=-1, sounds_path='sounds'):
 		self.sim = libaudioverse.Simulation()
 		self.sim.set_output_device(output_device)
+		self.convolver = libaudioverse.FftConvolverNode(self.sim, 2)
 		self.world = libaudioverse.EnvironmentNode(self.sim, "default")
-		self.world.default_panning_strategy.value=libaudioverse.PanningStrategies.hrtf
+		self.world.default_panning_strategy =libaudioverse.PanningStrategies.hrtf
 		self.world.default_distance_model = libaudioverse.DistanceModels.exponential
 		self.world.default_max_distance = 1000
 		self.world.output_channels.value= 2
+		self.world.connect(0, self.convolver, 0)
+		self.convolver.mul = 0.01
+		self.world.mul = 0.99
 		self.world.connect_simulation(0)
+		self.convolver.connect_simulation(0)
 		self.world.orientation=(0,1,0,0,0,1)
 		self.sounds = {}
 		self.sounds_path = sounds_path
@@ -78,6 +83,10 @@ class SoundManager(object):
 		to_play = random.choice(files)
 		self.last_random[folder] = to_play
 		return os.path.join(folder, to_play)
+
+	def set_impulse_response(self, filename):
+		self.convolver.set_response_from_file(filename, 0, 0)
+		self.convolver.set_response_from_file(filename, 1, 1)
 
 	def play_async(self, filename, x=0, y=0, z=0):
 		buffer = self.get_buffer(filename)
