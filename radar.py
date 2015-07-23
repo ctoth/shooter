@@ -11,7 +11,7 @@ class Radar(object):
 		position = self.looker.position
 		room = game.map.find_room_containing(position)
 		if room is None:
-			return
+			return []
 		query = game.world.query(room[0], room[2])
 		items = [i.body.userData for i in query.fixtures if i.body.userData is not game.world and math_utils.distance(i.body.position, self.looker.position) > 0]
 		def sort_by_distance(k):
