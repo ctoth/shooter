@@ -22,7 +22,7 @@ def main():
 	game.sound_manager = sound.SoundManager()
 	game.output = auto.Auto()
 	game.world = world.World()
-	game.map = map.Map(world=game.world, name="Deck 13", ambience='ambience.ogg', x_cells=3, y_cells=10, cell_size=8, npc_density=03)
+	game.map = map.Map(world=game.world, name="Deck 13", ambience='ambience.ogg', x_cells=3, y_cells=10, cell_size=8, npc_density=0.33)
 	game.player = player.Player(world=game.world, position=game.map.starting_coordinates)
 	game.map.enter(game.player)
 	if not getattr(sys, 'frozen', False):
