@@ -25,6 +25,7 @@ def main():
 	game.map = map.Map(world=game.world, name="Deck 13", ambience='ambience.ogg', x_cells=3, y_cells=10, cell_size=8, npc_density=0.33)
 	game.player = player.Player(world=game.world, position=game.map.starting_coordinates)
 	game.map.enter(game.player)
+	game.sound_manager.set_impulse_response('sounds/impulses/carpark.wav')
 	if not getattr(sys, 'frozen', False):
 		import ingress
 		ingress.install(port=4263, env=game.__dict__)
