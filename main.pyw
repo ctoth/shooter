@@ -96,6 +96,7 @@ def on_key_release(symbol, modifiers):
 		game.player.stop_moving()
 	if symbol == key.LEFT or symbol == key.RIGHT:
 		game.player.stop_turning()
+		game.player.stop_strafing()
 	if symbol in (key.LSHIFT, key.RSHIFT):
 		game.player.stop_strafing()
 		game.player.stop_running()
