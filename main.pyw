@@ -74,6 +74,11 @@ def on_key_press(symbol, modifiers):
 			game.player.radar.read_previous()
 		else:
 			game.player.radar.read_next()
+	if symbol == key.T:
+		if game.player.radar.tracking:
+			game.player.radar.stop_tracking()
+		else:
+			game.player.radar.start_tracking()
 	if symbol in (key.LCTRL, key.RCTRL):
 		game.player.start_attacking()
 

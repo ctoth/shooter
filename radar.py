@@ -2,10 +2,13 @@ import game
 import math_utils
 
 class Radar(object):
+	track_ping_delay = 0.5
 
 	def __init__(self, looker):
 		self.looker = looker
 		self.index = 0
+		self.tracking = None
+		self.last_track_time = 0
 
 	def get_surrounding_items(self):
 		position = self.looker.position
@@ -61,3 +64,20 @@ class Radar(object):
 	def read_previous(self):
 		self.previous_item()
 		self.read_current()
+
+	def tick(self):
+		if self.tracking is None:
+			return
+		if self.last_track_time + self.track_ping_delay > game.clock.time():
+			return
+		position = self.tracking
+		if not isinstance(position, tuple):
+			position = position.position
+		self.last_track_time = game.clock.time()
+		game.sound_manager.play_async('tracker.wav', *position)
+
+	def start_tracking(self):
+		self.tracking = self.current_item()
+
+	def stop_tracking(self):
+		self.tracking = None
