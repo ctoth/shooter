@@ -16,6 +16,7 @@ class Player(entity.Entity):
 	footstep_multiplier = 3.0
 	running_multiplier = 1.5
 	ping_distance = 50
+	approach_distance = 1.0
 
 	def __init__(self, size=(0.5, 0.5), mass=100, *args, **kwargs):
 		super(Player, self).__init__(size=size, mass=mass, *args, **kwargs)
@@ -28,6 +29,8 @@ class Player(entity.Entity):
 		self.attacking = False
 		self.sound_source.head_relative = True
 		self.radar = radar.Radar(looker=self)
+		self.walking_toward = None
+
 
 	def set_sound_position(self):
 		position = list(self.position)
@@ -61,6 +64,12 @@ class Player(entity.Entity):
 				self.last_footstep_time = game.clock.time()
 		else:
 			self.body.linearVelocity = (0, 0)
+		if self.walking_toward:
+			if distance(self.walking_toward, self.position) > self.approach_distance:
+				self.moving = 'forward'
+			else:
+				self.moving = False
+				self.walking_toward = None
 		if self.moving:
 			if self.moving == 'forward':
 				facing = self.facing
@@ -174,3 +183,11 @@ class Player(entity.Entity):
 
 	def play_exit_sound(self, t, x, y):
 		game.sound_manager.play_async('beep.wav', x, y)
+
+	def walk_toward(self, position):
+		self.face(position)
+		self.walking_toward = position
+
+
+	def face(self, position):
+		self.facing = angle_between(self.position, position)
