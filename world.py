@@ -45,17 +45,18 @@ class World(object):
 		start_point = looker.position
 		angle = looker.facing
 		end_point = target.position
+		distance_between = math_utils.distance(start_point, end_point)
 		if max_distance and math_utils.distance(start_point, end_point) > max_distance:
 			return False
 		position_vector = math_utils.vec_sub(end_point, start_point) 
 		if math_utils.vec_dot(math_utils.angle_to_vec(angle), position_vector) < 0:
 			return False
-		length = max_distance
+		length = distance_between
 		if length == 0:
 			length = 2**32-1
 		los = self.ray_cast(start_point, direction=angle, length=length)
 		for item in los:
-			if isinstance(item, World):
+			if item.userData is game.world:
 				return False
 			return True
 
