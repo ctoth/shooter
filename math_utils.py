@@ -43,4 +43,5 @@ def distance(v1, v2):
 	return vec_magnitude(vec_sub(v2, v1))
 
 def angle_between(v1, v2):
-	return vec_to_angle(vec_sub(v1, v2))
+	position_vector = vec_sub(v2, v1)
+	return vec_to_angle(position_vector)
