@@ -38,6 +38,7 @@ class Player(entity.Entity):
 		game.sound_manager.world.orientation = orientation
 
 	def tick(self):
+		self.radar.tick()
 		if self.attacking:
 			if self.weapon.can_use():
 				self.weapon.position = self.position
