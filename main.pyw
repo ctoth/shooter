@@ -20,6 +20,12 @@ def main():
 	game.clock = pyglet.clock.get_default()
 	game.window.set_exclusive_mouse(True)
 	game.sound_manager = sound.SoundManager()
+	joystick = pyglet.input.get_joysticks()
+	if joystick:
+		joystick = joystick[0]
+		joystick.open()
+		joystick.push_handlers(on_joybutton_press, on_joybutton_release)
+		game.joystick = joystick
 	game.output = auto.Auto()
 	game.world = world.World()
 	game.map = map.Map(world=game.world, name="Deck 13", ambience='ambience.ogg', x_cells=3, y_cells=10, cell_size=8, npc_density=0.33)
@@ -117,6 +123,16 @@ def on_mouse_release(x, y, button, modifiers):
 	if button == mouse.LEFT:
 		game.player.stop_attacking()
 
+@game.window.event
+def on_joybutton_press(joystick, button):
+	if button == 0: #trigger
+		game.player.start_attacking()
+	print button
+
+@game.window.event
+def on_joybutton_release(joystick, button):
+	if button == 0: #trigger
+		game.player.stop_attacking()
 
 if __name__ == '__main__':
 	main()
