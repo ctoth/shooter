@@ -79,3 +79,17 @@ class ProjectileWeapon(Weapon):
 		bullet.body.ApplyLinearImpulse(velocity, self.body.worldCenter, True)
 		self.fired.add(bullet)
 
+class BeamWeapon(Weapon):
+
+	def __init__(self, range=10, *args, **kwargs):
+		super(BeamWeapon, self).__init__(*args, **kwargs)
+		self.range = range
+
+
+	def use(self):
+		super(BeamWeapon, self).use()
+		targets = self.world.ray_cast(self.position, direction=self.facing, length=self.range)
+		target = targets[0]
+		other = target.userData
+		if getattr(other, 'take_damage', None):
+			other.take_damage(self.base_damage)
