@@ -12,6 +12,8 @@ import sys
 import libloader.com
 libloader.com.prepare_gencache()
 from accessible_output2.outputs import auto
+import faulthandler
+faulthandler.enable()
 
 MOUSE_SENSITIVITY = 20
 
