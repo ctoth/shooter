@@ -71,3 +71,8 @@ class GameObject(object):
 	def use(self):
 		if self.use_sound is not None:
 			game.sound_manager.play(self.use_sound, source=self.sound_source)
+
+	def take_damage(self, amount):
+		if self.destructable:
+			self.destroy()
+

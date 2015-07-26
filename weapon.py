@@ -46,8 +46,8 @@ class Projectile(entity.Entity):
 		self.set_sound_position()
 		print other
 
-		if getattr(other, 'destructable', False)  and hasattr(other, 'destroy'):
-			other.destroy()
+		if getattr(other, 'take_damage', None	):
+			other.take_damage(self.weapon.base_damage)
 		elif isinstance(other, world.World):
 			game.sound_manager.play_async(self.ricochet_sound, *self.position)
 		try:
