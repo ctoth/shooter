@@ -4,7 +4,7 @@ import game
 import math_utils
 import npc
 import tiles
-
+import weapon
 
 class Map(object):
 
@@ -41,12 +41,18 @@ class Map(object):
 						break
 
 	def place_npcs(self):
-		for num, room in enumerate(self.room_vertices):
+		for room in self.room_vertices:
 			center = tiles.center_of_room(room)
 			chance = self.random.random()
 			if chance > self.npc_density:
 				continue
-			new_npc = npc.NPC(world=self.world, name="NPC %d" % num, position=center, facing=self.random.randint(0, 359), aggressive=bool(random.randint(0, 1)))
+			num = len(self.npcs)
+			position = center
+			facing=self.random.randint(0, 359)
+			gun = weapon.BeamWeapon(world=self.world, name="Laser Rifle", use_sound='laser', size=(0.5, 0.1), facing=facing, position=position, base_damage=20)
+			aggressive = bool(self.random.randint(0, 1))
+			aggressive = True
+			new_npc = npc.NPC(world=self.world, name="NPC %d" % num, position=position, facing=facing, aggressive=aggressive, weapon=gun, hit_sound='hit')
 			self.npcs.append(new_npc)
 
 	def get_physical_coordinates(self, coordinates):
