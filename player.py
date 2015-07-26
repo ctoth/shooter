@@ -18,11 +18,10 @@ class Player(entity.Entity):
 	ping_distance = 50
 	approach_distance = 1.0
 
-	def __init__(self, size=(0.5, 0.5), mass=100, *args, **kwargs):
-		super(Player, self).__init__(size=size, mass=mass, *args, **kwargs)
+	def __init__(self, world=None, position=None, size=(0.5, 0.5), mass=100, *args, **kwargs):
+		gun = weapon.ProjectileWeapon(world=world, name="Gun", ammo_type="bullet", use_sound='rifle', size=(1, 0.1), position=position, cooldown=0.5, mass=30, base_damage=50)
+		super(Player, self).__init__(world=world, position=position, size=size, mass=mass, weapon=gun, *args, **kwargs)
 		self.moving = False
-		gun = weapon.ProjectileWeapon(world=self.world, name="Gun", ammo_type="bullet", use_sound='rifle', size=(1, 0.1), position=self.position, cooldown=0.5, mass=30)
-		self.equip(gun)
 		self.turning = None
 		self.running = False
 		self.last_footstep_time = 0
