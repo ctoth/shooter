@@ -54,7 +54,7 @@ class NPC(entity.Entity):
 		self.facing = math_utils.vec_to_angle(math_utils.vec_sub(self.target.position, self.position))
 
 	def perform_attack(self):
-		pass
+		self.fire_weapon()
 
 	def act_normally(self):
 		pass
