@@ -30,7 +30,6 @@ class Player(entity.Entity):
 		self.radar = radar.Radar(looker=self)
 		self.walking_toward = None
 
-
 	def set_sound_position(self):
 		position = list(self.position)
 		position.append(0.0)
@@ -42,10 +41,7 @@ class Player(entity.Entity):
 	def tick(self):
 		self.radar.tick()
 		if self.attacking:
-			if self.weapon.can_use():
-				self.weapon.position = self.position
-				self.weapon.facing = self.facing
-				self.weapon.use()
+			self.fire_weapon()
 		if self.turning == 'left':
 			self.facing -= self.TURN_RATE
 		elif self.turning == 'right':
@@ -83,8 +79,7 @@ class Player(entity.Entity):
 			self.body.linearVelocity = (0, 0)
 
 	def equip(self, item):
-		self.weapon = item
-		self.world.world.CreateRevoluteJoint(bodyA=self.body, bodyB=item.body, anchorPoint=self.body.worldCenter)
+		super(Player, self).equip(item)
 		item.sound_source.head_relative = True
 		item.sound_source.position = (0, 0, 0)
 
