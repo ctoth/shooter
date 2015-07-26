@@ -64,9 +64,6 @@ class NPC(entity.Entity):
 			game.map.npcs.remove(self)
 		except ValueError:
 			pass
-		if game.player.radar.tracking is self:
-			game.player.radar.stop_tracking()
-			game.player.radar.tracking = None
 		game.clock.schedule_once(self.play_corpse_fall, 0.5, position=self.position)
 		super(NPC, self).destroy()
 
