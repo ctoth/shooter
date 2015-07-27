@@ -51,8 +51,8 @@ class Radar(object):
 		else:
 			name = item.name
 			position = item.position
-		position_vector = math_utils.vec_sub(position, self.looker.position)
-		direction = (math_utils.vec_to_angle(position_vector) - self.looker.facing) % 360
+		angle = math_utils.angle_between(self.looker.position, position)
+		direction = (angle - self.looker.facing) % 360
 		distance = math_utils.distance(self.looker.position, position)
 		game.output.output("%s: %.2f meters at %d degrees" % (name, distance, direction))
 		game.sound_manager.play_async('beep.wav', *position)
