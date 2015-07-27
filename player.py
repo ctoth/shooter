@@ -186,3 +186,7 @@ class Player(entity.Entity):
 
 	def face(self, position):
 		self.facing = angle_between(self.position, position)
+
+	def destroy(self):
+		game.clock.unschedule(game.tick)
+		game.sound_manager.play_async('death', *self.position)
