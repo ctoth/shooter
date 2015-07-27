@@ -7,7 +7,7 @@ from math_utils import *
 
 class Weapon(entity.Entity):
 
-	def __init__(self, base_damage=1.0, range=1.0, cooldown=1.0, last_used=0, max_uses=0, current_uses=0, *args, **kwargs):
+	def __init__(self, base_damage=10.0, range=1.0, cooldown=1.0, last_used=0, max_uses=0, current_uses=0, *args, **kwargs):
 		super(Weapon, self).__init__(*args, **kwargs)
 		self.base_damage = base_damage
 		self.range = range
