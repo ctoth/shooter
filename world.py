@@ -9,24 +9,37 @@ class World(object):
 		self.framerate = framerate
 		self.world = b2.world(doSleep=True, gravity=(0, 0))
 		self.to_destroy = set()
+		self.unused_bodies = set()
+		self.objects_to_create_bodies_for = dict()
 		self.collisions =dict()
 		self.collision_callback = CollisionCallback(self)
 		self.world.contactListener = self.collision_callback
 		self.bodies = []
 
-
 	def destroy(self, obj):
 		self.to_destroy.add(obj)
 
+	def remove_body_from_world(self, body):
+		self.unused_bodies.add(body)
+
 	def destroy_body(self, body):
 		self.world.DestroyBody(body)
+
+	def create_body_next_tick(self, obj, position=(0, 0)):
+		self.objects_to_create_bodies_for[obj] = position
 
 	def tick(self):
 		with game.sound_manager.sim:
 			self.world.Step(1.0 / self.framerate, 10, 10)
 			for obj in self.to_destroy:
 				self.destroy_body(obj.body)
+			for body in self.unused_bodies:
+				self.destroy_body(body)
+			for obj, position in self.objects_to_create_bodies_for.iteritems():
+				obj.create_body(position=position)
 		self.to_destroy.clear()
+		self.objects_to_create_bodies_for.clear()
+		self.unused_bodies.clear()
 
 	def create_wall_tile(self, position, size=(0.5, 0.5)):
 		shape = b2.polygonShape(box=size)
@@ -96,6 +109,7 @@ class CollisionCallback(Box2D.b2ContactListener):
 
 	def EndContact(self, contact):
 		a, b = contact.fixtureA.body.userData, contact.fixtureB.body.userData
+		print a, b
 		if a > b:
 			a, b = b, a
 		try:

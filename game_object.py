@@ -10,9 +10,12 @@ class GameObject(object):
 		self.name = name
 		self.size = tuple(size)
 		self.location = location
+		self.contents = []
 		self.fixed = fixed
-		self.create_body()
-		self.body.mass = mass
+		self.body = None
+		if location is None:
+			self.create_body(position=position)
+		#self.body.mass = mass
 		if sound_source is None:
 			sound_source = game.sound_manager.create_source()
 		self.sound_source = sound_source
@@ -25,14 +28,17 @@ class GameObject(object):
 		self.facing = facing
 		self.destructable = destructable
 
-
-	def create_body(self):
+	def create_body(self, position=None):
 		size = self.size[0] / 2, self.size[1] / 2
 		self.shape = b2.polygonShape(box=size)
-		self.body = self.world.world.CreateStaticBody(shapes=self.shape, userData=self)
+		if position is None:
+			position = (0, 0)
+		self.body = self.world.world.CreateStaticBody(shapes=self.shape, userData=self, position=position)
 
 	@property
 	def position(self):
+		if self.location is not None:
+			return self.location.position
 		return tuple(self.body.position)
 
 	@position.setter
@@ -49,6 +55,8 @@ class GameObject(object):
 
 	@property
 	def facing(self):
+		if self.location is not None:
+			return self.location.facing
 		return self.body.angle
 
 	@facing.setter
@@ -56,6 +64,7 @@ class GameObject(object):
 		self.body.angle = facing
 
 	def destroy(self):
+		[self.remove(i) for i in self.contents]
 		if self.destroy_sound is not None:
 			game.sound_manager.play_async(self.destroy_sound, *self.position)
 		if game.player.radar.tracking is self:
@@ -75,4 +84,19 @@ class GameObject(object):
 	def take_damage(self, amount):
 		if self.destructable:
 			self.destroy()
+
+	def destroy_body(self):
+		game.world.remove_body_from_world(self.body)
+		self.body = None
+
+	def hold(self, other):
+		if other.body is not None:
+			other.destroy_body()
+		self.contents.append(other)
+		other.location = self
+
+	def remove(self, other):
+		self.contents.remove(other)
+		other.location = self.location
+		game.world.create_body_next_tick(other, position=self.position)
 

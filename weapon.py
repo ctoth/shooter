@@ -36,8 +36,8 @@ class Projectile(entity.Entity):
 		super(Projectile, self).__init__(size=size, *args, **kwargs)
 		self.weapon = weapon
 
-	def create_body(self):
-		super(Projectile, self).create_body()
+	def create_body(self, position=None):
+		super(Projectile, self).create_body(position=position)
 		self.body.bullet = True
 		self.box.restitution = 0.4
 		self.box.friction = 0
@@ -76,7 +76,7 @@ class ProjectileWeapon(Weapon):
 	def shoot(self, bullet):
 		direction = angle_to_vec(self.facing)
 		velocity = vec_mul(direction, self.speed)
-		bullet.body.ApplyLinearImpulse(velocity, self.body.worldCenter, True)
+		bullet.body.ApplyLinearImpulse(velocity, self.position, True)
 		self.fired.add(bullet)
 
 class BeamWeapon(Weapon):

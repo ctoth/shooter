@@ -13,19 +13,22 @@ class Entity(game_object.GameObject):
 			self.equip(weapon)
 		self.hit_sound = hit_sound
 
-	def create_body(self):
-		self.body = self.world.world.CreateDynamicBody(userData=self)
+	def create_body(self, position=None):
+		if position is None:
+			position = (0, 0)
+		self.body = self.world.world.CreateDynamicBody(userData=self, position=position, angularDamping=0.1)
 		size = self.size[0] / 2, self.size[1] / 2
 		self.box= self.body.CreatePolygonFixture(box=size, density=1, friction=1.0, restitution=0.0)
 
 	def equip(self, item):
+		self.hold(item)
 		self.weapon = item
-		self.world.world.CreateRevoluteJoint(bodyA=self.body, bodyB=item.body, anchorPoint=self.body.worldCenter)
+
+		item.location = self
+
 
 	def fire_weapon(self):
 		if self.weapon is not None and self.weapon.can_use():
-			self.weapon.position = self.position
-			self.weapon.facing = self.facing
 			self.weapon.use()
 
 	def take_damage(self, amount):

@@ -49,7 +49,7 @@ class Map(object):
 			num = len(self.npcs)
 			position = center
 			facing=self.random.randint(0, 359)
-			gun = weapon.BeamWeapon(world=self.world, name="Laser Rifle", use_sound='laser', size=(0.5, 0.1), facing=facing, position=position, base_damage=20)
+			gun = weapon.BeamWeapon(world=self.world, name="Laser Rifle", use_sound='laser', size=(0.5, 0.1), facing=facing, position=position, base_damage=20, cooldown=1.5)
 			aggressive = bool(self.random.randint(0, 1))
 			aggressive = True
 			new_npc = npc.NPC(world=self.world, name="NPC %d" % num, position=position, facing=facing, aggressive=aggressive, weapon=gun, hit_sound='hit')
