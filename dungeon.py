@@ -151,10 +151,10 @@ def generate(cellsX, cellsY, cellSize=5):
 
     # 7. For each connection between two cells:
     connections = {}
-    for c in cells.values():
+    for c in cells.itervalues():
         for other in c.connectedTo:
             connections[tuple(sorted((c.id, other.id)))] = (c.room, other.room)
-    for a, b in connections.values():
+    for a, b in connections.itervalues():
         # 7a. Create a random corridor between the rooms in each cell.
         start = random.choice(a)
         end = random.choice(b)
