@@ -1,5 +1,6 @@
 import random
 import os
+import multiprocessing
 import libaudioverse
 libaudioverse.initialize()
 
@@ -8,6 +9,7 @@ class SoundManager(object):
 
 	def __init__(self, output_device=-1, sounds_path='sounds'):
 		self.sim = libaudioverse.Simulation()
+		self.sim.threads = multiprocessing.cpu_count() - 1 or 1
 		self.sim.set_output_device(output_device)
 		self.convolver = libaudioverse.FftConvolverNode(self.sim, 2)
 		self.world = libaudioverse.EnvironmentNode(self.sim, "default")
