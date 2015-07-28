@@ -1,4 +1,5 @@
 import math
+import game_object
 import entity
 import game
 import radar
@@ -17,6 +18,7 @@ class Player(entity.Entity):
 	running_multiplier = 1.5
 	ping_distance = 50
 	approach_distance = 1.0
+	reach = 1.0
 
 	def __init__(self, world=None, position=None, size=(0.5, 0.5), mass=100, *args, **kwargs):
 		#gun = weapon.ProjectileWeapon(world=world, name="Gun", ammo_type="bullet", use_sound='rifle', size=(1, 0.1), position=position, cooldown=0.5, mass=30, base_damage=50)
@@ -190,3 +192,17 @@ class Player(entity.Entity):
 	def destroy(self):
 		game.clock.unschedule(game.tick)
 		game.sound_manager.play_async('death', *self.position)
+
+	def pick_up_obj(self):
+		obj = self.radar.current_item()
+		if not isinstance(obj, game_object.GameObject):
+			return
+		if obj.fixed:
+			return
+		if distance(self.position, obj.position) > self.reach:
+			return
+		self.hold(obj)
+		game.sound_manager.play('pickup.wav', source=self.sound_source, position=self.position)
+		if obj is self.radar.tracking:
+			self.radar.stop_tracking()
+			self.radar.tracking = None
