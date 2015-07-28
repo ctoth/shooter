@@ -20,10 +20,10 @@ class Player(entity.Entity):
 	approach_distance = 1.0
 	reach = 1.0
 
-	def __init__(self, world=None, position=None, size=(0.5, 0.5), mass=100, *args, **kwargs):
+	def __init__(self, world=None, position=None, shape='circle', size=(0.2, 0.2), mass=100, *args, **kwargs):
 		#gun = weapon.ProjectileWeapon(world=world, name="Gun", ammo_type="bullet", use_sound='rifle', size=(1, 0.1), position=position, cooldown=0.5, mass=30, base_damage=50)
 		gun = weapon.ProjectileWeapon(world=world, name="m240", ammo_type='bullet', use_sound='m240', size=(1, 0.2), cooldown=0.08, mass=50,base_damage=10)
-		super(Player, self).__init__(world=world, position=position, size=size, mass=mass, weapon=gun, *args, **kwargs)
+		super(Player, self).__init__(world=world, position=position, shape=shape, size=size, mass=mass, weapon=gun, *args, **kwargs)
 		self.moving = False
 		self.turning = None
 		self.running = False
