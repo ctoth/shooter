@@ -34,6 +34,7 @@ def main():
 	game.player = player.Player(world=game.world, position=game.map.starting_coordinates)
 	game.map.enter(game.player)
 	game.sound_manager.set_impulse_response('sounds/impulses/carpark.wav')
+	game.tick = tick
 	if not getattr(sys, 'frozen', False):
 		import ingress
 		ingress.install(port=4263, env=game.__dict__)
