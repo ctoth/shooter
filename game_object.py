@@ -4,10 +4,11 @@ from Box2D import b2
 
 class GameObject(object):
 
-	def __init__(self, name="", world=None, size=(1, 1), location=None, position=(2, 2), facing=0, mass=1, fixed=True, sound_source=None, sound=None, use_sound=None, destroy_sound=None, destructable=True, *args, **kwargs):
+	def __init__(self, name="", world=None, shape='box', size=(1, 1), location=None, position=(2, 2), facing=0, mass=1, fixed=True, sound_source=None, sound=None, use_sound=None, destroy_sound=None, destructable=True, *args, **kwargs):
 		super(GameObject, self).__init__(*args, **kwargs)
 		self.world = world
 		self.name = name
+		self.shape = shape
 		self.size = tuple(size)
 		self.location = location
 		self.contents = []
@@ -15,6 +16,7 @@ class GameObject(object):
 		self.body = None
 		if location is None:
 			self.create_body(position=position)
+			self.create_fixture()
 		#self.body.mass = mass
 		if sound_source is None:
 			sound_source = game.sound_manager.create_source()
@@ -30,10 +32,19 @@ class GameObject(object):
 
 	def create_body(self, position=None):
 		size = self.size[0] / 2, self.size[1] / 2
-		self.shape = b2.polygonShape(box=size)
 		if position is None:
 			position = (0, 0)
-		self.body = self.world.world.CreateStaticBody(shapes=self.shape, userData=self, position=position)
+		self.body = self.world.world.CreateStaticBody(userData=self, position=position)
+
+	def create_fixture(self):
+		density=1
+		friction=1.0
+		restitution=0.0
+		if self.shape == 'circle':
+			self.fixture = self.body.CreateCircleFixture(radius=self.size[0], density=density, friction=friction, restitution=restitution)
+		elif self.shape == 'box':
+			self.fixture= self.body.CreatePolygonFixture(box=self.size, density=density, friction=friction, restitution=restitution)
+
 
 	@property
 	def position(self):
