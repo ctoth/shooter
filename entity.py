@@ -4,10 +4,11 @@ import game_object
 
 class Entity(game_object.GameObject):
 
-	def __init__(self, health=100, speed=100, hit_sound=None, weapon=None, *args, **kwargs):
+	def __init__(self, health=100, speed=100, angle_of_visibility=180, hit_sound=None, weapon=None, *args, **kwargs):
 		super(Entity, self).__init__(*args, **kwargs)
 		self.health = health
 		self.speed = speed
+		self.angle_of_visibility = angle_of_visibility
 		self.weapon = None
 		if weapon is not None:
 			self.equip(weapon)
