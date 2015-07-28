@@ -62,8 +62,8 @@ class World(object):
 		distance_between = math_utils.distance(start_point, end_point)
 		if max_distance and math_utils.distance(start_point, end_point) > max_distance:
 			return False
-		position_vector = math_utils.vec_sub(end_point, start_point) 
-		if math_utils.vec_dot(math_utils.angle_to_vec(angle), position_vector) < 0:
+		angle_between = (math_utils.angle_between(looker.position, target.position) - looker.facing) % 360
+		if angle_between < 0+looker.angle_of_visibility / 2.0 and angle_between < 360 - looker.angle_of_visibility / 2.0:
 			return False
 		length = distance_between
 		if length == 0:
