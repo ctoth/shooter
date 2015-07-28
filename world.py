@@ -37,6 +37,7 @@ class World(object):
 				self.destroy_body(body)
 			for obj, position in self.objects_to_create_bodies_for.iteritems():
 				obj.create_body(position=position)
+				obj.create_fixture()
 		self.to_destroy.clear()
 		self.objects_to_create_bodies_for.clear()
 		self.unused_bodies.clear()
