@@ -73,8 +73,10 @@ def on_key_press(symbol, modifiers):
 		game.player.read_coordinates()
 	if symbol == key.F:
 		game.player.read_facing()
-	if symbol == key.P:
+	if symbol == key.L:
 		game.player.do_ping()
+	if symbol == key.P:
+		game.player.pick_up_obj()
 	if symbol == key.D:
 		game.player.detect_exits()
 	if symbol == key.TAB:
