@@ -39,8 +39,6 @@ class Projectile(entity.Entity):
 	def create_body(self, position=None):
 		super(Projectile, self).create_body(position=position)
 		self.body.bullet = True
-		self.box.restitution = 0.4
-		self.box.friction = 0
 
 	def handle_collision(self, other):
 		self.set_sound_position()
