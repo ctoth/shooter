@@ -1,5 +1,6 @@
 import game
 import math_utils
+import npc
 
 class Radar(object):
 	track_ping_delay = 0.5
@@ -9,6 +10,9 @@ class Radar(object):
 		self.index = 0
 		self.tracking = None
 		self.last_track_time = 0
+
+	def get_surrounding_npcs(self):
+		return [i for i in self.get_surrounding_items() if isinstance(i, npc.NPC)]
 
 	def get_surrounding_items(self):
 		position = self.looker.position
@@ -81,3 +85,14 @@ class Radar(object):
 
 	def stop_tracking(self):
 		self.tracking = None
+
+	def summarize_room(self):
+		room = game.map.find_room_containing(self.looker.position)
+		if room is None:
+			return
+		dimensions = room[1][0] - room[0][0], room[2][1] - room[1][1]
+		contents= self.get_surrounding_items()
+		exits = self.get_surrounding_exits()
+		npcs = self.get_surrounding_npcs()
+		description = "%d by %d meters, %d npcs, %d exits" % (dimensions[0], dimensions[1], len(npcs), len(exits))
+		game.output.output(description)
