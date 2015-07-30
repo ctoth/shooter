@@ -82,12 +82,13 @@ class Map(object):
 
 	def find_exits_for_room(self, room):
 		exits = self.get_exits()
-		working = []
-		working.append((room[0][0] - 1, room[0][1] - 1))
-		working.append((room[1][0] + 1, room[1][1] - 1))
-		working.append((room[2][0] - 1, room[2][1] + 1))
-		working.append((room[3][0] - 1, room[3][1] + 1))
-		return [exit for exit in exits if tiles.point_in_room(exit, working)]
+		room_shape = self.get_room_border(room)
+		return [exit for exit in exits if tiles.point_in_shape(exit, *room_shape)]
+
+	def get_room_border(self, room):
+		min = math_utils.vec_sub(room[0], (1, 1))
+		max = math_utils.vec_add(room[2], (1, 1))
+		return (min, max)
 
 	def find_room_containing(self, position):
 		for room in self.room_vertices:
