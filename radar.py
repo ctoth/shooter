@@ -59,7 +59,7 @@ class Radar(object):
 		direction = (angle - self.looker.facing) % 360
 		distance = math_utils.distance(self.looker.position, position)
 		game.output.output("%s: %.2f meters at %d degrees" % (name, distance, direction))
-		game.sound_manager.play_async('beep.wav', *position)
+		game.sound_manager.play_async('beep.wav', *position, in_world=False)
 
 	def read_next(self):
 		self.next_item()
@@ -78,7 +78,7 @@ class Radar(object):
 		if not isinstance(position, tuple):
 			position = position.position
 		self.last_track_time = game.clock.time()
-		game.sound_manager.play_async('tracker.wav', *position)
+		game.sound_manager.play_async('tracker.wav', *position, in_world=False)
 
 	def start_tracking(self):
 		self.tracking = self.current_item()
