@@ -1,17 +1,54 @@
+version: 1
+
 objects:
-  - name: Clock
+  KB8 Power Junction:
+    sound: devices/electrical/powerline.wav
+    fixed: True
+    placement: wall
     destructable: True
-    sound: clock.wav
-    destroy_sound: glass.wav
-    size: [0.25, 0.25]
-    fixed: true
 
-rooms:
-  - name: Starting Room
-    size: [30, 8]
-    floor: carpet
-    contents:
-      - Clock: [1, 8]
-    exits:
-      - Main Hallway: [8, 4]
+  XR7 Data Processing Hub:
+    sound: devices/computer/hum.wav
+    fixed: True
+    destructable: True
+    placement: random
 
+weapons:
+  Assault Rifle:
+    use_sound: rifle
+    mass: 20
+    cooldown: 0.5
+
+  Machine Gun:
+    use_sound: machine_Gun
+    mass: 30
+    cooldown: 0.04
+
+  Laser Rifle:
+    use_sound: laser
+    size: [0.5, 0.1]
+    base_damage: 15
+    cooldown: 1.5
+
+npcs:
+  Darth Vader:
+    ambient: monster/Vad_breath_1.wav
+
+  Alien Grunt:
+    ambient: monster/ambient
+    destroy_sound: monster/death
+    hit_sound: hit
+    weapon: Laser Rifle
+
+map:
+  name: Battlestation
+  x_rooms: 2
+  y_rooms: 4
+  max_room_dimension: 8
+  ambient: ambience.ogg
+  npcs:
+    Alien Grunt: 25%
+    Darth Vader: single
+  objects:
+    KB8 Power Junction: 20%
+    XR7 Data Processing Hub: 33%

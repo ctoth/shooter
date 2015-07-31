@@ -24,7 +24,6 @@ class Map(object):
 		self.starting_coordinates = None
 		self.npcs = []
 		self.fill_wall_tiles()
-		self.place_npcs()
 
 	def fill_wall_tiles(self):
 		tile_size=(0.5, 0.5)
@@ -40,19 +39,17 @@ class Map(object):
 						self.starting_coordinates = self.get_physical_coordinates(neighbor)
 						break
 
-	def place_npcs(self):
+	def place_npcs(self, npc_template, density):
 		for room in self.room_vertices:
-			center = tiles.center_of_room(room)
+			position = tiles.random_point_in_room(room)
 			chance = self.random.random()
-			if chance > self.npc_density:
+			if chance > density:
 				continue
 			num = len(self.npcs)
-			position = center
 			facing=self.random.randint(0, 359)
-			gun = weapon.BeamWeapon(world=self.world, name="Laser Rifle", use_sound='laser', size=(0.5, 0.1), facing=facing, position=position, base_damage=20, cooldown=1.5)
 			aggressive = bool(self.random.randint(0, 1))
 			aggressive = True
-			new_npc = npc.NPC(world=self.world, name="NPC %d" % num, position=position, facing=facing, aggressive=aggressive, weapon=gun, hit_sound='hit')
+			new_npc = npc_template.spawn(world=self.world, name="NPC %d" % num, position=position, facing=facing, aggressive=aggressive)
 			self.npcs.append(new_npc)
 
 	def get_physical_coordinates(self, coordinates):

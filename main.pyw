@@ -4,6 +4,7 @@ import pyglet
 game.window = pyglet.window.Window()
 from pyglet.window import key, mouse
 import map
+import map_loader
 import player
 import sound
 import world
@@ -30,7 +31,8 @@ def main():
 		game.joystick = joystick
 	game.output = auto.Auto()
 	game.world = world.World()
-	game.map = map.Map(world=game.world, name="Deck 13", ambience='ambience.ogg', x_cells=3, y_cells=10, cell_size=8, npc_density=0.33)
+	game.map = map_loader.load_template('map.yml', world=game.world)
+	#map.Map(world=game.world, name="Deck 13", ambience='ambience.ogg', x_cells=3, y_cells=10, cell_size=8, npc_density=0.33)
 	game.player = player.Player(world=game.world, position=game.map.starting_coordinates)
 	game.map.enter(game.player)
 	game.sound_manager.set_impulse_response('sounds/impulses/carpark.wav')
