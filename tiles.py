@@ -1,3 +1,4 @@
+import random
 import math_utils
 
 def point_on_line(point, line_start, line_end):
@@ -47,3 +48,6 @@ def center_of_room(room):
 	relative_center = math_utils.vec_div(relative, 2)
 	center = math_utils.vec_add(room_base, relative_center)
 	return center
+
+def random_point_in_room(room):
+	return random.randrange(room[0][0], room[1][0]), random.randrange(room[0][1], room[2][1])
