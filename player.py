@@ -36,7 +36,7 @@ class Player(entity.Entity):
 	def set_sound_position(self):
 		position = list(self.position)
 		position.append(0.0)
-		game.sound_manager.world.position = position
+		game.sound_manager.set_listener_position(position)
 		orientation = list(game.sound_manager.world.orientation.value)
 		orientation[0], orientation[1] = angle_to_vec(self.facing)
 		game.sound_manager.set_orientation(orientation)

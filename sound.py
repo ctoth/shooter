@@ -104,6 +104,10 @@ class SoundManager(object):
 		world.output_channels.value= 2
 		return world
 
+	def set_listener_position(self, position):
+		self.world.position = position
+		self.dry_world.position = position
+
 	def set_orientation(self, orientation):
 		self.world.orientation = orientation
 		self.dry_world.orientation = orientation
