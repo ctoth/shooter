@@ -17,7 +17,7 @@ class GameObject(object):
 		if location is None:
 			self.create_body(position=position)
 			self.create_fixture()
-		#self.body.mass = mass
+		self.mass = mass
 		if sound_source is None:
 			sound_source = game.sound_manager.create_source()
 		self.sound_source = sound_source
@@ -35,6 +35,8 @@ class GameObject(object):
 		if position is None:
 			position = (0, 0)
 		self.body = self.world.world.CreateStaticBody(userData=self, position=position)
+		self.body.mass = self.mass
+
 
 	def create_fixture(self):
 		density=1
