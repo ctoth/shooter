@@ -18,7 +18,6 @@ class GameObject(object):
 		if location is None:
 			self.create_body(position=position)
 			self.create_fixture()
-		self.mass = mass
 		if sound_source is None:
 			sound_source = game.sound_manager.create_source()
 		self.sound_source = sound_source
