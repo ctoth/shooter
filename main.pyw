@@ -34,6 +34,7 @@ def main():
 	if not getattr(sys, 'frozen', False):
 		import ingress
 		ingress.install(port=4263, env=game.__dict__)
+	game.sound_manager.start()
 	game.screen = screens.GameScreen()
 	game.window.push_handlers(game.screen)
 	main_loop()

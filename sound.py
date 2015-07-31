@@ -17,13 +17,20 @@ class SoundManager(object):
 		self.world.connect(0, self.convolver, 0)
 		self.convolver.mul = 0.01
 		self.world.mul = 0.99
-		self.world.connect_simulation(0)
-		self.dry_world.connect_simulation(0)
-		self.convolver.connect_simulation(0)
 		self.set_orientation((0,1,0,0,0,1))
 		self.sounds = {}
 		self.sounds_path = sounds_path
 		self.last_random = {}
+
+	def start(self):
+		self.world.connect_simulation(0)
+		self.dry_world.connect_simulation(0)
+		self.convolver.connect_simulation(0)
+
+	def stop(self):
+		self.world.disconnect(0)
+		self.dry_world.disconnect(0)
+		self.convolver.disconnect(0)
 
 	def play(self, filename, source, looping=False, position=(0, 0, 0)):
 		if len(position) == 2:
