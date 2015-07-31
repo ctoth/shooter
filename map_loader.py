@@ -7,7 +7,17 @@ import npc
 import template
 import weapon
 
+OBJECT_TYPES = {
+	i.__name__: i
+	for i in (
+		game_object.GameObject, weapon.ProjectileWeapon, weapon.BeamWeapon,
+	)
+}
+
 class ConsistencyError(KeyError):
+	pass
+
+class LoadError(ValueError):
 	pass
 
 class IncludeLoader(yaml.Loader):
@@ -62,6 +72,12 @@ def create_map(map_template, world):
 def load_objects(object_type, objects):
 	res = {}
 	for name, characteristics in objects.iteritems():
+		is_a = characteristics.pop('is_a', None)
+		if is_a:
+			try:	
+				object_type = OBJECT_TYPES[is_a]
+			except KeyError:
+				raise LoadError("Unable to create object with name %s as a subclass of %s as %s is not in the object types registry" % (name, is_a, is_a))
 		res[name] = template.ObjectTemplate(object_type, name=name, **characteristics)
 	return res
 
@@ -83,7 +99,6 @@ def extract_templates(data):
 		for subkey, subval in val.items():
 			map_template[key][data[key][subkey]] = subval
 	return map_template
-
 
 def load_template(filename, world=None):
 	with open(filename, 'r') as f:
