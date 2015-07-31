@@ -18,7 +18,6 @@ class Entity(game_object.GameObject):
 		if position is None:
 			position = (0, 0)
 		self.body = self.world.world.CreateDynamicBody(userData=self, position=position, angularDamping=1.0)
-		self.body.mass = self.mass
 
 	def equip(self, item):
 		self.hold(item)

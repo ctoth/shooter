@@ -35,8 +35,6 @@ class GameObject(object):
 		if position is None:
 			position = (0, 0)
 		self.body = self.world.world.CreateStaticBody(userData=self, position=position)
-		self.body.mass = self.mass
-
 
 	def create_fixture(self):
 		density=1
@@ -46,7 +44,7 @@ class GameObject(object):
 			self.fixture = self.body.CreateCircleFixture(radius=self.size[0], density=density, friction=friction, restitution=restitution)
 		elif self.shape == 'box':
 			self.fixture= self.body.CreatePolygonFixture(box=self.size, density=density, friction=friction, restitution=restitution)
-
+		self.body.mass = self.mass
 
 	@property
 	def position(self):
