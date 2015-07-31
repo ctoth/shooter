@@ -85,7 +85,9 @@ class BeamWeapon(Weapon):
 	def use(self):
 		super(BeamWeapon, self).use()
 		targets = self.world.ray_cast(self.position, direction=self.facing, length=self.range)
+		if not targets:
+			return
 		target = targets[0]
 		other = target.userData
-		if getattr(other, 'take_damage', None):
+		if hasattr(other, 'take_damage'):
 			other.take_damage(self.base_damage)
