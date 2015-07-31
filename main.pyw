@@ -92,6 +92,8 @@ def on_key_press(symbol, modifiers):
 			game.player.radar.start_tracking()
 	if symbol == key.R:
 		game.player.radar.summarize_room()
+	if symbol == key.H:
+		game.player.read_health()
 	if symbol in (key.LCTRL, key.RCTRL):
 		game.player.start_attacking()
 

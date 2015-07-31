@@ -206,3 +206,6 @@ class Player(entity.Entity):
 		if obj is self.radar.tracking:
 			self.radar.stop_tracking()
 			self.radar.tracking = None
+
+	def read_health(self):
+		game.output.output(unicode(self.health))
