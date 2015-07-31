@@ -14,6 +14,7 @@ class GameObject(object):
 		self.contents = []
 		self.fixed = fixed
 		self.body = None
+		self.mass = mass
 		if location is None:
 			self.create_body(position=position)
 			self.create_fixture()
