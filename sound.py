@@ -12,17 +12,15 @@ class SoundManager(object):
 		self.sim.threads = multiprocessing.cpu_count() - 1 or 1
 		self.sim.set_output_device(output_device)
 		self.convolver = libaudioverse.FftConvolverNode(self.sim, 2)
-		self.world = libaudioverse.EnvironmentNode(self.sim, "default")
-		self.world.default_panning_strategy =libaudioverse.PanningStrategies.hrtf
-		self.world.default_distance_model = libaudioverse.DistanceModels.exponential
-		self.world.default_max_distance = 1000
-		self.world.output_channels.value= 2
+		self.world = self.create_world()
+		self.dry_world = self.create_world()
 		self.world.connect(0, self.convolver, 0)
 		self.convolver.mul = 0.01
 		self.world.mul = 0.99
 		self.world.connect_simulation(0)
+		self.dry_world.connect_simulation(0)
 		self.convolver.connect_simulation(0)
-		self.world.orientation=(0,1,0,0,0,1)
+		self.set_orientation((0,1,0,0,0,1))
 		self.sounds = {}
 		self.sounds_path = sounds_path
 		self.last_random = {}
@@ -90,9 +88,25 @@ class SoundManager(object):
 		self.convolver.set_response_from_file(filename, 0, 0)
 		self.convolver.set_response_from_file(filename, 1, 1)
 
-	def play_async(self, filename, x=0, y=0, z=0):
+	def play_async(self, filename, x=0, y=0, z=0, in_world=True):
 		buffer = self.get_buffer(filename)
-		self.world.play_async(buffer, x=x, y=y, z=z)
+		if in_world:
+			world = self.world
+		else:
+			world = self.dry_world
+		world.play_async(buffer, x=x, y=y, z=z)
+
+	def create_world(self):
+		world = libaudioverse.EnvironmentNode(self.sim, "default")
+		world.default_panning_strategy =libaudioverse.PanningStrategies.hrtf
+		world.max_distance = 20
+		world.default_distance_model = libaudioverse.DistanceModels.exponential
+		world.output_channels.value= 2
+		return world
+
+	def set_orientation(self, orientation):
+		self.world.orientation = orientation
+		self.dry_world.orientation = orientation
 
 def _disconnecter(node):
 	node.disconnect(0)

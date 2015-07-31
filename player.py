@@ -39,7 +39,7 @@ class Player(entity.Entity):
 		game.sound_manager.world.position = position
 		orientation = list(game.sound_manager.world.orientation.value)
 		orientation[0], orientation[1] = angle_to_vec(self.facing)
-		game.sound_manager.world.orientation = orientation
+		game.sound_manager.set_orientation(orientation)
 
 	def tick(self):
 		self.radar.tick()
