@@ -52,6 +52,14 @@ class Map(object):
 			new_npc = npc_template.spawn(world=self.world, name="NPC %d" % num, position=position, facing=facing, aggressive=aggressive)
 			self.npcs.append(new_npc)
 
+	def place_objects(self, object_template, density):
+		for room in self.room_vertices:
+			position = tiles.random_point_in_room(room)
+			chance = self.random.random()
+			if chance > density:
+				continue
+			obj = object_template.spawn(world=self.world, position=position)
+
 	def get_physical_coordinates(self, coordinates):
 		return math_utils.vec_mul(coordinates, self.size_ratio)
 

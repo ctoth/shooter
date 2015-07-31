@@ -55,6 +55,8 @@ def create_map(map_template, world):
 	for npc_template, density in map_template['npcs'].iteritems():
 		if density != 'single':
 			loading.place_npcs(npc_template, density)
+	for object_template, density in map_template['objects'].iteritems():
+		loading.place_objects(object_template, density)
 	return loading
 
 def load_objects(object_type, objects):
