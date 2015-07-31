@@ -42,8 +42,6 @@ class Projectile(entity.Entity):
 
 	def handle_collision(self, other):
 		self.set_sound_position()
-		print other
-
 		if getattr(other, 'take_damage', None	):
 			other.take_damage(self.weapon.base_damage)
 		elif isinstance(other, world.World):

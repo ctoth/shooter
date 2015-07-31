@@ -110,7 +110,6 @@ class CollisionCallback(Box2D.b2ContactListener):
 
 	def EndContact(self, contact):
 		a, b = contact.fixtureA.body.userData, contact.fixtureB.body.userData
-		print a, b
 		if a > b:
 			a, b = b, a
 		try:
