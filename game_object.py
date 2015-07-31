@@ -106,6 +106,7 @@ class GameObject(object):
 		self.contents.append(other)
 		other.location = self
 
+
 	def remove(self, other):
 		self.contents.remove(other)
 		other.location = self.location
