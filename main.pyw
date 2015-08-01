@@ -14,9 +14,6 @@ import libloader.com
 libloader.com.prepare_gencache()
 from accessible_output2.outputs import auto
 import faulthandler
-faulthandler.enable()
-
-MOUSE_SENSITIVITY = 20
 
 def main():
 	libaudioverse.initialize()
@@ -41,8 +38,7 @@ def main():
 	libaudioverse.shutdown()
 
 def main_loop():
-	framerate = 1/60.0
-	pyglet.clock.schedule_interval(tick, framerate)
+	pyglet.clock.schedule_interval(tick, game.FRAMERATE)
 	pyglet.app.run()
 
 def tick(dt):

@@ -45,6 +45,9 @@ class GameScreen(object):
 			game.player.do_ping()
 		if symbol == key.P:
 			game.player.pick_up_obj()
+		if symbol == key.ESCAPE:
+			self.pause()
+			return True
 		if symbol == key.D:
 			game.player.detect_exits()
 		if symbol == key.TAB:
@@ -77,7 +80,7 @@ class GameScreen(object):
 			game.player.stop_running()
 
 	def on_mouse_motion(self, x, y, dx, dy):
-		dx /= MOUSE_SENSITIVITY
+		dx /= game.MOUSE_SENSITIVITY
 		game.player.facing += dx
 
 	def on_mouse_press(self, x, y, button, modifiers):
@@ -99,5 +102,16 @@ class GameScreen(object):
 	def __del__(self):
 		self.joystick.close()
 
+	def pause(self):
+		game.clock.unschedule(game.tick)
+		game.window.remove_handlers(self)
+		game.screen = PauseScreen()
+
+
 class PauseScreen(object):
-	pass
+
+	def unpause(self):
+		game.window.remove_handlers(self)
+		game.screen = GameScreen()
+		game.window.push_handlers(game.screen)
+		game.clock.schedule_interval(game.tick, game.FRAMERATE)
