@@ -106,7 +106,7 @@ class SoundManager(object):
 	def create_world(self):
 		world = libaudioverse.EnvironmentNode(self.sim, "default")
 		world.default_panning_strategy =libaudioverse.PanningStrategies.hrtf
-		world.max_distance = 20
+		world.default_max_distance = 20
 		world.default_distance_model = libaudioverse.DistanceModels.exponential
 		world.output_channels.value= 2
 		return world
