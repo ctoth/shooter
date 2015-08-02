@@ -82,19 +82,20 @@ class ProjectileWeapon(Weapon):
 		bullet.body.ApplyLinearImpulse(velocity, self.position, True)
 		self.fired.add(bullet)
 
-class BeamWeapon(Weapon):
+class DirectWeapon(Weapon):
 
-	def __init__(self, range=10, *args, **kwargs):
-		super(BeamWeapon, self).__init__(*args, **kwargs)
-		self.range = range
-
-
-	def use(self):
-		super(BeamWeapon, self).use()
+	def use(self, user):
+		super(DirectWeapon, self).use(user)
 		targets = self.world.ray_cast(self.position, direction=self.facing, length=self.range)
 		if not targets:
 			return
 		target = targets[0]
 		other = target.userData
-		if hasattr(other, 'take_damage'):
-			other.take_damage(self.base_damage)
+		self.did_hit(other, target.position)
+
+class BeamWeapon(DirectWeapon):
+	pass
+
+class BladedWeapon(DirectWeapon):
+	pass
+
