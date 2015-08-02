@@ -2,6 +2,7 @@ import collections
 import os
 import yaml
 import game_object
+import items
 import map
 import npc
 import template
@@ -10,7 +11,7 @@ import weapon
 OBJECT_TYPES = {
 	i.__name__: i
 	for i in (
-		game_object.GameObject, weapon.ProjectileWeapon, weapon.BeamWeapon,
+		game_object.GameObject, weapon.ProjectileWeapon, weapon.BeamWeapon, items.HealthBoost,
 	)
 }
 
