@@ -28,7 +28,7 @@ class Entity(game_object.GameObject):
 
 	def fire_weapon(self):
 		if self.weapon is not None and self.weapon.can_use():
-			self.weapon.use()
+			self.weapon.use(user=self)
 
 	def take_damage(self, amount):
 		self.health -= amount

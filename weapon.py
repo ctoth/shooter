@@ -21,8 +21,8 @@ class Weapon(entity.Entity):
 			return False
 		return self.last_used + self.cooldown < game.clock.time()
 
-	def use(self):
-		super(Weapon, self).use()
+	def use(self, user):
+		super(Weapon, self).use(user)
 		self.last_used = game.clock.time()
 
 class Ammunition(game_object.GameObject):
@@ -61,8 +61,8 @@ class ProjectileWeapon(Weapon):
 		self.fired = set()
 		self.body.fixtures[0].sensor = True
 
-	def use(self):
-		super(ProjectileWeapon, self).use()
+	def use(self, user):
+		super(ProjectileWeapon, self).use(user)
 		position = list(self.position)
 		position = vec_add(position, vec_mul(angle_to_vec(self.facing), self.size[0] + 0.1))
 		bullet = Projectile(world=self.world, name=self.ammo_type, weapon=self, position=position, facing=self.facing)
