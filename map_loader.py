@@ -61,11 +61,16 @@ def check_consistency(data, working=None):
 					raise ConsistencyError("Item %s not defined in %s section" % (innermost_key, subkey))
 
 def create_map(map_template, world):
-	loading = map.Map(world=world, name=map_template['name'], x_cells=map_template['x_rooms'], y_cells=map_template['y_rooms'], cell_size=map_template['max_room_dimension'], ambience=map_template['ambient'], )
-	for npc_template, density in map_template['npcs'].iteritems():
+	name = map_template['name']
+	impulse = map_template.get('impulse')
+	cell_size=map_template['max_room_dimension']
+	footstep=map_template['footstep']
+	loading = map.Map(world=world, name=name, x_cells=map_template['x_rooms'], y_cells=map_template['y_rooms'], cell_size=cell_size, ambience=map_template['ambient'], footstep=footstep, impulse=impulse)
+	for npc_template, density in map_template.get('npcs', {}).iteritems():
 		if density != 'single':
 			loading.place_npcs(npc_template, density)
-	for object_template, density in map_template['objects'].iteritems():
+	for object_template, density in map_template.get('objects', {}).iteritems():
+		print "placing %s with density of %f" % (object_template.object_type, density)
 		loading.place_objects(object_template, density)
 	return loading
 
