@@ -42,8 +42,8 @@ class Ammunition(game_object.GameObject):
 
 class Projectile(entity.Entity):
 
-	def __init__(self, weapon=None, size=(0.01, 0.01), *args, **kwargs):
-		super(Projectile, self).__init__(size=size, *args, **kwargs)
+	def __init__(self, weapon=None, size=(0.01, 0.01), shape='circle', mass=0.1, *args, **kwargs):
+		super(Projectile, self).__init__(size=size, shape=shape, mass=mass, *args, **kwargs)
 		self.weapon = weapon
 
 	def create_body(self, position=None):
