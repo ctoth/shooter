@@ -7,7 +7,7 @@ from math_utils import *
 
 class Weapon(entity.Entity):
 
-	def __init__(self, base_damage=10.0, range=1.0, cooldown=1.0, last_used=0, max_uses=0, current_uses=0, fixed=False, *args, **kwargs):
+	def __init__(self, base_damage=10.0, range=1.0, cooldown=1.0, last_used=0, max_uses=0, current_uses=0, fixed=False, hit_sound=None, hit_wall_sound=None, *args, **kwargs):
 		super(Weapon, self).__init__(fixed=fixed, *args, **kwargs)
 		self.base_damage = base_damage
 		self.range = range
@@ -15,6 +15,8 @@ class Weapon(entity.Entity):
 		self.last_used = last_used
 		self.max_uses = max_uses
 		self.current_uses = current_uses
+		self.hit_sound = hit_sound
+		self.hit_wall_sound = hit_wall_sound
 
 	def can_use(self):
 		if self.max_uses and self.current_uses >= self.max_uses:
@@ -25,12 +27,20 @@ class Weapon(entity.Entity):
 		super(Weapon, self).use(user)
 		self.last_used = game.clock.time()
 
+	def did_hit(self, target, position):
+		if hasattr(target, 'take_damage'):
+			if self.hit_sound is not None:
+				game.sound_manager.play_async(self.hit_sound, *position)
+			target.take_damage(self.base_damage)
+		elif isinstance(target, world.World):
+			if self.hit_wall_sound is not None:
+				game.sound_manager.play_async(self.hit_wall_sound, *position)
+
 class Ammunition(game_object.GameObject):
 	pass
 
 
 class Projectile(entity.Entity):
-	ricochet_sound = 'ricochet'
 
 	def __init__(self, weapon=None, size=(0.01, 0.01), *args, **kwargs):
 		super(Projectile, self).__init__(size=size, *args, **kwargs)
@@ -42,10 +52,7 @@ class Projectile(entity.Entity):
 
 	def handle_collision(self, other):
 		self.set_sound_position()
-		if getattr(other, 'take_damage', None	):
-			other.take_damage(self.weapon.base_damage)
-		elif isinstance(other, world.World):
-			game.sound_manager.play_async(self.ricochet_sound, *self.position)
+		self.weapon.did_hit(other, self.position)
 		try:
 			self.weapon.fired.remove(self)
 		except KeyError: #happens because of double collisions sometimes
@@ -54,8 +61,8 @@ class Projectile(entity.Entity):
 
 class ProjectileWeapon(Weapon):
 
-	def __init__(self, ammo_type="", speed=300, *args, **kwargs):
-		super(ProjectileWeapon, self).__init__(*args, **kwargs)
+	def __init__(self, ammo_type="", speed=300, hit_wall_sound='ricochet', *args, **kwargs):
+		super(ProjectileWeapon, self).__init__(hit_wall_sound=hit_wall_sound, *args, **kwargs)
 		self.ammo_type = ammo_type
 		self.speed = speed
 		self.fired = set()
