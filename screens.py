@@ -83,6 +83,7 @@ class GameScreen(Screen):
 			game.player.stop_attacking()
 		if symbol == key.UP or symbol == key.DOWN:
 			game.player.stop_moving()
+			game.player.stop_running()
 		if symbol == key.LEFT or symbol == key.RIGHT:
 			game.player.stop_turning()
 			game.player.stop_strafing()
