@@ -43,15 +43,12 @@ class SoundManager(object):
 		if not looping:
 			sound.end_event = _disconnecter
 		sound.looping.value = looping
-		self.sounds[filename] = sound_buffer
 		return Sound(sound)
 
 	def play_ambient(self, filename):
 		sound = libaudioverse.BufferNode(self.sim)
 		sound_buffer = self.get_buffer(filename)
 		sound.buffer = sound_buffer
-		self.sounds[filename] = sound_buffer
-		sound.looping.value = True
 		sound.connect_simulation(0)
 		return Sound(sound)
 
@@ -76,6 +73,7 @@ class SoundManager(object):
 		if not sound_buffer:
 			sound_buffer = libaudioverse.Buffer(self.sim)
 			sound_buffer.load_from_file(filename)
+			self.sounds[filename] = sound_buffer
 		return sound_buffer
 
 	def select_random_sound(self, folder):
