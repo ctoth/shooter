@@ -28,6 +28,7 @@ def main():
 	game.map.enter(game.player)
 	game.tick = tick
 	if not getattr(sys, 'frozen', False):
+		faulthandler.enable()
 		import ingress
 		ingress.install(port=4263, env=game.__dict__)
 	game.sound_manager.start()
