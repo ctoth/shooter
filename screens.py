@@ -2,10 +2,21 @@ import pyglet
 from pyglet.window import key, mouse
 import game
 
-class GameScreen(object):
+class Screen(object):
 
-	def __init__(self):
-		super(GameScreen, self).__init__()
+	def activate(self):
+		if hasattr(game, 'screen'):
+			game.screen.deactivate()
+		game.screen = self
+		game.window.push_handlers(self)
+
+	def deactivate(self):
+		game.window.remove_handlers(self)
+
+class GameScreen(Screen):
+
+	def activate(self):
+		super(GameScreen, self).activate()
 		self.joystick = None
 		joystick = pyglet.input.get_joysticks()
 		if joystick:
@@ -99,16 +110,25 @@ class GameScreen(object):
 		if button == 0: #trigger
 			game.player.stop_attacking()
 
-	def __del__(self):
+	def deactivate(self):
+		super(GameScreen, self).deactivate()
 		self.joystick.close()
 
 	def pause(self):
+		screen = PauseScreen()
+		screen.activate()
+
+class PauseScreen(Screen):
+
+	def activate(self):
+		super(PauseScreen, self).activate()
 		game.clock.unschedule(game.tick)
-		game.window.remove_handlers(self)
-		game.screen = PauseScreen()
 
+	def deactivate(self):
+		super(PauseScreen, self).deactivate()
+		game.clock.schedule_interval(game.tick, game.FRAMERATE)
 
-class PauseScreen(object):
+class MenuScreen(Screen):
 
 	def unpause(self):
 		game.window.remove_handlers(self)
