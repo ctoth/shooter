@@ -89,10 +89,10 @@ def load_objects(object_type, objects):
 
 def load_npcs(data):
 	npcs = []
-	for npc_template in data['npcs'].values():
+	for npc_template in data.get('npcs', {}).values():
 		if 'weapon' in npc_template:
 			npc_template['weapon'] = data['weapons'][npc_template['weapon']]
-	npcs = load_objects(npc.NPC, data['npcs'])
+	npcs = load_objects(npc.NPC, data.get('npcs', {}))
 	return npcs
 
 def extract_templates(data):
@@ -113,8 +113,8 @@ def load_template(filename, world=None):
 	#pass 1: convert percentages to decimal ratios of 1, so that 25% becomes 0.25
 	data = percentage_values(data)
 	#pass 2: Convert dictionaries to object templates
-	data['objects'] = load_objects(game_object.GameObject, data['objects'])
-	data['weapons'] = load_objects(weapon.ProjectileWeapon, data['weapons'])
+	data['objects'] = load_objects(game_object.GameObject, data.get('objects', {}))
+	data['weapons'] = load_objects(weapon.ProjectileWeapon, data.get('weapons', {}))
 	data['npcs'] = load_npcs(data)
 	#pass 3: Move templates into the map
 	map_template = extract_templates(data)
