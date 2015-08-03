@@ -6,9 +6,8 @@ import libaudioverse
 class NPC(entity.Entity):
 	visibility_distance = 30
 	activation_distance = 30
-	corpse_fall_sound = 'corpse/metal'
 
-	def __init__(self, aggressive=True, ambient='monster/ambient', attack_sound='monster/attack', destroy_sound='monster/death', *args, **kwargs):
+	def __init__(self, aggressive=True, ambient='monster/ambient', attack_sound='monster/attack', corpse_fall_sound='corpse/generic', destroy_sound='monster/death', *args, **kwargs):
 		super(NPC, self).__init__(destroy_sound=destroy_sound, *args, **kwargs)
 		self.aggressive = aggressive
 		self.ambient = ambient
@@ -17,6 +16,7 @@ class NPC(entity.Entity):
 			self.ambient_sound = game.sound_manager.play(self.ambient, source=self.sound_source, looping=True)
 			self.ambient_sound.pause()
 		self.attack_sound = attack_sound
+		self.corpse_fall_sound = corpse_fall_sound
 		self.target = None
 		self.attacking = False
 
