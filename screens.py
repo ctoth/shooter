@@ -130,8 +130,81 @@ class PauseScreen(Screen):
 
 class MenuScreen(Screen):
 
-	def unpause(self):
-		game.window.remove_handlers(self)
-		game.screen = GameScreen()
-		game.window.push_handlers(game.screen)
-		game.clock.schedule_interval(game.tick, game.FRAMERATE)
+	def __init__(self, choices, callback, selection_sound=None, activation_sound=None, boundary_sound=None):
+		super(MenuScreen, self).__init__()
+		self.choices = choices
+		self.callback = callback
+		self.selection_sound = selection_sound
+		self.activation_sound = activation_sound
+		self.boundary_sound = boundary_sound
+		self.index = 0
+
+	def current_item(self):
+		if not self.choices:
+			return
+		self.index %= len(self.choices)
+		return self.choices[self.index]
+
+	def next_item(self):
+		if self.index + 1 >= len(self.choices):
+			self.play_boundary()
+		self.index += 1
+		self.read_current_item()
+
+	def previous_item(self):
+		if self.index - 1 < 0:
+			self.play_boundary()
+		self.index -= 1
+		self.read_current_item()
+
+	def read_current_item(self):
+		item = self.current_item()
+		if item is None:
+			return
+		self.play_selection()
+		game.output.output(unicode(item))
+
+	def first_item(self):
+		self.index = 0
+		self.read_current_item()
+
+	def last_item(self):
+		self.index = len(self.choices)
+		self.read_current_item()
+
+	def on_key_press(self, symbol, modifiers):
+		if symbol == key.DOWN:
+			self.next_item()
+		elif symbol == key.UP:
+			self.previous_item()
+		elif symbol == key.HOME:
+			self.first_item()
+		elif symbol == key.END:
+			self.last_item()
+		elif symbol == key.ENTER:
+			self.activate_item()
+		char = key.symbol_string(symbol).lower()
+		for num, item in enumerate(self.choices):
+			if unicode(item).lower().startswith(char):
+				self.index = num
+				self.read_current_item()
+
+	def activate_item(self):
+		item = self.current_item()
+		if item is None:
+			return
+		self.play_activation()
+		if self.callback is not None:
+			self.callback(item)
+
+	def play_boundary(self):
+			if self.boundary_sound:
+				game.sound_manager.play_UI_queue(self.boundary_sound)
+
+	def play_selection(self):
+		if self.selection_sound is not None:
+			game.sound_manager.play_UI_queue(self.selection_sound)
+
+	def play_activation(self):
+		if self.activation_sound is not None:
+			game.sound_manager.play_UI_queue(self.activation_sound)
