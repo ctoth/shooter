@@ -87,7 +87,7 @@ class Player(entity.Entity):
 		item.sound_source.position = (0, 0, 0)
 
 	def get_footstep_sound(self):
-		return 'footsteps/metal'
+		return game.map.footstep
 
 	def start_forward(self):
 		self.moving = 'forward'
