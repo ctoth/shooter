@@ -20,11 +20,9 @@ class Entity(game_object.GameObject):
 		self.body = self.world.world.CreateDynamicBody(userData=self, position=position, angularDamping=1.0)
 
 	def equip(self, item):
-		self.hold(item)
+		if item not in self.contents:
+			self.hold(item)
 		self.weapon = item
-
-		item.location = self
-
 
 	def fire_weapon(self):
 		if self.weapon is not None and self.weapon.can_use():
