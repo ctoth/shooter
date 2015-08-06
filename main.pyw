@@ -31,7 +31,6 @@ def main():
 		faulthandler.enable()
 		import ingress
 		ingress.install(port=4263, env=game.__dict__)
-	game.sound_manager.start()
 	screen = screens.GameScreen()
 	screen.activate()
 	main_loop()
@@ -39,6 +38,7 @@ def main():
 
 def main_loop():
 	pyglet.clock.schedule_interval(tick, game.FRAMERATE)
+	game.sound_manager.start()
 	pyglet.app.run()
 
 def tick(dt):
