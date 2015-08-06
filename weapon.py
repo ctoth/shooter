@@ -7,7 +7,7 @@ from math_utils import *
 
 class Weapon(entity.Entity):
 
-	def __init__(self, base_damage=10.0, range=1.0, cooldown=1.0, last_used=0, max_uses=0, current_uses=0, fixed=False, hit_sound=None, hit_wall_sound=None, *args, **kwargs):
+	def __init__(self, base_damage=10.0, range=1.0, cooldown=1.0, last_used=0, max_uses=0, current_uses=0, fixed=False, hit_sound=None, hit_wall_sound=None, equip_sound='hands.ogg', *args, **kwargs):
 		super(Weapon, self).__init__(fixed=fixed, *args, **kwargs)
 		self.base_damage = base_damage
 		self.range = range
@@ -17,6 +17,8 @@ class Weapon(entity.Entity):
 		self.current_uses = current_uses
 		self.hit_sound = hit_sound
 		self.hit_wall_sound = hit_wall_sound
+		self.equip_sound = equip_sound
+
 
 	def can_use(self):
 		if self.max_uses and self.current_uses >= self.max_uses:
