@@ -1,6 +1,7 @@
 import random
 import dungeon
 import game	
+import game_object
 import math_utils
 import npc
 import tiles
@@ -21,8 +22,12 @@ class Map(object):
 		self.random = random.Random()
 		if random_state is not None:
 			self.random.setstate(random_state)
-		self.map, self.room_vertices, self.corridors = dungeon.generate(x_cells, y_cells, cell_size)
-		self.starting_coordinates = None
+		self.room_vertices = []
+		self.corridors = []
+		self.map = {}
+		if x_cells or y_cells:
+			self.map, self.room_vertices, self.corridors = dungeon.generate(x_cells, y_cells, cell_size)
+		self.starting_coordinates = (1, 1)
 		self.npcs = []
 		self.fill_wall_tiles()
 
@@ -39,10 +44,14 @@ class Map(object):
 					if self.map[neighbor] == 'r':
 						self.starting_coordinates = self.get_physical_coordinates(neighbor)
 						break
+				physical_position = self.get_physical_coordinates(tile_coord)
+				staircase = game_object.GameObject(world=self.world, name="Staircase Up", position=physical_position, destructable=False)
 
 	def place_npcs(self, npc_template, density):
 		for room in self.room_vertices:
 			position = tiles.random_point_in_room(room)
+			size = npc_template.object_characteristics.get('size', (0.5, 0.5))
+			position = math_utils.vec_add(position, size)
 			chance = self.random.random()
 			if chance > density:
 				continue
@@ -56,6 +65,8 @@ class Map(object):
 	def place_objects(self, object_template, density):
 		for room in self.room_vertices:
 			position = tiles.random_point_in_room(room)
+			size = object_template.object_characteristics.get('size', (0.5, 0.5))
+			position = math_utils.vec_add(position, size)
 			chance = self.random.random()
 			if chance > density:
 				continue
