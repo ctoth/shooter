@@ -113,7 +113,7 @@ def generate(cellsX, cellsY, cellSize=5):
         cell.connect(random.choice(neighbors))
 
     # 5. Pick 0 or more pairs of adjacent cells that are not connected and connect them.
-    extraConnections = random.randint((cellsX + cellsY) / 4, int((cellsX + cellsY) / 1.2))
+    extraConnections = random.randint((int(cellsX + cellsY) / 4), int((cellsX + cellsY) / 2))
     maxRetries = 10
     while extraConnections > 0 and maxRetries > 0:
         cell = random.choice(cells.values())
