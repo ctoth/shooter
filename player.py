@@ -87,6 +87,8 @@ class Player(entity.Entity):
 		super(Player, self).equip(item)
 		item.sound_source.head_relative = True
 		item.sound_source.position = (0, 0, 0)
+		if item.equip_sound is not None:
+			game.sound_manager.play(item.equip_sound, source=self.sound_source, position=self.position)
 
 	def get_footstep_sound(self):
 		return game.map.footstep
