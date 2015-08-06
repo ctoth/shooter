@@ -73,8 +73,8 @@ class World(object):
 		distance_between = math_utils.distance(start_point, end_point)
 		if max_distance and math_utils.distance(start_point, end_point) > max_distance:
 			return False
-		angle_between = (math_utils.angle_between(looker.position, target.position) - looker.facing) % 360
-		if angle_between < 0+looker.angle_of_visibility / 2.0 and angle_between < 360 - looker.angle_of_visibility / 2.0:
+		angle_between = (math_utils.angle_between(target.position, looker.position) - looker.facing) % 360
+		if angle_between < (looker.angle_of_visibility / 2.0) and angle_between < 360 - (looker.angle_of_visibility / 2.0):
 			return False
 		length = distance_between
 		if length == 0:
@@ -84,6 +84,7 @@ class World(object):
 			if item.userData is game.world:
 				return False
 			return True
+		return False
 
 	def query(self, lower, upper):
 		callback = QueryCallback()
