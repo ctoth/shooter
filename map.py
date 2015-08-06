@@ -114,8 +114,3 @@ class Map(object):
 			for tile in corridor:
 				if position == tile:
 					return corridor
-
-	def tick(self):
-		for npc in self.npcs:
-			if math_utils.distance(npc.position, game.player.position) <= 10:
-				npc.tick()

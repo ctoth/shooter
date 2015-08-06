@@ -14,6 +14,8 @@ class World(object):
 		self.collisions =dict()
 		self.collision_callback = CollisionCallback(self)
 		self.world.contactListener = self.collision_callback
+		self.objects = set()
+		self.objects_to_add = set()
 		self.bodies = []
 
 	def destroy(self, obj):
@@ -31,16 +33,25 @@ class World(object):
 	def tick(self):
 		with game.sound_manager.sim:
 			self.world.Step(1.0 / self.framerate, 10, 10)
-			for obj in self.to_destroy:
-				self.destroy_body(obj.body)
+			self.objects .update(self.objects_to_add)
+			self.objects_to_add.clear()
+			for o in self.to_destroy:
+				if o in self.objects:
+					self.objects.remove(o)
+				self.destroy_body(o.body)
 			for body in self.unused_bodies:
 				self.destroy_body(body)
 			for obj, position in self.objects_to_create_bodies_for.iteritems():
 				obj.create_body(position=position)
 				obj.create_fixture()
-		self.to_destroy.clear()
-		self.objects_to_create_bodies_for.clear()
-		self.unused_bodies.clear()
+			self.to_destroy.clear()
+			self.objects_to_create_bodies_for.clear()
+			self.unused_bodies.clear()
+			for obj in self.objects:
+				obj.tick()
+
+	def add_object(self, obj):
+		self.objects_to_add.add(obj)
 
 	def create_wall_tile(self, position, size=(0.5, 0.5)):
 		shape = b2.polygonShape(box=size)

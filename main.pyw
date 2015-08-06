@@ -43,8 +43,6 @@ def main_loop():
 
 def tick(dt):
 	with game.sound_manager.sim:
-		game.player.tick()
-		game.map.tick()
 		game.world.tick()
 		game.player.set_sound_position()
 

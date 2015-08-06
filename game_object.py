@@ -7,6 +7,7 @@ class GameObject(object):
 	def __init__(self, name="", world=None, shape='box', size=(1, 1), location=None, position=(2, 2), facing=0, mass=1, fixed=True, sound_source=None, sound=None, use_sound=None, destroy_sound=None, destructable=True, *args, **kwargs):
 		super(GameObject, self).__init__(*args, **kwargs)
 		self.world = world
+		self.world.add_object(self)
 		self.name = name
 		self.shape = shape
 		self.size = tuple(size)
@@ -112,3 +113,11 @@ class GameObject(object):
 		other.location = self.location
 		game.world.create_body_next_tick(other, position=self.position)
 
+	def __unicode__(self):
+		return self.name
+
+	def play_async_after(self, delay, *args, **kwargs):
+		game.clock.schedule_once(lambda dt,: game.sound_manager.play_async(*args, **kwargs), delay)
+
+	def tick(self):
+		self.set_sound_position()
