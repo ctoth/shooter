@@ -1,6 +1,7 @@
 import pyglet
 from pyglet.window import key, mouse
 import game
+import weapon
 
 class Screen(object):
 
@@ -133,8 +134,11 @@ class PauseScreen(Screen):
 
 class MenuScreen(Screen):
 
-	def __init__(self, choices, callback, selection_sound=None, activation_sound=None, boundary_sound=None):
+	def __init__(self, prompt="", choices=None, callback=None, string_callback=None, selection_sound=None, activation_sound=None, boundary_sound=None):
 		super(MenuScreen, self).__init__()
+		self.prompt = prompt
+		if choices is None:
+			choices = []
 		self.choices = choices
 		self.callback = callback
 		self.selection_sound = selection_sound
@@ -160,12 +164,12 @@ class MenuScreen(Screen):
 		self.index -= 1
 		self.read_current_item()
 
-	def read_current_item(self):
+	def read_current_item(self, interrupt=True):
 		item = self.current_item()
 		if item is None:
 			return
 		self.play_selection()
-		game.output.output(unicode(item))
+		game.output.output(unicode(item), interrupt)
 
 	def first_item(self):
 		self.index = 0
@@ -174,6 +178,15 @@ class MenuScreen(Screen):
 	def last_item(self):
 		self.index = len(self.choices)
 		self.read_current_item()
+
+	def activate(self):
+		super(MenuScreen, self).activate()
+		self.read_prompt()
+		self.read_current_item(interrupt=False)
+
+	def read_prompt(self):
+		game.output.output(self.prompt)
+
 
 	def on_key_press(self, symbol, modifiers):
 		if symbol == key.DOWN:
@@ -211,3 +224,35 @@ class MenuScreen(Screen):
 	def play_activation(self):
 		if self.activation_sound is not None:
 			game.sound_manager.play_UI_queue(self.activation_sound)
+
+class InventoryScreen(MenuScreen):
+
+	def activate_item(self):
+		super(InventoryScreen, self).activate_item()
+		item = self.current_item()
+		print item
+		if item is None:
+			return
+		if isinstance(item, weapon.Weapon):
+			game.player.equip(item)
+		elif hasattr(item, 'use'):
+			item.use(game.player)
+
+	def on_key_press(self, symbol, modifiers):
+		item = self.current_item()
+		if symbol == key.D and item is not None:
+			game.player.drop(item)
+			return
+		if symbol == key.ESCAPE:
+			self.deactivate()
+			screen = GameScreen()
+			screen.activate()
+			return True
+		return super(InventoryScreen, self).on_key_press(symbol, modifiers)
+
+	def translate_item(self, item):
+		if isinstance(item, basestring):
+			return item
+		if self.string_callback is not None:
+			return self.string_callback(item)
+		return unicode(item)
