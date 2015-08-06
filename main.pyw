@@ -32,8 +32,8 @@ def main():
 		import ingress
 		ingress.install(port=4263, env=game.__dict__)
 	game.sound_manager.start()
-	game.screen = screens.GameScreen()
-	game.window.push_handlers(game.screen)
+	screen = screens.GameScreen()
+	screen.activate()
 	main_loop()
 	libaudioverse.shutdown()
 
