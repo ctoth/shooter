@@ -4,6 +4,7 @@ import entity
 import game
 import radar
 import room
+import screens
 import tiles
 import weapon
 import world
@@ -209,3 +210,7 @@ class Player(entity.Entity):
 
 	def read_health(self):
 		game.output.output(unicode(self.health))
+
+	def show_inventory(self):
+		screen = screens.MenuScreen(choices=[i.name for i in self.contents], callback=None, selection_sound='menu/select.wav', activation_sound='menu/activate.wav')
+		screen.activate()

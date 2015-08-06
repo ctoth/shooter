@@ -26,6 +26,8 @@ class GameScreen(Screen):
 			self.joystick = joystick
 
 	def on_key_press(self, symbol, modifiers):
+		if symbol == key.I:
+			game.player.show_inventory()
 		if symbol == key.UP:
 			if key.MOD_SHIFT & modifiers:
 				game.player.start_running()
