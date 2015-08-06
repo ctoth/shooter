@@ -64,9 +64,11 @@ def check_consistency(data, working=None):
 def create_map(map_template, world):
 	name = map_template['name']
 	impulse = map_template.get('impulse')
-	cell_size=map_template['max_room_dimension']
+	cell_size=map_template.get('max_room_dimension', 0)
+	x_rooms = map_template.get('x_rooms', 0)
+	y_rooms = map_template.get('y_rooms', 0)
 	footstep=map_template['footstep']
-	loading = map.Map(world=world, name=name, x_cells=map_template['x_rooms'], y_cells=map_template['y_rooms'], cell_size=cell_size, ambience=map_template['ambient'], footstep=footstep, impulse=impulse)
+	loading = map.Map(world=world, name=name, x_cells=x_rooms, y_cells=y_rooms, cell_size=cell_size, ambience=map_template['ambient'], footstep=footstep, impulse=impulse)
 	for npc_template, density in map_template.get('npcs', {}).iteritems():
 		if density != 'single':
 			loading.place_npcs(npc_template, density)
