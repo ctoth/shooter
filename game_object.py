@@ -4,7 +4,7 @@ from Box2D import b2
 
 class GameObject(object):
 
-	def __init__(self, name="", world=None, shape='box', size=(1, 1), location=None, position=(2, 2), facing=0, mass=1, fixed=True, sound_source=None, sound=None, use_sound=None, destroy_sound=None, destructable=True, *args, **kwargs):
+	def __init__(self, name="", world=None, shape='box', size=(0.5, 0.5), location=None, position=(2, 2), facing=0, mass=1, fixed=True, sound_source=None, sound=None, use_sound=None, destroy_sound=None, destructable=True, *args, **kwargs):
 		super(GameObject, self).__init__(*args, **kwargs)
 		self.world = world
 		self.world.add_object(self)
@@ -78,7 +78,7 @@ class GameObject(object):
 	def destroy(self):
 		[self.remove(i) for i in self.contents]
 		if self.destroy_sound is not None:
-			game.sound_manager.play_async(self.destroy_sound, *self.position)
+			self.play_async_after(0.15, self.destroy_sound, *self.position)
 		if game.player.radar.tracking is self:
 			game.player.radar.stop_tracking()
 			game.player.radar.tracking = None
@@ -106,7 +106,6 @@ class GameObject(object):
 			other.destroy_body()
 		self.contents.append(other)
 		other.location = self
-
 
 	def remove(self, other):
 		self.contents.remove(other)

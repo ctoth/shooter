@@ -34,7 +34,7 @@ class Entity(game_object.GameObject):
 			self.destroy()
 		else:
 			if self.hit_sound is not None:
-				game.clock.schedule_once(self.play_hit_sound, 0.1)
+				game.clock.schedule_once(self.play_hit_sound, 0.15)
 
 	def play_hit_sound(self, t):
 		game.sound_manager.play(self.hit_sound, source=self.sound_source, position=self.position)
