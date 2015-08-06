@@ -64,7 +64,8 @@ class NPC(entity.Entity):
 			game.map.npcs.remove(self)
 		except ValueError:
 			pass
-		game.clock.schedule_once(self.play_corpse_fall, 0.5, position=self.position)
+		position = self.position
+		game.clock.schedule_once(self.play_corpse_fall, 0.5, position=position)
 		super(NPC, self).destroy()
 
 	def play_corpse_fall(self, t, position):
