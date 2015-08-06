@@ -15,6 +15,24 @@ objects:
     destructable: True
     placement: random
 
+  CC1 Communications Terminal:
+    sound: devices/computer/Computer Beeps 01.wav
+    destroy_sound: devices/destroyed
+    fixed: True
+    destructable: True
+    placement: random
+
+  Med kit:
+    is_a: HealthBoost
+    fixed: False
+    size: [0.1, 0.1]
+    placement: random
+
+  Shelving with Glassware:
+    fixed: True
+    destructable: True
+    destroy_sound: glass
+
 weapons:
   Assault Rifle:
     use_sound: rifle
@@ -32,6 +50,7 @@ weapons:
     size: [0.5, 0.1]
     base_damage: 15
     cooldown: 1.5
+    range: 15
 
 npcs:
   Darth Vader:
@@ -44,15 +63,30 @@ npcs:
     mass: 120
     weapon: Laser Rifle
 
+tile_types:
+  Decking:
+    footstep_sound: footsteps/metal
+
+rooms:
+  Laboratory:
+    objects:
+      Shelving with Glassware: wall
+
 map:
-  name: Battlestation
+  name: Top Floor
   x_rooms: 2
   y_rooms: 4
   max_room_dimension: 8
   ambient: ambience.ogg
+  footstep: footsteps/metal
+  default_tile_type: Decking
+  impulse: sounds/impulses/garage.wav
   npcs:
     Alien Grunt: 40%
     Darth Vader: single
   objects:
     KB8 Power Junction: 10%
     XR7 Data Processing Hub: 15%
+    Med kit: 20%
+    CC1 Communications Terminal: 20%
+  
