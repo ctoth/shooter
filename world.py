@@ -1,3 +1,5 @@
+from logging import getLogger
+logger = getLogger('world')
 import Box2D
 from Box2D import b2
 import game
@@ -48,7 +50,10 @@ class World(object):
 			self.objects_to_create_bodies_for.clear()
 			self.unused_bodies.clear()
 			for obj in self.objects:
-				obj.tick()
+				try:
+					obj.tick()
+				except Exception as e:
+					logger.exception(u"Error with object tick for object %s with name %s" % (obj, obj.name))
 
 	def add_object(self, obj):
 		self.objects_to_add.add(obj)
