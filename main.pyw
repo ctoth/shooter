@@ -1,4 +1,6 @@
 from __future__ import division
+import logging
+logging.basicConfig()
 import game
 import screens
 import pyglet
