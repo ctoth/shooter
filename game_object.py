@@ -1,6 +1,7 @@
 from __future__ import division
 import game
 from Box2D import b2
+import math_utils
 
 class GameObject(object):
 
@@ -22,8 +23,11 @@ class GameObject(object):
 		if sound_source is None:
 			sound_source = game.sound_manager.create_source()
 		self.sound_source = sound_source
+		self.occlusion_filter = game.sound_manager.create_biquad_filter()
+		self.occlusion_filter.filter_type = 2
+		self.occlusion_filter.connect(0, self.sound_source, 0)
 		if sound is not None:
-			sound = game.sound_manager.play(sound, source=self.sound_source, looping=True)
+			sound = game.sound_manager.play(sound, source=self.occlusion_filter, looping=True)
 		self.sound = sound
 		self.destroy_sound = destroy_sound
 		self.use_sound = use_sound
@@ -120,3 +124,16 @@ class GameObject(object):
 
 	def tick(self):
 		self.set_sound_position()
+		self.update_audio_occlusion()
+
+	def update_audio_occlusion(self):
+		distance = math_utils.distance(self.position, game.player.position)
+		if distance  > game.MAX_AUDIO_DISTANCE:
+			return
+		q = 0
+		count = game.world.count_objects_between(self.position, game.player.position)
+		if count == 0:
+			q = 0.1
+		else:
+			q = 10 * count
+		self.occlusion_filter.q = q

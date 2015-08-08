@@ -31,7 +31,7 @@ class NPC(entity.Entity):
 			self.weapon.sound_source.state = libaudioverse.NodeStates.playing
 		if self.ambient_sound is not None and not self.ambient_sound.is_playing():
 			self.ambient_sound.play()
-		self.set_sound_position()
+		super(NPC, self).tick()
 		if self.aggressive:
 			self.find_target()
 		if self.target:

@@ -115,6 +115,9 @@ class SoundManager(object):
 		world.output_channels.value= 2
 		return world
 
+	def create_biquad_filter(self):
+		return libaudioverse.BiquadNode(self.sim, 2)
+
 	def set_listener_position(self, position):
 		self.world.position = position
 		self.dry_world.position = position
