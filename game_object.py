@@ -135,5 +135,5 @@ class GameObject(object):
 		if count == 0:
 			q = 0.1
 		else:
-			q = 10 * count
+			q = 3 * count
 		self.occlusion_filter.q = q
