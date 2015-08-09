@@ -1,4 +1,6 @@
 from __future__ import division
+from logging import getLogger
+logger = getLogger('game_object')
 import game
 from Box2D import b2
 import math_utils
@@ -91,7 +93,7 @@ class GameObject(object):
 		self.world.destroy(self)
 
 	def handle_collision(self, other):
-		print "collision", self.position, self, other
+		logger.debug("collision: %s %s %s" % (self.position, self, other))
 
 	def use(self, user):
 		if self.use_sound is not None:
