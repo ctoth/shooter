@@ -21,6 +21,8 @@ def main():
 	libaudioverse.initialize()
 	game.clock = pyglet.clock.get_default()
 	game.window.set_exclusive_mouse(True)
+	window_caption = "{name} - {version}".format(name=game.NAME, version=game.VERSION)
+	game.window.set_caption(window_caption)
 	game.sound_manager = sound.SoundManager()
 	game.output = auto.Auto()
 	game.world = world.World()
