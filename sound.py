@@ -21,6 +21,8 @@ class SoundManager(object):
 		self.sounds = {}
 		self.sounds_path = sounds_path
 		self.last_random = {}
+		self.impulse_response = False
+		self.activate_impulse()
 
 	def start(self):
 		self.world.connect_simulation(0)
@@ -125,6 +127,15 @@ class SoundManager(object):
 	def set_orientation(self, orientation):
 		self.world.orientation = orientation
 		self.dry_world.orientation = orientation
+
+	def activate_impulse(self):
+		self.convolver.connect_simulation(0)
+		self.impulse_response = True
+
+	def deactivate_impulse(self):
+		self.convolver.disconnect(0)
+		self.impulse_response = False
+
 
 def _disconnecter(node):
 	node.disconnect(0)

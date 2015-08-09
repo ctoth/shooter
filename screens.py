@@ -80,6 +80,11 @@ class GameScreen(Screen):
 			game.player.read_health()
 		if symbol in (key.LCTRL, key.RCTRL):
 			game.player.start_attacking()
+		if symbol == key.F1:
+			if game.sound_manager.impulse_response:
+				game.sound_manager.deactivate_impulse()
+			else:
+				game.sound_manager.activate_impulse()
 
 	def on_key_release(self, symbol, modifiers):
 		if symbol in (key.LCTRL, key.RCTRL):
