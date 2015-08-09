@@ -116,7 +116,8 @@ class GameScreen(Screen):
 
 	def deactivate(self):
 		super(GameScreen, self).deactivate()
-		self.joystick.close()
+		if self.joystick is not None:
+			self.joystick.close()
 
 	def pause(self):
 		screen = PauseScreen()
