@@ -7,8 +7,7 @@ import math_utils
 
 class World(object):
 
-	def __init__(self, framerate=60):
-		self.framerate = framerate
+	def __init__(self):
 		self.world = b2.world(doSleep=True, gravity=(0, 0))
 		self.to_destroy = set()
 		self.unused_bodies = set()
@@ -34,7 +33,7 @@ class World(object):
 
 	def tick(self):
 		with game.sound_manager.sim:
-			self.world.Step(1.0 / self.framerate, 10, 10)
+			self.world.Step(game.FRAMERATE, 10, 10)
 			self.objects .update(self.objects_to_add)
 			self.objects_to_add.clear()
 			for o in self.to_destroy:
