@@ -1,3 +1,5 @@
+from logging import getLogger
+logger = getLogger('map')
 import random
 import dungeon
 import game	
@@ -84,7 +86,7 @@ class Map(object):
 			self.ambience_sound = game.sound_manager.play_ambient(self.ambience)
 		if self.impulse is not None:
 			game.sound_manager.set_impulse_response(self.impulse)
-		print "setting player position to %.2f, %.2f" % tuple(self.starting_coordinates)
+		logger.info("setting player position to %.2f, %.2f" % tuple(self.starting_coordinates))
 		player.position = self.starting_coordinates
 
 	def get_exits(self):

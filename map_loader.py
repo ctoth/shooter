@@ -1,3 +1,5 @@
+from logging import getLogger
+logger = getLogger('map_loader')
 import collections
 import os
 import yaml
@@ -73,7 +75,7 @@ def create_map(map_template, world):
 		if density != 'single':
 			loading.place_npcs(npc_template, density)
 	for object_template, density in map_template.get('objects', {}).iteritems():
-		print "placing %s with density of %f" % (object_template.object_type, density)
+		logger.info("placing %s with density of %f" % (object_template.object_type, density))
 		loading.place_objects(object_template, density)
 	return loading
 

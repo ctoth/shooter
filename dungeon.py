@@ -1,3 +1,5 @@
+from logging import getLogger
+logger = getLogger('dungeon')
 import random
 import itertools
 import sys
@@ -141,7 +143,7 @@ def generate(cellsX, cellsY, cellSize=5):
             (x, y + height),
         )
         room_coords.append(room_size)
-        print "Creating room at %d, %d of size %d by %d" % (x, y, width, height)
+        logger.info("Creating room at %d, %d of size %d by %d" % (x, y, width, height))
         floorTiles = []
         for i in xrange(width):
             for j in xrange(height):
@@ -166,7 +168,7 @@ def generate(cellsX, cellsY, cellSize=5):
         rooms.append(corridor)
         exits.add(corridor[0])
         exits.add(corridor[-1])
-        print corridor[0], corridor[-1]
+        logger.debug(corridor[0], corridor[-1])
         corridors.append(corridor)
     # 8. Place staircases in the cell picked in step 2 and the lest cell visited in step 3b.
     stairsUp = random.choice(firstCell.room)
