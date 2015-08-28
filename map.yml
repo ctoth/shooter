@@ -22,6 +22,13 @@ objects:
     destructable: True
     placement: random
 
+  AE16 Analysis Unit:
+    sound: devices/computer/amb_computerrackvault_01_lp.wav
+    placement: random
+    destructable: True
+    destroy_sound: devices/destroyed
+
+
   Med kit:
     is_a: HealthBoost
     fixed: False
@@ -31,7 +38,7 @@ objects:
   Shelving with Glassware:
     fixed: True
     destructable: True
-    destroy_sound: glass
+    destroy_sound: glass.wav
 
 weapons:
   Assault Rifle:
@@ -45,7 +52,7 @@ weapons:
     cooldown: 0.04
 
   Laser Rifle:
-    use_sound: laser
+    use_sound: laser/alienlaser1.wav
     is_a: BeamWeapon
     size: [0.5, 0.1]
     base_damage: 15
@@ -74,8 +81,8 @@ rooms:
 
 map:
   name: Top Floor
-  x_rooms: 2
-  y_rooms: 4
+  x_rooms: 4
+  y_rooms: 2
   max_room_dimension: 8
   ambient: ambience.ogg
   footstep: footsteps/metal
@@ -89,4 +96,5 @@ map:
     XR7 Data Processing Hub: 15%
     Med kit: 20%
     CC1 Communications Terminal: 20%
-  
+    AE16 Analysis Unit: 16%
+    Shelving with Glassware: 10%
