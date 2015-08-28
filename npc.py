@@ -45,6 +45,9 @@ class NPC(entity.Entity):
 	def find_target(self):
 		if self.world.is_visible(self, game.player, self.visibility_distance):
 			self.target = game.player
+		else:
+			self.target = None
+
 
 	def attack_target(self):
 		self.face_target()
