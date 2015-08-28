@@ -37,6 +37,8 @@ class Map(object):
 		tile_size=(0.5, 0.5)
 		physical_tile_size = math_utils.vec_mul(tile_size, self.size_ratio)
 		for tile_coord, tile_type in self.map.items():
+			physical_position = self.get_physical_coordinates(tile_coord)
+			physical_position= math_utils.vec_add(physical_position, physical_tile_size)
 			if tile_type == 'w':
 				self.world.create_wall_tile(position=physical_position, size=physical_tile_size)
 			#elif tile_type == 'e':
