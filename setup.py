@@ -31,12 +31,15 @@ def list_sounds():
 def list_maps():
 	return [('', glob.glob('*.yml'))]
 
+def list_docs():
+	return [('', glob.glob('*.txt'))]
+
 setup(
 	name = "Shooter",
 	author = "Christopher Toth",
 	author_email = "q@q-continuum.net",
 	packages = find_packages(),
-	data_files = accessible_output2.find_datafiles() + libaudioverse.find_datafiles() + list_maps() + list_sounds(),
+	data_files = accessible_output2.find_datafiles() + libaudioverse.find_datafiles() + list_maps() + list_sounds() + list_docs(),
 	options = {
 		'py2exe': {
 			'compressed': False,
