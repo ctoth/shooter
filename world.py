@@ -57,9 +57,9 @@ class World(object):
 	def add_object(self, obj):
 		self.objects_to_add.add(obj)
 
-	def create_wall_tile(self, position, size=(0.5, 0.5)):
+	def create_wall_tile(self, position, size=(0.5, 0.5), **kwargs):
 		shape = b2.polygonShape(box=size)
-		self.bodies.append(self.world.CreateStaticBody(shapes=shape, position=position, userData=self))
+		self.bodies.append(self.world.CreateStaticBody(shapes=shape, position=position, userData=self, **kwargs))
 
 	def ray_cast(self, start, direction, length):
 		"""Returns the list of game objects in order of distance from the given start at the given direction up to the given length"""
