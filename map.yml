@@ -67,6 +67,7 @@ npcs:
     ambient: monster/ambient
     destroy_sound: monster/death
     hit_sound: hit
+    health: 35
     mass: 120
     weapon: Laser Rifle
 
