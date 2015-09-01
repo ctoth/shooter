@@ -2,7 +2,10 @@ import random
 import os
 import multiprocessing
 import libaudioverse
+import fdn_reverb
+
 libaudioverse.initialize()
+
 
 class SoundManager(object):
 	SUPPORTED_EXTENSIONS = ('.wav', '.ogg')
@@ -11,28 +14,28 @@ class SoundManager(object):
 		self.sim = libaudioverse.Simulation()
 		self.sim.threads = multiprocessing.cpu_count() - 1 or 1
 		self.sim.set_output_device(output_device)
-		self.convolver = libaudioverse.FftConvolverNode(self.sim, 2)
+		self.reverb = fdn_reverb.Reverb(self.sim)
 		self.world = self.create_world()
 		self.dry_world = self.create_world()
-		self.world.connect(0, self.convolver, 0)
-		self.convolver.mul = 0.01
-		self.world.mul = 0.99
+		self.world.connect(0, self.reverb.input_node, 0)
+		self.reverb.mul = 0.2
+		self.world.mul = 0.8
 		self.set_orientation((0,1,0,0,0,1))
 		self.sounds = {}
 		self.sounds_path = sounds_path
 		self.last_random = {}
-		self.impulse_response = False
-		self.activate_impulse()
+		self.has_reverb = False
+		self.activate_reverb()
 
 	def start(self):
 		self.world.connect_simulation(0)
 		self.dry_world.connect_simulation(0)
-		self.convolver.connect_simulation(0)
+		self.reverb.connect_simulation(0)
 
 	def stop(self):
 		self.world.disconnect(0)
 		self.dry_world.disconnect(0)
-		self.convolver.disconnect(0)
+		self.reverb.disconnect(0)
 
 	def play(self, filename, source, looping=False, position=(0, 0, 0)):
 		if len(position) == 2:
@@ -98,8 +101,9 @@ class SoundManager(object):
 		return os.path.join(folder, to_play)
 
 	def set_impulse_response(self, filename):
-		self.convolver.set_response_from_file(filename, 0, 0)
-		self.convolver.set_response_from_file(filename, 1, 1)
+		pass
+		#self.convolver.set_response_from_file(filename, 0, 0)
+		#self.convolver.set_response_from_file(filename, 1, 1)
 
 	def play_async(self, filename, x=0, y=0, z=0, in_world=True):
 		buffer = self.get_buffer(filename)
@@ -128,13 +132,14 @@ class SoundManager(object):
 		self.world.orientation = orientation
 		self.dry_world.orientation = orientation
 
-	def activate_impulse(self):
-		self.convolver.connect_simulation(0)
-		self.impulse_response = True
+	def activate_reverb(self):
+		self.reverb.connect_simulation(0)
+		self.has_reverb = True
 
-	def deactivate_impulse(self):
-		self.convolver.disconnect(0)
-		self.impulse_response = False
+	def deactivate_reverb(self):
+		self.reverb.disconnect(0)
+		self.has_reverb = False
+
 
 
 def _disconnecter(node):
