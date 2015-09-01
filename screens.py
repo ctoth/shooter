@@ -242,6 +242,8 @@ class InventoryScreen(MenuScreen):
 		if isinstance(item, weapon.Weapon):
 			game.player.equip(item)
 		elif hasattr(item, 'use'):
+			if not item.can_use():
+				return
 			item.use(game.player)
 
 	def on_key_press(self, symbol, modifiers):
