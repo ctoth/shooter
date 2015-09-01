@@ -29,7 +29,7 @@ class GameObject(object):
 		self.occlusion_filter.filter_type = 2
 		self.occlusion_filter.connect(0, self.sound_source, 0)
 		if sound is not None:
-			sound = game.sound_manager.play(sound, source=self.occlusion_filter, looping=True)
+			sound = self.play_sound(sound, looping=True)
 		self.sound = sound
 		self.destroy_sound = destroy_sound
 		self.use_sound = use_sound
@@ -97,7 +97,7 @@ class GameObject(object):
 
 	def use(self, user):
 		if self.use_sound is not None:
-			game.sound_manager.play(self.use_sound, source=self.sound_source)
+			self.play_sound(self.use_sound)
 
 	def take_damage(self, amount):
 		if self.destructable:
@@ -139,3 +139,6 @@ class GameObject(object):
 		else:
 			q = 1.5 * count
 		self.occlusion_filter.q = q
+
+	def play_sound(self, sound, *args, **kwargs):
+		game.sound_manager.play(sound, source=self.occlusion_filter, **kwargs)
