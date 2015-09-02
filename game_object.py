@@ -129,15 +129,20 @@ class GameObject(object):
 		self.update_audio_occlusion()
 
 	def update_audio_occlusion(self):
-		distance = math_utils.distance(self.position, game.player.position)
+		if self.location is not None:
+			q = self.location.occlusion_filter.q.value + 1.0
+			self.occlusion_filter.q = q
+			return
+		pos, playerpos = self.position, game.player.position
+		distance = math_utils.distance(pos, playerpos)
 		if distance  > game.MAX_AUDIO_DISTANCE:
 			return
 		q = 0
-		count = game.world.count_objects_between(self.position, game.player.position)
+		count = game.world.count_objects_between(pos, playerpos)
 		if count == 0:
 			q = 0.1
 		else:
-			q = 1.5 * count
+			q = 1.7 * count
 		self.occlusion_filter.q = q
 
 	def play_sound(self, sound, *args, **kwargs):

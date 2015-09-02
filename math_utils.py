@@ -37,7 +37,7 @@ def magnitude(*v):
 	return math.sqrt(sum([i**2 for i in v]))
 
 def vec_magnitude(v):
-	return magnitude(*v)
+	return math.sqrt(sum([i**2 for i in v]))
 
 def distance(v1, v2):
 	return vec_magnitude(vec_sub(v2, v1))
