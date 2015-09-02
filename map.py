@@ -49,6 +49,8 @@ class Map(object):
 						self.starting_coordinates = self.get_physical_coordinates(neighbor)
 						break
 				staircase = game_object.GameObject(world=self.world, name="Staircase Up", position=physical_position, destructable=False)
+			elif tile_type == 'd':
+				staircase = game_object.GameObject(world=self.world, name="Staircase Down", position=physical_position, destructable=False)
 
 	def place_npcs(self, npc_template, density):
 		for room in self.room_vertices:
