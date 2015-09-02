@@ -52,6 +52,9 @@ def center_of_room(room):
 def random_point_in_room(room):
 	return random.randrange(room[0][0], room[1][0]), random.randrange(room[0][1], room[2][1])
 
+def area_of_room(room):
+  return (room[1][0] - room[0][0]) * (room[2][1] - room[0][1])
+
 class TileType(object):
 
 	def __init__(self, name, footstep_sound):

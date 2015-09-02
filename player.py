@@ -42,6 +42,11 @@ class Player(entity.Entity):
 		orientation = list(game.sound_manager.world.orientation.value)
 		orientation[0], orientation[1] = angle_to_vec(self.facing)
 		game.sound_manager.set_orientation(orientation)
+		room = game.map.find_room_containing(self.position)
+		if not room:
+			game.sound_manager.reverb.feedback_gain = 0
+		else:
+			game.sound_manager.reverb.feedback_gain = tiles.area_of_room(room) / 4.5 * 0.1
 
 	def tick(self):
 		self.radar.tick()

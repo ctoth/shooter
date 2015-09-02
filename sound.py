@@ -18,7 +18,8 @@ class SoundManager(object):
 		self.world = self.create_world()
 		self.dry_world = self.create_world()
 		self.world.connect(0, self.reverb.input_node, 0)
-		self.reverb.mul = 0.2
+		self.reverb.mul = 0.15
+		self.reverb.feedback_gain = 0.1
 		self.world.mul = 0.8
 		self.set_orientation((0,1,0,0,0,1))
 		self.sounds = {}
