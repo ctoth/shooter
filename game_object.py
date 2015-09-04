@@ -87,7 +87,7 @@ class GameObject(object):
 	def destroy(self):
 		[self.remove(i) for i in self.contents]
 		if self.destroy_sound is not None:
-			self.play_async_after(0.15, self.destroy_sound, *self.position)
+			self.play_async_after(0.0, self.destroy_sound, *self.position)
 		if game.player.radar.tracking is self:
 			game.player.radar.stop_tracking()
 			game.player.radar.tracking = None
