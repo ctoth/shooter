@@ -99,31 +99,34 @@ class Radar(object):
 
 class SweepingRadar(object):
 
-	def __init__(self, looker, step_size=5, arc=180, sweep_delay=0.2, range=20):
+	def __init__(self, looker, step_size=5, arc=180, sweep_delay=0.1, reset_delay=0.3, range=20):
 		self.looker = looker
 		self.arc = arc
 		self.sweeping = False
 		self.step_size = step_size
 		self.sweep_Delay = sweep_delay
+		self.reset_delay = reset_delay
 		self.current_degree = None
 		self.reset()
 		self.last_ping_time = 0
+		self.last_reset_time = 0
 		self.range = range
 
 	def reset(self):
 		self.current_degree = 0 - (self.arc / 2.0)
+		self.last_reset_time = game.clock.time()
 
 	def should_reset(self):
-		if self.current_degree >= (self.arc / 2.0):
+		if self.current_degree >= (self.arc / 2.0) + 1:
 			return True
 		return False
 
 	def sweep(self):
 		if not self.can_ping():
 			return
+		self.ping()
 		if self.should_reset():
 			self.reset()
-		self.ping()
 		self.current_degree += self.step_size
 
 	def ping(self):
@@ -133,12 +136,12 @@ class SweepingRadar(object):
 		if not what:
 			return
 		hitpoint, item = what
-		print hitpoint
 		game.sound_manager.play_async('radar_ping.ogg', *hitpoint, in_world=False)
 
 	def can_ping(self):
 		if game.clock.time() - self.last_ping_time > self.sweep_Delay:
-			return True
+			if game.clock.time() - self.last_reset_time > self.reset_delay:
+				return True
 		return False
 
 	def tick(self):
