@@ -148,3 +148,4 @@ class SweepingRadar(object):
 
 	def stop(self):
 		self.sweeping = False
+		self.reset()
