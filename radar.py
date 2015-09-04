@@ -132,7 +132,7 @@ class SweepingRadar(object):
 		if not items:
 			return
 		item = items[0]
-		game.sound_manager.play_async('radar_ping.ogg', *item.position)
+		game.sound_manager.play_async('radar_ping.ogg', *item.position, in_world=False)
 
 	def can_ping(self):
 		if game.clock.time() - self.last_ping_time > self.sweep_Delay:
