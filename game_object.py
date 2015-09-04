@@ -1,6 +1,7 @@
 from __future__ import division
 from logging import getLogger
 logger = getLogger('game_object')
+import collections
 import game
 from Box2D import b2
 import math_utils
@@ -22,6 +23,7 @@ class GameObject(object):
 		if location is None:
 			self.create_body(position=position)
 			self.create_fixture()
+		self.last_played_times = collections.defaultdict(int)
 		if sound_source is None:
 			sound_source = game.sound_manager.create_source()
 		self.sound_source = sound_source
@@ -147,3 +149,10 @@ class GameObject(object):
 
 	def play_sound(self, sound, *args, **kwargs):
 		game.sound_manager.play(sound, source=self.occlusion_filter, **kwargs)
+
+	def only_play_every(self, delay, sound, *args, **kwargs):
+		last_played = self.last_played_times[sound]
+		if game.clock.time() - last_played < delay:
+			return
+		self.play_sound(sound, *args, **kwargs)
+		self.last_played_times[sound] = game.clock.time()
