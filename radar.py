@@ -128,11 +128,13 @@ class SweepingRadar(object):
 
 	def ping(self):
 		self.last_ping_time = game.clock.time()
-		items = game.world.ray_cast(self.looker.position, (self.looker.facing + self.current_degree) % 360, self.range)
-		if not items:
+		direction = (self.looker.facing + self.current_degree) % 360
+		what = game.world.ray_cast_to_first_item(self.looker.position, direction, self.range)
+		if not what:
 			return
-		item = items[0]
-		game.sound_manager.play_async('radar_ping.ogg', *item.position, in_world=False)
+		hitpoint, item = what
+		print hitpoint
+		game.sound_manager.play_async('radar_ping.ogg', *hitpoint, in_world=False)
 
 	def can_ping(self):
 		if game.clock.time() - self.last_ping_time > self.sweep_Delay:
