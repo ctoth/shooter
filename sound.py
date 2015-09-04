@@ -2,7 +2,7 @@ import random
 import os
 import multiprocessing
 import libaudioverse
-import fdn_reverb
+import reverb
 
 libaudioverse.initialize()
 
@@ -14,13 +14,12 @@ class SoundManager(object):
 		self.sim = libaudioverse.Simulation()
 		self.sim.threads = multiprocessing.cpu_count() - 1 or 1
 		self.sim.set_output_device(output_device)
-		self.reverb = fdn_reverb.Reverb(self.sim)
+		self.reverb = reverb.Reverb(self.sim)
 		self.world = self.create_world()
 		self.dry_world = self.create_world()
 		self.world.connect(0, self.reverb.input_node, 0)
-		self.reverb.mul = 0.15
-		self.reverb.feedback_gain = 0.1
-		self.world.mul = 0.8
+		self.reverb.mul = 0.3
+		self.world.mul = 0.7
 		self.set_orientation((0,1,0,0,0,1))
 		self.sounds = {}
 		self.sounds_path = sounds_path
