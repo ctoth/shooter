@@ -32,6 +32,7 @@ class Player(entity.Entity):
 		self.attacking = False
 		self.sound_source.head_relative = True
 		self.radar = radar.Radar(looker=self)
+		self.sweeping_radar = radar.SweepingRadar(self)
 		self.walking_toward = None
 
 	def set_sound_position(self):
@@ -50,6 +51,7 @@ class Player(entity.Entity):
 
 	def tick(self):
 		self.radar.tick()
+		self.sweeping_radar.tick()
 		if self.attacking:
 			self.fire_weapon()
 		if self.turning == 'left':
