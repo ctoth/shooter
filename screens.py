@@ -29,6 +29,11 @@ class GameScreen(Screen):
 	def on_key_press(self, symbol, modifiers):
 		if symbol == key.I:
 			game.player.show_inventory()
+		if symbol == key.S:
+			if not game.player.sweeping_radar.sweeping:
+				game.player.sweeping_radar.start()
+			else:
+				game.player.sweeping_radar.stop()
 		if symbol == key.UP:
 			if key.MOD_SHIFT & modifiers:
 				game.player.start_running()
