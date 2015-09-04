@@ -16,8 +16,10 @@ import libloader.com
 libloader.com.prepare_gencache()
 from accessible_output2.outputs import auto
 import faulthandler
+#import profile
 
 def main():
+#	profile.setup()
 	libaudioverse.initialize()
 	game.clock = pyglet.clock.get_default()
 	game.window.set_exclusive_mouse(True)

@@ -2,6 +2,8 @@ import pyglet
 from pyglet.window import key, mouse
 import game
 import weapon
+import profile
+
 
 class Screen(object):
 
@@ -27,6 +29,8 @@ class GameScreen(Screen):
 			self.joystick = joystick
 
 	def on_key_press(self, symbol, modifiers):
+		if symbol == key.F2:
+			profile.show_profiler()
 		if symbol == key.I:
 			game.player.show_inventory()
 		if symbol == key.S:

@@ -83,7 +83,7 @@ rooms:
 map:
   name: Top Floor
   x_rooms: 4
-  y_rooms: 2
+  y_rooms: 6
   max_room_dimension: 8
   ambient: ambience.ogg
   footstep: footsteps/metal

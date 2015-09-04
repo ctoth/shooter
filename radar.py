@@ -99,7 +99,7 @@ class Radar(object):
 
 class SweepingRadar(object):
 
-	def __init__(self, looker, step_size=5, arc=180, sweep_delay=0.3, range=20):
+	def __init__(self, looker, step_size=5, arc=180, sweep_delay=0.2, range=20):
 		self.looker = looker
 		self.arc = arc
 		self.sweeping = False
