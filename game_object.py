@@ -3,6 +3,7 @@ from logging import getLogger
 logger = getLogger('game_object')
 import collections
 import game
+
 from Box2D import b2
 import math_utils
 
@@ -27,8 +28,7 @@ class GameObject(object):
 		if sound_source is None:
 			sound_source = game.sound_manager.create_source()
 		self.sound_source = sound_source
-		self.occlusion_filter = game.sound_manager.create_biquad_filter()
-		self.occlusion_filter.filter_type = 2
+		self.occlusion_filter = game.sound_manager.create_occlusion_filter()
 		self.occlusion_filter.connect(0, self.sound_source, 0)
 		if sound is not None:
 			sound = self.play_sound(sound, looping=True)
@@ -132,20 +132,17 @@ class GameObject(object):
 
 	def update_audio_occlusion(self):
 		if self.location is not None:
-			q = self.location.occlusion_filter.q.value + 1.0
-			self.occlusion_filter.q = q
+			dbgain = self.location.occlusion_filter.dbgain.value
+			self.occlusion_filter.dbgain = dbgain
 			return
 		pos, playerpos = self.position, game.player.position
 		distance = math_utils.distance(pos, playerpos)
 		if distance  > game.MAX_AUDIO_DISTANCE:
 			return
-		q = 0
+		dbgain = 0
 		count = game.world.count_objects_between(pos, playerpos)
-		if count == 0:
-			q = 0.1
-		else:
-			q = 1.7 * count
-		self.occlusion_filter.q = q
+		dbgain = -10.0 * count
+		self.occlusion_filter.dbgain = dbgain
 
 	def play_sound(self, sound, *args, **kwargs):
 		game.sound_manager.play(sound, source=self.occlusion_filter, **kwargs)

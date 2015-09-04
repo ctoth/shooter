@@ -122,8 +122,12 @@ class SoundManager(object):
 		world.output_channels.value= 2
 		return world
 
-	def create_biquad_filter(self):
-		return libaudioverse.BiquadNode(self.sim, 2)
+	def create_occlusion_filter(self):
+		filter = libaudioverse.BiquadNode(self.sim, 1)
+		filter.filter_type = libaudioverse.BiquadTypes.highshelf
+		filter.frequency = 800
+		return filter
+
 
 	def set_listener_position(self, position):
 		self.world.position = position
