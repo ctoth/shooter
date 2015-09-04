@@ -88,12 +88,12 @@ class DirectWeapon(Weapon):
 
 	def use(self, user):
 		super(DirectWeapon, self).use(user)
-		targets = self.world.ray_cast(self.position, direction=self.facing, length=self.range)
-		if not targets:
+		target = self.world.ray_cast_to_first_item(self.position, direction=self.facing, length=self.range)
+		if not target:
 			return
-		target = targets[0]
+		hitpoint, target = target
 		other = target.userData
-		self.did_hit(other, target.position)
+		self.did_hit(other, hitpoint)
 
 class BeamWeapon(DirectWeapon):
 	pass
