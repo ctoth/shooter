@@ -96,3 +96,55 @@ class Radar(object):
 		npcs = self.get_surrounding_npcs()
 		description = "%d by %d meters, %d npcs, %d exits" % (dimensions[0], dimensions[1], len(npcs), len(exits))
 		game.output.output(description)
+
+class SweepingRadar(object):
+
+	def __init__(self, looker, step_size=5, arc=180, sweep_delay=0.3, range=20):
+		self.looker = looker
+		self.arc = arc
+		self.sweeping = False
+		self.step_size = step_size
+		self.sweep_Delay = sweep_delay
+		self.current_degree = None
+		self.reset()
+		self.last_ping_time = 0
+		self.range = range
+
+	def reset(self):
+		self.current_degree = 0 - (self.arc / 2.0)
+
+	def should_reset(self):
+		if self.current_degree >= (self.arc / 2.0):
+			return True
+		return False
+
+	def sweep(self):
+		if not self.can_ping():
+			return
+		if self.should_reset():
+			self.reset()
+		self.ping()
+		self.current_degree += self.step_size
+
+	def ping(self):
+		self.last_ping_time = game.clock.time()
+		items = game.world.ray_cast(self.looker.position, (self.looker.facing + self.current_degree) % 360, self.range)
+		if not items:
+			return
+		item = items[0]
+		game.sound_manager.play_async('radar_ping.ogg', *item.position)
+
+	def can_ping(self):
+		if game.clock.time() - self.last_ping_time > self.sweep_Delay:
+			return True
+		return False
+
+	def tick(self):
+		if self.sweeping:
+			self.sweep()
+
+	def start(self):
+		self.sweeping = True
+
+	def stop(self):
+		self.sweeping = False
