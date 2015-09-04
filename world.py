@@ -63,12 +63,29 @@ class World(object):
 
 	def ray_cast(self, start, direction, length):
 		"""Returns the list of game objects in order of distance from the given start at the given direction up to the given length"""
-		end = math_utils.vec_mul(math_utils.angle_to_vec(direction), length)
+		unit = math_utils.angle_to_vec(direction)
+		end = math_utils.vec_mul(unit, length)
 		end = math_utils.vec_add(list(start), end)
 		callback = RayCastCallback()
 		self.world.RayCast(callback, start, end)
 		callback.fixtures.sort()
 		return [i[1].body for i in callback.fixtures]
+
+	def ray_cast_to_first_item(self, start, direction, length):
+		"""Returns the first game object in order of distance from the given start at the given direction up to the given length. Also returns the precise point at which it was hit."""
+		unit = math_utils.angle_to_vec(direction)
+		end = math_utils.vec_mul(unit, length)
+		end = math_utils.vec_add(list(start), end)
+		callback = RayCastCallback()
+		self.world.RayCast(callback, start, end)
+		callback.fixtures.sort()
+		if not callback.fixtures:
+			return
+		frac_distance, fixture = callback.fixtures[0]
+		distance = frac_distance * length
+		hitpoint = math_utils.vec_mul(unit, distance)
+		hitpoint = math_utils.vec_add(hitpoint, start)
+		return hitpoint, fixture.body
 
 	def count_objects_between(self, p1, p2):
 		if p1 == p2:
