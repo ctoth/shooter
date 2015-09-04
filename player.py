@@ -29,7 +29,6 @@ class Player(entity.Entity):
 		self.moving = False
 		self.turning = None
 		self.running = False
-		self.last_footstep_time = 0
 		self.attacking = False
 		self.sound_source.head_relative = True
 		self.radar = radar.Radar(looker=self)
@@ -43,10 +42,11 @@ class Player(entity.Entity):
 		orientation[0], orientation[1] = angle_to_vec(self.facing)
 		game.sound_manager.set_orientation(orientation)
 		room = game.map.find_room_containing(self.position)
-		if not room:
-			game.sound_manager.reverb.feedback_gain = 0
-		else:
-			game.sound_manager.reverb.feedback_gain = tiles.area_of_room(room) / 4.5 * 0.1
+		t60 = 0
+		if room:
+			t60 = tiles.area_of_room(room) / 7.0
+		game.sound_manager.reverb.t60.cancel_automators(0.0)
+		game.sound_manager.reverb.t60.linear_ramp_to_value(0.3, t60)
 
 	def tick(self):
 		self.radar.tick()
@@ -64,9 +64,7 @@ class Player(entity.Entity):
 			if self.body.contacts and self.body.contacts[0].contact.fixtureB.body.userData == 'wall':
 				return
 			slowdown_multiplier = inverse_percentage(speed, 100)
-			if self.last_footstep_time + (self.FOOTSTEP_DELAY*slowdown_multiplier) <= game.clock.time():
-				self.footstep_sound = game.sound_manager.play(self.get_footstep_sound(), source=self.sound_source)
-				self.last_footstep_time = game.clock.time()
+			self.only_play_every(self.FOOTSTEP_DELAY* slowdown_multiplier, self.get_footstep_sound())
 		else:
 			self.body.linearVelocity = (0, 0)
 		if self.walking_toward:
