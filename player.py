@@ -45,7 +45,7 @@ class Player(entity.Entity):
 		room = game.map.find_room_containing(self.position)
 		t60 = 0
 		if room:
-			t60 = tiles.area_of_room(room) / 9.0
+			t60 = tiles.area_of_room(room) / 8.0
 		game.sound_manager.reverb.t60.cancel_automators(0.0)
 		game.sound_manager.reverb.t60.linear_ramp_to_value(0.3, t60)
 
