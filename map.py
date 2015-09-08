@@ -107,7 +107,9 @@ class Map(object):
 	def find_exits_for_room(self, room):
 		exits = self.get_exits()
 		room_shape = self.get_room_border(room)
-		return [exit for exit in exits if tiles.point_in_shape(exit, *room_shape)]
+		exits = [exit for exit in exits if tiles.point_in_shape(exit, *room_shape)]
+		add_offset = lambda exit: (exit[0] + 0.5, exit[1] + 0.5)
+		return map(add_offset, exits)
 
 	def get_room_border(self, room):
 		min = math_utils.vec_sub(room[0], (1, 1))
