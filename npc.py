@@ -19,6 +19,7 @@ class NPC(entity.Entity):
 		self.corpse_fall_sound = corpse_fall_sound
 		self.target = None
 		self.attacking = False
+		self.is_being_attacked = False
 
 	def tick(self):
 		if math_utils.distance(self.position, game.player.position) > self.activation_distance:
@@ -48,7 +49,6 @@ class NPC(entity.Entity):
 		else:
 			self.target = None
 
-
 	def attack_target(self):
 		self.face_target()
 		self.perform_attack()
@@ -70,6 +70,10 @@ class NPC(entity.Entity):
 		position = self.position
 		game.clock.schedule_once(self.play_corpse_fall, 0.5, position=position)
 		super(NPC, self).destroy()
+
+	def take_damage(self, amount):
+		self.is_being_attacked = True
+		super(NPC, self).take_damage(amount)
 
 	def play_corpse_fall(self, t, position):
 		game.sound_manager.play_async(self.corpse_fall_sound, *position)
