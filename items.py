@@ -13,4 +13,4 @@ class HealthBoost(game_object.GameObject):
 
 	def use(self, user):
 		user.health += self.heal_amount
-
+		self.current_uses += 1
