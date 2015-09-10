@@ -76,14 +76,15 @@ class Player(entity.Entity):
 				self.moving = False
 				self.walking_toward = None
 		if self.moving:
+			facing = self.facing
 			if self.moving == 'forward':
-				facing = self.facing
-			elif self.moving == 'right':
-				facing = self.facing + 90 % 360
-			elif self.moving == 'left':
-				facing = self.facing - 90 % 360
+				facing = facing
 			elif self.moving == 'backward':
-				facing = (self.facing - 180) % 360
+				facing = (facing - 180) % 360
+			if self.moving == 'right':
+				facing = facing + 90 % 360
+			elif self.moving == 'left':
+				facing = facing - 90 % 360
 			self.body.linearVelocity = vec_mul(angle_to_vec(facing), percentage(self.footstep_multiplier, speed))
 		else:
 			self.body.linearVelocity = (0, 0)
