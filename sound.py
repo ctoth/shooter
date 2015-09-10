@@ -111,7 +111,7 @@ class SoundManager(object):
 			world = self.world
 		else:
 			world = self.dry_world
-		world.play_async(buffer, x=x, y=y, z=z)
+		world.play_async(buffer, x=x, y=y, z=z, is_dry = 0)
 
 	def create_world(self):
 		world = libaudioverse.EnvironmentNode(self.sim, "default")
