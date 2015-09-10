@@ -107,11 +107,8 @@ class SoundManager(object):
 
 	def play_async(self, filename, x=0, y=0, z=0, in_world=True):
 		buffer = self.get_buffer(filename)
-		if in_world:
-			world = self.world
-		else:
-			world = self.dry_world
-		world.play_async(buffer, x=x, y=y, z=z)
+		dry = not in_world
+		self.world.play_async(buffer, x=x, y=y, z=z, is_dry=dry)
 
 	def create_world(self):
 		world = libaudioverse.EnvironmentNode(self.sim, "default")
