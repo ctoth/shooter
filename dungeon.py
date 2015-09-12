@@ -168,7 +168,6 @@ def generate(cellsX, cellsY, cellSize=5):
         rooms.append(corridor)
         exits.add(corridor[0])
         exits.add(corridor[-1])
-        logger.debug(corridor[0], corridor[-1])
         corridors.append(corridor)
     # 8. Place staircases in the cell picked in step 2 and the lest cell visited in step 3b.
     stairsUp = random.choice(firstCell.room)
