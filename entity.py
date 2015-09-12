@@ -17,7 +17,7 @@ class Entity(game_object.GameObject):
 	def create_body(self, position=None):
 		if position is None:
 			position = (0, 0)
-		self.body = self.world.world.CreateDynamicBody(userData=self, position=position, angularDamping=1.0)
+		self.body = self.world.world.CreateDynamicBody(userData=self, position=position, angularDamping=1.0, fixedRotation=True)
 
 	def equip(self, item):
 		if item not in self.contents:
