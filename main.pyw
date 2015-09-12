@@ -1,4 +1,6 @@
-from __future__ import division
+from platform_utils import blackhole
+import logger_setup
+logger_setup.setup_logging(debug_log='shooter.log')
 import logging
 logging.basicConfig()
 import game
