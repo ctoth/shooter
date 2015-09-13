@@ -14,6 +14,7 @@ class World(object):
 		self.objects_to_create_bodies_for = dict()
 		self.collisions =dict()
 		self.collision_callback = CollisionCallback(self)
+		self.ray_cast_callback = RayCastCallback()
 		self.world.contactListener = self.collision_callback
 		self.objects = set()
 		self.objects_to_add = set()
@@ -66,7 +67,8 @@ class World(object):
 		unit = math_utils.angle_to_vec(direction)
 		end = math_utils.vec_mul(unit, length)
 		end = math_utils.vec_add(list(start), end)
-		callback = RayCastCallback()
+		callback = self.ray_cast_callback
+		callback.fixtures = []
 		self.world.RayCast(callback, start, end)
 		callback.fixtures.sort()
 		return [i[1].body for i in callback.fixtures]
@@ -76,7 +78,8 @@ class World(object):
 		unit = math_utils.angle_to_vec(direction)
 		end = math_utils.vec_mul(unit, length)
 		end = math_utils.vec_add(list(start), end)
-		callback = RayCastCallback()
+		callback = self.ray_cast_callback
+		callback.fixtures = []
 		self.world.RayCast(callback, start, end)
 		callback.fixtures.sort()
 		if not callback.fixtures:
@@ -90,7 +93,8 @@ class World(object):
 	def count_objects_between(self, p1, p2):
 		if p1 == p2:
 			return 0
-		callback = RayCastCallback()
+		callback = self.ray_cast_callback
+		callback.fixtures = []
 		self.world.RayCast(callback, p1, p2)
 		bodies = [i[1].body for i in callback.fixtures]
 		return len([i for i in bodies if i.position != p1 and i.position != p2])
