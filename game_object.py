@@ -1,6 +1,7 @@
 from __future__ import division
 from logging import getLogger
 logger = getLogger('game_object')
+from math import sqrt
 import collections
 import game
 
@@ -70,9 +71,9 @@ class GameObject(object):
 	def set_sound_position(self):
 		if self.sound_source.head_relative.value:
 			return
-		position = [float(i) for i in self.position]
+		position = list(self.position)
 		position.append(0.0)
-		self.sound_source.position = position
+		self.sound_source.position.value = position
 
 	@property
 	def facing(self):
@@ -132,18 +133,19 @@ class GameObject(object):
 		self.update_audio_occlusion()
 
 	def update_audio_occlusion(self):
-		if self.location is not None:
-			dbgain = self.location.occlusion_filter.dbgain.value
-			self.occlusion_filter.dbgain = dbgain
+		location = self.location
+		if location is not None:
+			dbgain = location.occlusion_filter.dbgain.value
+			self.occlusion_filter.dbgain.value = dbgain
 			return
 		pos, playerpos = self.position, game.player.position
-		distance = math_utils.distance(pos, playerpos)
+		distance = sqrt((pos[0] - playerpos[0])**2+(pos[1]-playerpos[1])**2)
 		if distance  > game.MAX_AUDIO_DISTANCE:
 			return
 		dbgain = 0
 		count = game.world.count_objects_between(pos, playerpos)
 		dbgain = -12.0 * count
-		self.occlusion_filter.dbgain = dbgain
+		self.occlusion_filter.dbgain.value = dbgain
 
 	def play_sound(self, sound, *args, **kwargs):
 		game.sound_manager.play(sound, source=self.occlusion_filter, **kwargs)
