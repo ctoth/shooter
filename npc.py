@@ -23,13 +23,13 @@ class NPC(entity.Entity):
 
 	def tick(self):
 		if math_utils.distance(self.position, game.player.position) > self.activation_distance:
-			self.sound_source.state = libaudioverse.NodeStates.paused
+			self.sound_source.state.value = libaudioverse.NodeStates.paused
 			if self.weapon is not None:
-				self.weapon.sound_source.state = libaudioverse.NodeStates.paused
+				self.weapon.sound_source.state.value = libaudioverse.NodeStates.paused
 			return
-		self.sound_source.state = libaudioverse.NodeStates.playing
+		self.sound_source.state.value = libaudioverse.NodeStates.playing
 		if self.weapon is not None:
-			self.weapon.sound_source.state = libaudioverse.NodeStates.playing
+			self.weapon.sound_source.state.value = libaudioverse.NodeStates.playing
 		if self.ambient_sound is not None and not self.ambient_sound.is_playing():
 			self.ambient_sound.play()
 		super(NPC, self).tick()
