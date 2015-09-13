@@ -98,12 +98,14 @@ class GameScreen(Screen):
 	def on_key_release(self, symbol, modifiers):
 		if symbol in (key.LCTRL, key.RCTRL):
 			game.player.stop_attacking()
-		if symbol == key.UP or symbol == key.DOWN:
+		if symbol == key.UP or symbol == key.DOWN and game.player.moving not in ('left', 'right'):
 			game.player.stop_moving()
 			game.player.stop_running()
 		if symbol == key.LEFT or symbol == key.RIGHT:
-			game.player.stop_turning()
-			game.player.stop_strafing()
+			if game.player.moving not in ('left', 'right'):
+				game.player.stop_turning()
+			else:
+				game.player.stop_strafing()
 		if symbol in (key.LSHIFT, key.RSHIFT):
 			game.player.stop_strafing()
 			game.player.stop_running()
