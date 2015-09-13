@@ -110,12 +110,11 @@ class World(object):
 		if angle_between < (looker.angle_of_visibility / 2.0) and angle_between < 360 - (looker.angle_of_visibility / 2.0):
 			return False
 		length = distance_between
-		if length == 0:
-			length = 2**32-1
 		los = self.ray_cast(start_point, direction=angle, length=length)
 		for item in los:
 			if item.userData is game.world:
 				return False
+		else:
 			return True
 		return False
 
