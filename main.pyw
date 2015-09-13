@@ -50,9 +50,7 @@ def main_loop():
 	pyglet.app.run()
 
 def tick(dt):
-	with game.sound_manager.sim:
 		game.world.tick()
-		game.player.set_sound_position()
 
 if __name__ == '__main__':
 	main()

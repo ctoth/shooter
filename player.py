@@ -52,6 +52,7 @@ class Player(entity.Entity):
 	def tick(self):
 		self.radar.tick()
 		self.sweeping_radar.tick()
+		self.set_sound_position()
 		if self.attacking:
 			self.fire_weapon()
 		if self.turning == 'left':
