@@ -1,3 +1,5 @@
+from logging import getLogger
+logger = getLogger('npc')
 import entity
 import game
 import math_utils
@@ -33,7 +35,10 @@ class NPC(entity.Entity):
 		if self.ambient_sound is not None and not self.ambient_sound.is_playing():
 			self.ambient_sound.play()
 		super(NPC, self).tick()
-		if self.aggressive:
+		if self.is_being_attacked and self.target is None:
+			logger.info("Finding dirty rotten attacker")
+			self.find_attacker()
+		if self.aggressive or self.is_being_attacked:
 			self.find_target()
 		if self.target:
 			if not self.attacking:
@@ -46,8 +51,14 @@ class NPC(entity.Entity):
 	def find_target(self):
 		if self.world.is_visible(self, game.player, self.visibility_distance):
 			self.target = game.player
+			logger.info("Target acquired")
 		else:
 			self.target = None
+
+	def find_attacker(self):
+		if not self.world.is_visible(self, game.player, self.visibility_distance):
+			self.facing += 45
+			self.facing %= 360
 
 	def attack_target(self):
 		self.face_target()
