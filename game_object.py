@@ -142,7 +142,7 @@ class GameObject(object):
 			return
 		dbgain = 0
 		count = game.world.count_objects_between(pos, playerpos)
-		dbgain = -10.0 * count
+		dbgain = -12.0 * count
 		self.occlusion_filter.dbgain = dbgain
 
 	def play_sound(self, sound, *args, **kwargs):
