@@ -3,6 +3,7 @@ import game
 import game_object
 
 class Entity(game_object.GameObject):
+	turn_rate = 0.8
 
 	def __init__(self, health=100, speed=100, angle_of_visibility=180, hit_sound=None, weapon=None, *args, **kwargs):
 		super(Entity, self).__init__(*args, **kwargs)

@@ -8,12 +8,14 @@ import libaudioverse
 class NPC(entity.Entity):
 	visibility_distance = 30
 	activation_distance = 30
+	turn_rate = 0.6
 
 	def __init__(self, aggressive=True, ambient='monster/ambient', attack_sound='monster/attack', corpse_fall_sound='corpse/generic', destroy_sound='monster/death', *args, **kwargs):
 		super(NPC, self).__init__(destroy_sound=destroy_sound, *args, **kwargs)
 		self.aggressive = aggressive
 		self.ambient = ambient
 		self.ambient_sound = None
+		self.turning_toward = None
 		if ambient is not None:
 			self.ambient_sound = game.sound_manager.play(self.ambient, source=self.occlusion_filter, looping=True)
 			self.ambient_sound.pause()
@@ -48,6 +50,13 @@ class NPC(entity.Entity):
 		else:
 			self.act_normally()
 
+	def turn_towards(self, endpoint):
+		direction = self.turn_rate
+		if endpoint < self.facing:
+			direction *= -1
+		self.facing += direction
+		self.facing %= 360
+
 	def find_target(self):
 		if self.world.is_visible(self, game.player, self.visibility_distance):
 			self.target = game.player
@@ -57,15 +66,15 @@ class NPC(entity.Entity):
 
 	def find_attacker(self):
 		if not self.world.is_visible(self, game.player, self.visibility_distance):
-			self.facing += 45
-			self.facing %= 360
+			facing = self.facing + 45
+			self.turn_towards(facing)
 
 	def attack_target(self):
 		self.face_target()
 		self.perform_attack()
 
 	def face_target(self):
-		self.facing = math_utils.vec_to_angle(math_utils.vec_sub(self.target.position, self.position))
+		self.turn_towards(math_utils.vec_to_angle(math_utils.vec_sub(self.target.position, self.position)))
 
 	def perform_attack(self):
 		self.fire_weapon()
