@@ -68,10 +68,10 @@ class World(object):
 		end = math_utils.vec_mul(unit, length)
 		end = math_utils.vec_add(list(start), end)
 		callback = self.ray_cast_callback
-		callback.fixtures = []
+		callback.fixtures = set()
 		self.world.RayCast(callback, start, end)
-		callback.fixtures.sort()
-		return [i[1].body for i in callback.fixtures]
+		fixtures = sorted(callback.fixtures)
+		return [i[1].body for i in fixtures]
 
 	def ray_cast_to_first_item(self, start, direction, length):
 		"""Returns the first game object in order of distance from the given start at the given direction up to the given length. Also returns the precise point at which it was hit."""
@@ -79,12 +79,12 @@ class World(object):
 		end = math_utils.vec_mul(unit, length)
 		end = math_utils.vec_add(list(start), end)
 		callback = self.ray_cast_callback
-		callback.fixtures = []
+		callback.fixtures = set()
 		self.world.RayCast(callback, start, end)
-		callback.fixtures.sort()
 		if not callback.fixtures:
 			return
-		frac_distance, fixture = callback.fixtures[0]
+		fixtures = sorted(callback.fixtures)
+		frac_distance, fixture = fixtures[0]
 		distance = frac_distance * length
 		hitpoint = math_utils.vec_mul(unit, distance)
 		hitpoint = math_utils.vec_add(hitpoint, start)
@@ -94,7 +94,7 @@ class World(object):
 		if p1 == p2:
 			return 0
 		callback = self.ray_cast_callback
-		callback.fixtures = []
+		callback.fixtures = set()
 		self.world.RayCast(callback, p1, p2)
 		bodies = [i[1].body for i in callback.fixtures]
 		return len([i for i in bodies if i.position != p1 and i.position != p2])
@@ -165,11 +165,11 @@ class RayCastCallback(Box2D.b2RayCastCallback):
 
 	def __init__(self):
 		super(RayCastCallback, self).__init__()
-		self.fixtures = []
+		self.fixtures = set()
 
 	def ReportFixture(self, fixture, point, normal, fraction):
 		result = (fraction, fixture)
-		self.fixtures.append(result)
+		self.fixtures.add(result)
 		return 1
 
 class QueryCallback(Box2D.b2QueryCallback):
