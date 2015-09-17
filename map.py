@@ -11,7 +11,7 @@ import weapon
 
 class Map(object):
 
-	def __init__(self, world, name="", x_cells=8, y_cells=5, cell_size=8, size_ratio=1.0, ambience=None, footstep=None, impulse=None, random_state=None):
+	def __init__(self, world, name="", x_cells=8, y_cells=5, cell_size=8, size_ratio=1.0, ambience=None, footstep=None, random_state=None):
 		self.world = world
 		self.name = name
 		self.x_cells, self.y_cells = x_cells, y_cells
@@ -19,7 +19,6 @@ class Map(object):
 		self.size_ratio = size_ratio
 		self.ambience = ambience
 		self.footstep = footstep
-		self.impulse = impulse
 		self.ambience_sound = None
 		self.random = random.Random()
 		if random_state is not None:
@@ -87,8 +86,6 @@ class Map(object):
 	def enter(self, player):
 		if self.ambience is not None:
 			self.ambience_sound = game.sound_manager.play_ambient(self.ambience)
-		if self.impulse is not None:
-			game.sound_manager.set_impulse_response(self.impulse)
 		logger.info("setting player position to %.2f, %.2f" % tuple(self.starting_coordinates))
 		player.position = self.starting_coordinates
 

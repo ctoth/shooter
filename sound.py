@@ -2,7 +2,7 @@ import random
 import os
 import multiprocessing
 import libaudioverse
-import reverb
+
 
 libaudioverse.initialize()
 
@@ -14,27 +14,21 @@ class SoundManager(object):
 		self.sim = libaudioverse.Simulation()
 		self.sim.threads = multiprocessing.cpu_count() - 1 or 1
 		self.sim.set_output_device(output_device)
-		self.reverb = reverb.Reverb(self.sim)
+		self.reverb = libaudioverse.FdnReverbNode(self.sim)
 		self.world = self.create_world()
-		self.dry_world = self.create_world()
-		self.world.connect(0, self.reverb.input_node, 0)
-		self.reverb.mul = 0.15
-		self.world.mul = 0.85
+		self.reverb_send = self.world.add_effect_send(channels = 4, is_reverb = True, connect_by_default = True)
+		self.world.connect(self.reverb_send, self.reverb, 0)
 		self.set_orientation((0,1,0,0,0,1))
 		self.sounds = {}
 		self.sounds_path = sounds_path
 		self.last_random = {}
-		self.has_reverb = False
-		self.activate_reverb()
 
 	def start(self):
 		self.world.connect_simulation(0)
-		self.dry_world.connect_simulation(0)
 		self.reverb.connect_simulation(0)
 
 	def stop(self):
 		self.world.disconnect(0)
-		self.dry_world.disconnect(0)
 		self.reverb.disconnect(0)
 
 	def play(self, filename, source, looping=False, position=(0, 0, 0)):
@@ -101,11 +95,6 @@ class SoundManager(object):
 		self.last_random[folder] = to_play
 		return os.path.join(folder, to_play)
 
-	def set_impulse_response(self, filename):
-		pass
-		#self.convolver.set_response_from_file(filename, 0, 0)
-		#self.convolver.set_response_from_file(filename, 1, 1)
-
 	def play_async(self, filename, x=0, y=0, z=0, in_world=True):
 		buffer = self.get_buffer(filename)
 		dry = not in_world
@@ -128,20 +117,9 @@ class SoundManager(object):
 
 	def set_listener_position(self, position):
 		self.world.position = position
-		self.dry_world.position = position
 
 	def set_orientation(self, orientation):
 		self.world.orientation = orientation
-		self.dry_world.orientation = orientation
-
-	def activate_reverb(self):
-		self.reverb.connect_simulation(0)
-		self.has_reverb = True
-
-	def deactivate_reverb(self):
-		self.reverb.disconnect(0)
-		self.has_reverb = False
-
 
 
 def _disconnecter(node):
