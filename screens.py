@@ -186,7 +186,7 @@ class MenuScreen(Screen):
 		if item is None:
 			return
 		self.play_selection()
-		game.output.output(unicode(item), interrupt)
+		game.output.output(str(item), interrupt)
 
 	def first_item(self):
 		self.index = 0
@@ -247,7 +247,6 @@ class InventoryScreen(MenuScreen):
 	def activate_item(self):
 		super(InventoryScreen, self).activate_item()
 		item = self.current_item()
-		print item
 		if item is None:
 			return
 		if isinstance(item, weapon.Weapon):

@@ -73,13 +73,13 @@ def generate(cellsX, cellsY, cellSize=5):
             other.connected = True
 
     cells = {}
-    for y in xrange(cellsY):
-        for x in xrange(cellsX):
+    for y in range(cellsY):
+        for x in range(cellsX):
             c = Cell(x, y, len(cells))
             cells[(c.x, c.y)] = c
-
     # 2. Pick a random cell as the current cell and mark it as connected.
-    current = lastCell = firstCell = random.choice(cells.values())
+    current = lastCell = firstCell = random.choice(list(cells.values()))
+    print(current)
     current.connected = True
 
     # 3. While the current cell has unconnected neighbor cells:
@@ -91,7 +91,7 @@ def generate(cellsX, cellsY, cellSize=5):
                 continue
 
     while True:
-        unconnected = filter(lambda x: not x.connected, getNeighborCells(current))
+        unconnected = [x for x in getNeighborCells(current) if not x.connected]
         if not unconnected:
             break
 
@@ -103,11 +103,13 @@ def generate(cellsX, cellsY, cellSize=5):
         current = lastCell = neighbor
 
     # 4. While there are unconnected cells:
-    while filter(lambda x: not x.connected, cells.values()):
+    while [x for x in cells.values() if not x.connected]:
         # 4a. Pick a random connected cell with unconnected neighbors and connect to one of them.
         candidates = []
-        for cell in filter(lambda x: x.connected, cells.values()):
-            neighbors = filter(lambda x: not x.connected, getNeighborCells(cell))
+        connected_cells = [i for i in cells.values() if i.connected]
+        #print("Connected cells" + str(connected_cells))
+        for cell in connected_cells:
+            neighbors = [x for x in getNeighborCells(cell) if not x.connected]
             if not neighbors:
                 continue
             candidates.append((cell, neighbors))
@@ -115,10 +117,10 @@ def generate(cellsX, cellsY, cellSize=5):
         cell.connect(random.choice(neighbors))
 
     # 5. Pick 0 or more pairs of adjacent cells that are not connected and connect them.
-    extraConnections = random.randint((int(cellsX + cellsY) / 4), int((cellsX + cellsY) / 2))
+    extraConnections = random.randint((int((cellsX + cellsY) / 4)), int(((cellsX + cellsY) / 2)))
     maxRetries = 10
     while extraConnections > 0 and maxRetries > 0:
-        cell = random.choice(cells.values())
+        cell = random.choice(list(cells.values()))
         neighbor = random.choice(list(getNeighborCells(cell)))
         if cell in neighbor.connectedTo:
             maxRetries -= 1
@@ -145,18 +147,18 @@ def generate(cellsX, cellsY, cellSize=5):
         room_coords.append(room_size)
         logger.info("Creating room at %d, %d of size %d by %d" % (x, y, width, height))
         floorTiles = []
-        for i in xrange(width):
-            for j in xrange(height):
+        for i in range(width):
+            for j in range(height):
                 floorTiles.append((x + i, y + j))
         cell.room = floorTiles
         rooms.append(floorTiles)
 
     # 7. For each connection between two cells:
     connections = {}
-    for c in cells.itervalues():
+    for c in cells.values():
         for other in c.connectedTo:
             connections[tuple(sorted((c.id, other.id)))] = (c.room, other.room)
-    for a, b in connections.itervalues():
+    for a, b in connections.values():
         # 7a. Create a random corridor between the rooms in each cell.
         start = random.choice(a)
         end = random.choice(b)
@@ -177,8 +179,8 @@ def generate(cellsX, cellsY, cellSize=5):
     tiles = {}
     tilesX = cellsX * cellSize
     tilesY = cellsY * cellSize
-    for x in xrange(tilesX):
-        for y in xrange(tilesY):
+    for x in range(tilesX):
+        for y in range(tilesY):
             tiles[(x, y)] = "w"
     for xy in itertools.chain.from_iterable(rooms):
         tiles[xy] = "r"
@@ -195,7 +197,7 @@ def generate(cellsX, cellsY, cellSize=5):
             except KeyError:
                 continue
 
-    for xy, tile in dict(tiles).iteritems():
+    for xy, tile in dict(tiles).items():
         if not tile in ('r', 'e') and "r" in getNeighborTiles(xy):
             tiles[xy] = "w"
     tiles[stairsUp] = "u"

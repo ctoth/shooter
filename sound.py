@@ -83,6 +83,7 @@ class SoundManager(object):
 		sound_buffer = self.sounds.get(filename)
 		if not sound_buffer:
 			sound_buffer = libaudioverse.Buffer(self.sim)
+			filename = filename.encode('mbcs')
 			sound_buffer.load_from_file(filename)
 			self.sounds[filename] = sound_buffer
 		return sound_buffer
@@ -111,7 +112,7 @@ class SoundManager(object):
 		self.world.play_async(buffer, x=x, y=y, z=z, is_dry=dry)
 
 	def create_world(self):
-		world = libaudioverse.EnvironmentNode(self.sim, "default")
+		world = libaudioverse.EnvironmentNode(self.sim, b'default')
 		world.default_panning_strategy =libaudioverse.PanningStrategies.hrtf
 		world.default_max_distance = 20
 		world.default_distance_model = libaudioverse.DistanceModels.exponential

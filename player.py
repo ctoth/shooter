@@ -219,7 +219,7 @@ class Player(entity.Entity):
 			self.radar.tracking = None
 
 	def read_health(self):
-		game.output.output(unicode(self.health))
+		game.output.output(str(self.health))
 
 	def show_inventory(self):
 		screen = screens.InventoryScreen(prompt="Inventory", choices=self.contents, selection_sound='menu/select.wav')

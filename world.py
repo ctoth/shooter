@@ -43,7 +43,7 @@ class World(object):
 				self.destroy_body(o.body)
 			for body in self.unused_bodies:
 				self.destroy_body(body)
-			for obj, position in self.objects_to_create_bodies_for.iteritems():
+			for obj, position in self.objects_to_create_bodies_for.items():
 				obj.create_body(position=position)
 				obj.create_fixture()
 			self.to_destroy.clear()
@@ -142,7 +142,7 @@ class CollisionCallback(Box2D.b2ContactListener):
 
 	def BeginContact(self, contact):
 		a, b=contact.fixtureA.body.userData, contact.fixtureB.body.userData
-		if a > b:
+		if id(a) > id(b):
 			a, b = b, a
 		if (a, b) in self.for_object.collisions:
 			return #already handled
@@ -154,7 +154,7 @@ class CollisionCallback(Box2D.b2ContactListener):
 
 	def EndContact(self, contact):
 		a, b = contact.fixtureA.body.userData, contact.fixtureB.body.userData
-		if a > b:
+		if id(a) > id(b):
 			a, b = b, a
 		try:
 			del self.for_object.collisions[(a, b)]

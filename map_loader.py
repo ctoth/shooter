@@ -39,8 +39,10 @@ IncludeLoader.add_constructor('!include', IncludeLoader.include)
 
 def percentage_values(d):
 	res = {}
-	for k, v in d.iteritems():
-		if isinstance(v, basestring) and v.endswith('%'):
+	str_type = str
+
+	for k, v in d.items():
+		if hasattr(v, 'endswith') and v.endswith('%'):
 			res[k] = float(v[:-1]) / 100.0
 		elif isinstance(v, collections.MutableMapping):
 			res[k] = percentage_values(v)
@@ -51,11 +53,11 @@ def percentage_values(d):
 def check_consistency(data, working=None):
 	if working is None:
 		working = data
-	for key, value in working.iteritems():
+	for key, value in working.items():
 		if not isinstance(value, collections.MutableMapping):
 			continue
 		check_consistency(data, working=value)
-		for subkey, subvalue in value.iteritems():
+		for subkey, subvalue in value.items():
 			if subkey not in data:
 				continue
 			templates = data[subkey]
@@ -71,17 +73,17 @@ def create_map(map_template, world):
 	y_rooms = map_template.get('y_rooms', 0)
 	footstep=map_template['footstep']
 	loading = map.Map(world=world, name=name, x_cells=x_rooms, y_cells=y_rooms, cell_size=cell_size, ambience=map_template['ambient'], footstep=footstep, impulse=impulse)
-	for npc_template, density in map_template.get('npcs', {}).iteritems():
+	for npc_template, density in map_template.get('npcs', {}).items():
 		if density != 'single':
 			loading.place_npcs(npc_template, density)
-	for object_template, density in map_template.get('objects', {}).iteritems():
+	for object_template, density in map_template.get('objects', {}).items():
 		logger.info("placing %s with density of %f" % (object_template.object_type, density))
 		loading.place_objects(object_template, density)
 	return loading
 
 def load_objects(object_type, objects):
 	res = {}
-	for name, characteristics in objects.iteritems():
+	for name, characteristics in objects.items():
 		is_a = characteristics.pop('is_a', None)
 		if is_a:
 			try:	
@@ -101,7 +103,7 @@ def load_npcs(data):
 
 def extract_templates(data):
 	map_template = {}
-	for key, val in data['map'].iteritems():
+	for key, val in data['map'].items():
 		if key not in data:
 			map_template[key] = val
 			continue

@@ -11,7 +11,7 @@ class Reverb(object):
 		#Set up the graph.
 		self.input_node.connect(0, self.splitter, 0)
 		#The splitter and merger circumvent mixing matrix logic.
-		for i in xrange(4):
+		for i in range(4):
 			self.splitter.connect(i%2, self.merger, i)
 		self.merger.connect(0, self.reverb, 0)
 
