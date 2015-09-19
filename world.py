@@ -2,9 +2,11 @@ from logging import getLogger
 logger = getLogger('world')
 import Box2D
 from Box2D import b2
+import collections
 import game
 from vector import Vector
 
+collections.Sequence.register(Box2D.b2Vec2)
 
 class World(object):
 
