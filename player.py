@@ -19,6 +19,7 @@ class Player(entity.Entity):
 	ping_distance = 50
 	approach_distance = 1.0
 	reach = 1.0
+	wall_collision_sound = 'wall.wav'
 
 	def __init__(self, world=None, position=None, shape='circle', size=(0.1, 0.1), hit_sound='hit', mass=100, *args, **kwargs):
 		#gun = weapon.ProjectileWeapon(world=world, name="Gun", ammo_type="bullet", use_sound='rifle', size=(1, 0.1), position=position, cooldown=0.5, mass=30, base_damage=50)
@@ -62,10 +63,10 @@ class Player(entity.Entity):
 		speed = self.speed
 		if self.running:
 			speed *= self.running_multiplier
+		slowdown_multiplier = inverse_percentage(speed, 100)
+		if self.moving and self.body.contacts and self.body.contacts[0].other.userData == game.world:
+			self.only_play_every(self.FOOTSTEP_DELAY* slowdown_multiplier, self.wall_collision_sound)
 		if magnitude(*self.body.linearVelocity) >= self.FOOTSTEP_SPEED:
-			if self.body.contacts and self.body.contacts[0].contact.fixtureB.body.userData == 'wall':
-				return
-			slowdown_multiplier = inverse_percentage(speed, 100)
 			self.only_play_every(self.FOOTSTEP_DELAY* slowdown_multiplier, self.get_footstep_sound())
 		else:
 			self.body.linearVelocity = (0, 0)
