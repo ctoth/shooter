@@ -125,6 +125,9 @@ class GameObject(object):
 	def __unicode__(self):
 		return self.name
 
+	def __str__(self):
+		return self.name
+
 	def play_async_after(self, delay, *args, **kwargs):
 		game.clock.schedule_once(lambda dt,: game.sound_manager.play_async(*args, **kwargs), delay)
 
