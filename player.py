@@ -12,7 +12,6 @@ from math_utils import *
 
 
 class Player(entity.Entity):
-	TURN_RATE = 0.8
 	FOOTSTEP_SPEED = 0.5
 	FOOTSTEP_DELAY = 0.3
 	footstep_multiplier = 3.0
@@ -56,9 +55,9 @@ class Player(entity.Entity):
 		if self.attacking:
 			self.fire_weapon()
 		if self.turning == 'left':
-			self.facing -= self.TURN_RATE
+			self.facing -= self.turn_rate
 		elif self.turning == 'right':
-			self.facing += self.TURN_RATE	
+			self.facing += self.turn_rate
 		self		.facing %= 360
 		speed = self.speed
 		if self.running:
