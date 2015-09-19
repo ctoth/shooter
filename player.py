@@ -2,13 +2,15 @@ import math
 import game_object
 import entity
 import game
+import math_utils
 import radar
 import room
 import screens
+from vector import Vector
 import tiles
 import weapon
 import world
-from math_utils import *
+
 
 
 class Player(entity.Entity):
@@ -40,7 +42,7 @@ class Player(entity.Entity):
 		position.append(0.0)
 		game.sound_manager.set_listener_position(position)
 		orientation = list(game.sound_manager.world.orientation.value)
-		orientation[0], orientation[1] = angle_to_vec(self.facing)
+		orientation[0], orientation[1] = Vector.from_angle(self.facing)
 		game.sound_manager.set_orientation(orientation)
 		room = game.map.find_room_containing(self.position)
 		t60 = 0
@@ -63,13 +65,11 @@ class Player(entity.Entity):
 		speed = self.speed
 		if self.running:
 			speed *= self.running_multiplier
-		slowdown_multiplier = inverse_percentage(speed, 100)
-		if self.moving and self.body.contacts and self.body.contacts[0].other.userData == game.world:
-			self.only_play_every(self.FOOTSTEP_DELAY* slowdown_multiplier, self.wall_collision_sound)
-		if magnitude(*self.body.linearVelocity) >= self.FOOTSTEP_SPEED:
+		slowdown_multiplier = math_utils.inverse_percentage(speed, 100)
+		if self.velocity.magnitude() >= self.FOOTSTEP_SPEED:
 			self.only_play_every(self.FOOTSTEP_DELAY* slowdown_multiplier, self.get_footstep_sound())
 		else:
-			self.body.linearVelocity = (0, 0)
+			self.velocity = (0, 0)
 		if self.walking_toward:
 			if distance(self.walking_toward, self.position) > self.approach_distance:
 				self.moving = 'forward'
@@ -86,7 +86,7 @@ class Player(entity.Entity):
 				facing = facing + 90 % 360
 			elif self.moving == 'left':
 				facing = facing - 90 % 360
-			self.body.linearVelocity = vec_mul(angle_to_vec(facing), percentage(self.footstep_multiplier, speed))
+			self.velocity = Vector.from_angle(facing) * math_utils.percentage(self.footstep_multiplier, speed)
 		else:
 			self.body.linearVelocity = (0, 0)
 
@@ -171,7 +171,7 @@ class Player(entity.Entity):
 		visible = []
 		for item in los:
 			position = item.position
-			distance = magnitude(*vec_sub(self.position, position))
+			distance = self.position.distance(position)
 			if isinstance(item.userData, world.World):
 				message = "wall: %.2f meters. %.2f, %.2f" % (distance, item.position[0], item.position[1])
 				game.output.output(message)
@@ -184,7 +184,7 @@ class Player(entity.Entity):
 		exits = game.map.nearby_exits(self.position)
 		delay = 0.0
 		for exit in exits:
-			pos = game.map.get_physical_coordinates(exit)
+			pos = game.map.get_physical_coordinates(Vector(*exit))
 			game.output.output(str(pos), interrupt=False)
 			game.clock.schedule_once(self.play_exit_sound, delay=delay, x=pos[0], y=pos[1])
 			delay += 0.55
@@ -198,7 +198,7 @@ class Player(entity.Entity):
 
 
 	def face(self, position):
-		self.facing = angle_between(self.position, position)
+		self.facing = self.position.angle_between(position)
 
 	def destroy(self):
 		game.clock.unschedule(game.tick)
@@ -210,7 +210,7 @@ class Player(entity.Entity):
 			return
 		if obj.fixed:
 			return
-		if distance(self.position, obj.position) > self.reach:
+		if self.position.distance(obj.position) > self.reach:
 			return
 		self.hold(obj)
 		game.sound_manager.play('pickup.wav', source=self.sound_source, position=self.position)

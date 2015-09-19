@@ -2,7 +2,6 @@ from logging import getLogger
 logger = getLogger('npc')
 import entity
 import game
-import math_utils
 import libaudioverse
 
 class NPC(entity.Entity):
@@ -26,7 +25,7 @@ class NPC(entity.Entity):
 		self.is_being_attacked = False
 
 	def tick(self):
-		if math_utils.distance(self.position, game.player.position) > self.activation_distance:
+		if self.position.distance(game.player.position) > self.activation_distance:
 			self.sound_source.state.value = libaudioverse.NodeStates.paused
 			if self.weapon is not None:
 				self.weapon.sound_source.state.value = libaudioverse.NodeStates.paused
@@ -74,7 +73,7 @@ class NPC(entity.Entity):
 		self.perform_attack()
 
 	def face_target(self):
-		self.turn_towards(math_utils.vec_to_angle(math_utils.vec_sub(self.target.position, self.position)))
+		self.turn_towards((self.target.position - self.position).to_angle())
 
 	def perform_attack(self):
 		self.fire_weapon()

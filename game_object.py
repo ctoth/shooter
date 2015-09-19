@@ -6,7 +6,7 @@ import collections
 import game
 
 from Box2D import b2
-import math_utils
+from vector import Vector
 
 class GameObject(object):
 
@@ -61,12 +61,20 @@ class GameObject(object):
 	def position(self):
 		if self.location is not None:
 			return self.location.position
-		return tuple(self.body.position)
+		return Vector(*self.body.position)
 
 	@position.setter
 	def position(self, position):
 		self.body.position = tuple(position)
 		self.set_sound_position()
+
+	@property
+	def velocity(self):
+		return Vector(*self.body.linearVelocity)
+
+	@velocity.setter
+	def velocity(self, velocity):
+		self.body.linearVelocity = velocity
 
 	def set_sound_position(self):
 		if self.sound_source.head_relative.value:

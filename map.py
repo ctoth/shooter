@@ -4,9 +4,9 @@ import random
 import dungeon
 import game	
 import game_object
-import math_utils
 import npc
 import tiles
+from vector import Vector
 import weapon
 
 class Map(object):
@@ -33,11 +33,12 @@ class Map(object):
 		self.fill_wall_tiles()
 
 	def fill_wall_tiles(self):
-		tile_size=(0.5, 0.5)
-		physical_tile_size = math_utils.vec_mul(tile_size, self.size_ratio)
+		tile_size = Vector(0.5, 0.5)
+		physical_tile_size = tile_size* self.size_ratio
 		for tile_coord, tile_type in self.map.items():
+			tile_coord = Vector(*tile_coord)
 			physical_position = self.get_physical_coordinates(tile_coord)
-			physical_position= math_utils.vec_add(physical_position, physical_tile_size)
+			physical_position= physical_position + physical_tile_size
 			if tile_type == 'w':
 				self.world.create_wall_tile(position=physical_position, size=physical_tile_size)
 			#elif tile_type == 'e':
@@ -45,7 +46,7 @@ class Map(object):
 			elif tile_type == 'u':
 				for neighbor in dungeon.neighbors(tile_coord):
 					if self.map[neighbor] == 'r':
-						self.starting_coordinates = self.get_physical_coordinates(neighbor)
+						self.starting_coordinates = self.get_physical_coordinates(Vector(*neighbor))
 						break
 				staircase = game_object.GameObject(world=self.world, name="Staircase Up", position=physical_position, destructable=False)
 			elif tile_type == 'd':
@@ -53,9 +54,9 @@ class Map(object):
 
 	def place_npcs(self, npc_template, density):
 		for room in self.room_vertices:
-			position = tiles.random_point_in_room(room)
-			size = npc_template.object_characteristics.get('size', (0.5, 0.5))
-			position = math_utils.vec_add(position, size)
+			position = Vector(*tiles.random_point_in_room(room))
+			size = Vector(*npc_template.object_characteristics.get('size', (0.5, 0.5)))
+			position = position + size
 			chance = self.random.random()
 			if chance > density:
 				continue
@@ -68,20 +69,18 @@ class Map(object):
 
 	def place_objects(self, object_template, density):
 		for room in self.room_vertices:
-			position = tiles.random_point_in_room(room)
-			size = object_template.object_characteristics.get('size', (0.5, 0.5))
-			position = math_utils.vec_add(position, size)
+			position = Vector(*tiles.random_point_in_room(room))
+			size = Vector(*object_template.object_characteristics.get('size', (0.5, 0.5)))
+			position = position+ size
 			chance = self.random.random()
 			if chance > density:
 				continue
 			obj = object_template.spawn(world=self.world, position=position)
 
 	def get_physical_coordinates(self, coordinates):
-		return math_utils.vec_mul(coordinates, self.size_ratio)
-
+		return coordinates* self.size_ratio
 	def get_real_coordinates(self, physical_coordinates):
-		coordinates = math_utils.vec_div(physical_coordinates, self.size_ratio)
-		return coordinates
+		return physical_coordinates / self.size_ratio
 
 	def enter(self, player):
 		if self.ambience is not None:
@@ -109,8 +108,8 @@ class Map(object):
 		return map(add_offset, exits)
 
 	def get_room_border(self, room):
-		min = math_utils.vec_sub(room[0], (1, 1))
-		max = math_utils.vec_add(room[2], (1, 1))
+		min = Vector(*room[0]) - (1, 1)
+		max = Vector(*room[2]) + (1, 1)
 		return (min, max)
 
 	def find_room_containing(self, position):
@@ -124,7 +123,7 @@ class Map(object):
 		return [exit for exit in exits if exit in corridor]
 
 	def find_corridor_containing(self, position):
-		position = tuple(math_utils.vec_round(position))
+		position = position.as_ints()
 		for corridor in self.corridors:
 			for tile in corridor:
 				if position == tile:

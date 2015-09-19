@@ -2,8 +2,8 @@ import entity
 import game
 import game_object
 import room
+from vector import Vector
 import world
-from math_utils import *
 
 class Weapon(entity.Entity):
 
@@ -72,15 +72,15 @@ class ProjectileWeapon(Weapon):
 
 	def use(self, user):
 		super(ProjectileWeapon, self).use(user)
-		position = list(self.position)
-		position = vec_add(position, vec_mul(angle_to_vec(self.facing), self.size[0] + 0.1))
+		position = self.position
+		position = position + Vector.from_angle(self.facing) * (self.size[0] + 0.1)
 		bullet = Projectile(world=self.world, name=self.ammo_type, weapon=self, position=position, facing=self.facing)
 		self.shoot(bullet) 
 		return bullet
 
 	def shoot(self, bullet):
-		direction = angle_to_vec(self.facing)
-		velocity = vec_mul(direction, self.speed)
+		direction = Vector.from_angle(self.facing)
+		velocity = direction * self.speed
 		bullet.body.ApplyLinearImpulse(velocity, self.position, True)
 		self.fired.add(bullet)
 

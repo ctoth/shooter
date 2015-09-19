@@ -1,5 +1,5 @@
 import random
-import math_utils
+from vector import Vector
 
 def point_on_line(point, line_start, line_end):
 	line_start, line_end = sorted([line_start, line_end])
@@ -44,9 +44,9 @@ def exit_on_wall(room, exit):
 
 def center_of_room(room):
 	room_base = room[0]
-	relative = room[1][0] - room[0][0], room[2][1] - room[0][1]
-	relative_center = math_utils.vec_div(relative, 2)
-	center = math_utils.vec_add(room_base, relative_center)
+	relative = Vector(room[1][0] - room[0][0], room[2][1] - room[0][1])
+	relative_center = relative / 2
+	center = room_base + relative_center
 	return center
 
 def random_point_in_room(room):

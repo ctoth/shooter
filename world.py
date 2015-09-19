@@ -3,7 +3,8 @@ logger = getLogger('world')
 import Box2D
 from Box2D import b2
 import game
-import math_utils
+from vector import Vector
+
 
 class World(object):
 
@@ -64,9 +65,10 @@ class World(object):
 
 	def ray_cast(self, start, direction, length):
 		"""Returns the list of game objects in order of distance from the given start at the given direction up to the given length"""
-		unit = math_utils.angle_to_vec(direction)
-		end = math_utils.vec_mul(unit, length)
-		end = math_utils.vec_add(list(start), end)
+
+		unit = Vector.from_angle(direction)
+		end = unit * length
+		end = start + end
 		callback = self.ray_cast_callback
 		callback.fixtures = set()
 		self.world.RayCast(callback, start, end)
@@ -75,9 +77,9 @@ class World(object):
 
 	def ray_cast_to_first_item(self, start, direction, length):
 		"""Returns the first game object in order of distance from the given start at the given direction up to the given length. Also returns the precise point at which it was hit."""
-		unit = math_utils.angle_to_vec(direction)
-		end = math_utils.vec_mul(unit, length)
-		end = math_utils.vec_add(list(start), end)
+		unit = Vector.from_angle(direction)
+		end = unit * length
+		end = start + end
 		callback = self.ray_cast_callback
 		callback.fixtures = set()
 		self.world.RayCast(callback, start, end)
@@ -86,8 +88,8 @@ class World(object):
 		fixtures = sorted(callback.fixtures)
 		frac_distance, fixture = fixtures[0]
 		distance = frac_distance * length
-		hitpoint = math_utils.vec_mul(unit, distance)
-		hitpoint = math_utils.vec_add(hitpoint, start)
+		hitpoint = unit * distance
+		hitpoint = hitpoint + start
 		return hitpoint, fixture.body
 
 	def count_objects_between(self, p1, p2):
@@ -103,10 +105,10 @@ class World(object):
 		start_point = looker.position
 		angle = looker.facing
 		end_point = target.position
-		distance_between = math_utils.distance(start_point, end_point)
-		if max_distance and math_utils.distance(start_point, end_point) > max_distance:
+		distance_between = start_point.distance(end_point)
+		if max_distance and distance_between > max_distance:
 			return False
-		angle_between = (math_utils.angle_between(target.position, looker.position) - looker.facing) % 360
+		angle_between = (target.position.angle_between(looker.position) - looker.facing) % 360
 		if angle_between < (looker.angle_of_visibility / 2.0) and angle_between < 360 - (looker.angle_of_visibility / 2.0):
 			return False
 		length = distance_between
