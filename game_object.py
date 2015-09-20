@@ -10,7 +10,7 @@ from vector import Vector
 
 class GameObject(object):
 
-	def __init__(self, name="", world=None, shape='box', size=(0.5, 0.5), location=None, position=(2, 2), facing=0, mass=1, fixed=True, sound_source=None, sound=None, use_sound=None, destroy_sound=None, destructable=True, *args, **kwargs):
+	def __init__(self, name="", world=None, shape='box', size=(0.5, 0.5), location=None, position=(2, 2), facing=0, mass=1, fixed=True, sound_source=None, sound=None, use_sound=None, destroy_sound=None, destructable=True, collide_sound=None, *args, **kwargs):
 		super(GameObject, self).__init__(*args, **kwargs)
 		self.world = world
 		self.world.add_object(self)
@@ -36,6 +36,7 @@ class GameObject(object):
 		self.sound = sound
 		self.destroy_sound = destroy_sound
 		self.use_sound = use_sound
+		self.collide_sound = collide_sound
 		self.position = position
 		self.facing = facing
 		self.destructable = destructable
