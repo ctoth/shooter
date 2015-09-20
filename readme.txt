@@ -10,10 +10,11 @@ Current coordinates: c.
 Direction facing: f.
 Room summary: r. 
 Explore with radar: tab and shift+tab. 
-Pick up selected item if it's close enough: p.
+Pick up / interact with selected item if it's close enough: enter.
 Sweeping radar: s
 look ahead: l
 Inventory Screen: i. (equip or use item with enter, exit with escape)
+Pause/Unpause game: p
 
 What's going on here?
 
