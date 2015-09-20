@@ -11,7 +11,7 @@ import tiles
 import weapon
 import world
 
-
+HEALTH_OK, HEALTH_BAD, HEALTH_TERRIBLE = range(3)
 
 class Player(entity.Entity):
 	FOOTSTEP_SPEED = 0.5
@@ -36,6 +36,9 @@ class Player(entity.Entity):
 		self.radar = radar.Radar(looker=self)
 		self.sweeping_radar = radar.SweepingRadar(self)
 		self.walking_toward = None
+		self.injured_sound = None
+		self.health_state = HEALTH_OK
+
 
 	def set_sound_position(self):
 		position = list(self.position)
@@ -52,6 +55,15 @@ class Player(entity.Entity):
 		game.sound_manager.reverb.t60.linear_ramp_to_value(0.3, t60)
 
 	def tick(self):
+		if self.health > 75 and self.health_state != HEALTH_OK:
+			self.injured_sound = None
+			self.health_state = HEALTH_OK
+		if self.health < 75 and self.health > 50 and self.health_state != HEALTH_BAD:
+			self.injured_sound = self.play_sound('Heartbeat Slow.wav', looping=True)
+			self.health_state = HEALTH_BAD
+		elif self.health < 50 and self.health_state != HEALTH_TERRIBLE:
+			self.injured_sound = self.play_sound('Heartbeat Fast.wav', looping=True)
+			self.health_state = HEALTH_TERRIBLE
 		self.radar.tick()
 		self.sweeping_radar.tick()
 		self.set_sound_position()
