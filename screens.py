@@ -18,6 +18,10 @@ class Screen(object):
 
 class GameScreen(Screen):
 
+	def __init__(self, *args, **kwargs):
+		super(GameScreen, self).__init__(*args, **kwargs)
+		self.joystick = None		
+
 	def activate(self):
 		super(GameScreen, self).activate()
 		self.joystick = None
@@ -66,9 +70,9 @@ class GameScreen(Screen):
 			game.player.read_facing()
 		if symbol == key.L:
 			game.player.do_ping()
+		if symbol == key.ENTER:
+			game.player.interact_with_target()
 		if symbol == key.P:
-			game.player.pick_up_obj()
-		if symbol == key.ESCAPE:
 			self.pause()
 			return True
 		if symbol == key.D:
@@ -134,7 +138,7 @@ class GameScreen(Screen):
 		super(GameScreen, self).deactivate()
 		if self.joystick is not None:
 			self.joystick.close()
-
+ 
 	def pause(self):
 		screen = PauseScreen()
 		screen.activate()
@@ -148,6 +152,12 @@ class PauseScreen(Screen):
 	def deactivate(self):
 		super(PauseScreen, self).deactivate()
 		game.clock.schedule_interval(game.tick, game.FRAMERATE)
+
+	def on_key_press(self, symbol, modifiers):
+		if symbol == key.P:
+			screen = GameScreen()
+			screen.activate()
+			return True
 
 class MenuScreen(Screen):
 

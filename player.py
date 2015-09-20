@@ -216,7 +216,7 @@ class Player(entity.Entity):
 		game.clock.unschedule(game.tick)
 		game.sound_manager.play_async('death', *self.position)
 
-	def pick_up_obj(self):
+	def interact_with_target(self):
 		obj = self.radar.current_item()
 		if not isinstance(obj, game_object.GameObject):
 			return
