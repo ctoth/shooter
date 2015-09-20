@@ -131,7 +131,7 @@ class Sound(object):
 		self.buffer_node = buffer_node
 
 	def stop(self):
-		self.buffer_node.state = libaudioverse.NodeStates.stop
+		self.buffer_node.state = libaudioverse.NodeStates.paused
 
 	def is_playing(self):
 		return self.buffer_node.state == libaudioverse.NodeStates.playing
