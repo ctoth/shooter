@@ -56,14 +56,21 @@ class Player(entity.Entity):
 
 	def tick(self):
 		if self.health > 75 and self.health_state != HEALTH_OK:
+			self.injured_sound.stop()
 			self.injured_sound = None
 			self.health_state = HEALTH_OK
 		if self.health < 75 and self.health > 50 and self.health_state != HEALTH_BAD:
+			if self.injured_sound:
+				self.injured_sound.stop()
 			self.injured_sound = self.play_sound('Heartbeat Slow.ogg', looping=True)
 			self.health_state = HEALTH_BAD
 		elif self.health < 50 and self.health_state != HEALTH_TERRIBLE:
+			if self.injured_sound:
+				self.injured_sound.stop()
 			self.injured_sound = self.play_sound('Heartbeat Fast.ogg', looping=True)
 			self.health_state = HEALTH_TERRIBLE
+		elif self.health <= 0:
+			self.injured_sound = None
 		self.radar.tick()
 		self.sweeping_radar.tick()
 		self.set_sound_position()
