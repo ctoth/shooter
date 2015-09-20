@@ -57,7 +57,7 @@ class Radar(object):
 		angle = self.looker.position.angle_between(position)
 		direction = (angle - self.looker.facing) % 360
 		distance = self.looker.position.distance(position)
-		game.output.output("%.1f at %d: %s" % (distance, direction, name))
+		game.output.output("%s %.1f at %d" % (name, distance, direction))
 		game.sound_manager.play_async('radar_ping.ogg', *position, in_world=False)
 
 	def read_next(self):
