@@ -54,6 +54,8 @@ weapons:
   Laser Rifle:
     use_sound: laser/alienlaser1.wav
     is_a: BeamWeapon
+    hit_sound: plasma.wav
+    hit_wall_sound: plasma.wav
     size: [0.5, 0.1]
     base_damage: 15
     cooldown: 1.5
