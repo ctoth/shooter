@@ -61,6 +61,8 @@ def check_consistency(data, working=None):
 			if subkey not in data:
 				continue
 			templates = data[subkey]
+			if subvalue is None:
+				continue
 			for innermost_key in subvalue:
 				if innermost_key not in templates:
 					raise ConsistencyError("Item %s not defined in %s section" % (innermost_key, subkey))
@@ -107,6 +109,8 @@ def extract_templates(data):
 			map_template[key] = val
 			continue
 		map_template[key] = {}
+		if val is None:
+			continue
 		for subkey, subval in val.items():
 			map_template[key][data[key][subkey]] = subval
 	return map_template
