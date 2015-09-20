@@ -13,7 +13,7 @@ class SoundManager(object):
 	def __init__(self, output_device=-1, sounds_path='sounds'):
 		self.sim = libaudioverse.Simulation()
 		self.sim.threads = multiprocessing.cpu_count() - 1 or 1
-		self.sim.set_output_device(output_device, max_latency=0.003)
+		self.sim.set_output_device(output_device, max_latency=0.002)
 		self.reverb = libaudioverse.FdnReverbNode(self.sim)
 		self.world = self.create_world()
 		self.reverb_send = self.world.add_effect_send(channels = 4, is_reverb = True, connect_by_default = True)
