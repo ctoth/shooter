@@ -24,7 +24,6 @@ class GameScreen(Screen):
 
 	def activate(self):
 		super(GameScreen, self).activate()
-		self.joystick = None
 		joystick = pyglet.input.get_joysticks()
 		if joystick:
 			joystick = joystick[0]
