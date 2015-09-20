@@ -227,9 +227,11 @@ class Player(entity.Entity):
 		obj = self.radar.current_item()
 		if not isinstance(obj, game_object.GameObject):
 			return
-		if obj.fixed:
-			return
 		if self.position.distance(obj.position) > self.reach:
+			return
+		if obj.fixed:
+			if obj.can_use():
+				obj.use(user=self)
 			return
 		self.hold(obj)
 		game.sound_manager.play('pickup.wav', source=self.sound_source, position=self.position)
