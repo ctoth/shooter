@@ -18,6 +18,7 @@ class World(object):
 		self.collisions =dict()
 		self.collision_callback = CollisionCallback(self)
 		self.ray_cast_callback = RayCastCallback()
+		self.closest_ray_cast_callback = ClosestRayCastCallback()
 		self.world.contactListener = self.collision_callback
 		self.objects = set()
 		self.objects_to_add = set()
@@ -82,13 +83,12 @@ class World(object):
 		unit = Vector.from_angle(direction)
 		end = unit * length
 		end = start + end
-		callback = self.ray_cast_callback
-		callback.fixtures = set()
+		callback = self.closest_ray_cast_callback
+		callback.result = None
 		self.world.RayCast(callback, start, end)
-		if not callback.fixtures:
+		if not callback.result:
 			return
-		fixtures = sorted(callback.fixtures)
-		frac_distance, fixture = fixtures[0]
+		frac_distance, fixture = callback.result
 		distance = frac_distance * length
 		hitpoint = unit * distance
 		hitpoint = hitpoint + start
@@ -165,6 +165,7 @@ class CollisionCallback(Box2D.b2ContactListener):
 		except KeyError as e:
 			pass
 
+
 class RayCastCallback(Box2D.b2RayCastCallback):
 
 	def __init__(self):
@@ -175,6 +176,18 @@ class RayCastCallback(Box2D.b2RayCastCallback):
 		result = (fraction, fixture)
 		self.fixtures.add(result)
 		return 1
+
+class ClosestRayCastCallback(Box2D.b2RayCastCallback):
+
+	def __init__(self, *args, **kwargs):
+		super(ClosestRayCastCallback, self).__init__(*args, **kwargs)
+		self.result = None
+
+	def ReportFixture(self, fixture, point, normal, fraction):
+		result = (fraction, fixture)
+		self.result = result
+		return fraction
+
 
 class QueryCallback(Box2D.b2QueryCallback):
 
