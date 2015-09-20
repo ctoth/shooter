@@ -14,13 +14,13 @@ import world
 HEALTH_OK, HEALTH_BAD, HEALTH_TERRIBLE = range(3)
 
 class Player(entity.Entity):
-	FOOTSTEP_SPEED = 0.5
+	FOOTSTEP_SPEED = 0.75
 	FOOTSTEP_DELAY = 0.3
 	footstep_multiplier = 3.0
 	running_multiplier = 1.5
 	ping_distance = 50
 	approach_distance = 1.0
-	reach = 1.0
+	reach = 1.5
 	wall_collision_sound = 'wall.wav'
 
 	def __init__(self, world=None, position=None, shape='circle', size=(0.1, 0.1), hit_sound='hit', mass=100, *args, **kwargs):
