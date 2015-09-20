@@ -160,7 +160,7 @@ class GameObject(object):
 		self.occlusion_filter.dbgain.value = dbgain
 
 	def play_sound(self, sound, *args, **kwargs):
-		game.sound_manager.play(sound, source=self.occlusion_filter, **kwargs)
+		return game.sound_manager.play(sound, source=self.occlusion_filter, **kwargs)
 
 	def only_play_every(self, delay, sound, *args, **kwargs):
 		last_played = self.last_played_times[sound]
