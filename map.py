@@ -4,6 +4,7 @@ import random
 import dungeon
 import game	
 import game_object
+import items
 import npc
 import tiles
 from vector import Vector
@@ -48,9 +49,9 @@ class Map(object):
 					if self.map[neighbor] == 'r':
 						self.starting_coordinates = self.get_physical_coordinates(Vector(*neighbor))
 						break
-				staircase = game_object.GameObject(world=self.world, name="Staircase Up", position=physical_position, destructable=False)
+				staircase = items.Staircase(world=self.world, name="Staircase Up", position=physical_position, destructable=False)
 			elif tile_type == 'd':
-				staircase = game_object.GameObject(world=self.world, name="Staircase Down", position=physical_position, destructable=False)
+				staircase = items.Staircase(world=self.world, name="Staircase Down", position=physical_position, destructable=False)
 
 	def place_npcs(self, npc_template, density):
 		for room in self.room_vertices:

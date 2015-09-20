@@ -1,4 +1,5 @@
 import game_object
+import game
 
 class HealthBoost(game_object.GameObject):
 
@@ -14,3 +15,12 @@ class HealthBoost(game_object.GameObject):
 	def use(self, user):
 		user.health += self.heal_amount
 		self.current_uses += 1
+
+class Staircase(game_object.GameObject):
+
+	def can_use(self):
+		return True
+
+	def use(self, user):
+		game.output.output("Used the staircase, yea!")
+
