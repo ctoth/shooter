@@ -70,6 +70,8 @@ class Player(entity.Entity):
 			self.injured_sound = self.play_sound('Heartbeat Fast.ogg', looping=True)
 			self.health_state = HEALTH_TERRIBLE
 		elif self.health <= 0:
+			if self.injured_sound:
+				self.injured_sound.stop()
 			self.injured_sound = None
 		self.radar.tick()
 		self.sweeping_radar.tick()
