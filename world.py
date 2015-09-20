@@ -37,7 +37,7 @@ class World(object):
 
 	def tick(self):
 		with game.sound_manager.sim:
-			self.world.Step(game.FRAMERATE, 10, 10)
+			self.world.Step(game.FRAMERATE, 3, 3)
 			self.objects .update(self.objects_to_add)
 			self.objects_to_add.clear()
 			for o in self.to_destroy:
