@@ -2,4 +2,4 @@ FRAMERATE = 1/60.0
 MOUSE_SENSITIVITY = 20
 MAX_AUDIO_DISTANCE = 20
 NAME = "qng"
-VERSION = "Concept Demo 1"
+VERSION = "Concept Demo 2"
