@@ -81,6 +81,8 @@ class GameScreen(Screen):
 		if symbol == key.Z:
 			game.player.detect_exits()
 		if symbol == key.TAB:
+			if key.MOD_ALT & modifiers:
+				return False
 			if key.MOD_SHIFT & modifiers:
 				game.player.radar.read_previous()
 			else:
