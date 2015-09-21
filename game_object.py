@@ -10,7 +10,7 @@ from vector import Vector
 
 class GameObject(object):
 
-	def __init__(self, name="", world=None, shape='box', size=(0.5, 0.5), location=None, position=(2, 2), facing=0, mass=1, fixed=True, solid=True, sound_source=None, sound=None, use_sound=None, destroy_sound=None, destructable=True, collide_sound=None, *args, **kwargs):
+	def __init__(self, name="", world=None, shape='box', size=(0.5, 0.5), location=None, position=(2, 2), facing=0, mass=1, fixed=True, solid=True, sound=None, use_sound=None, destroy_sound=None, destructable=True, collide_sound=None, head_relative=False, *args, **kwargs):
 		super(GameObject, self).__init__(*args, **kwargs)
 		self.world = world
 		self.world.add_object(self)
@@ -21,17 +21,15 @@ class GameObject(object):
 		self.contents = []
 		self.fixed = fixed
 		self.solid = solid
+		self.head_relative = head_relative
 		self.body = None
 		self.mass = mass
 		if location is None:
 			self.create_body(position=position)
 			self.create_fixture()
 		self.last_played_times = collections.defaultdict(int)
-		if sound_source is None:
-			sound_source = game.sound_manager.create_source()
-		self.sound_source = sound_source
-		self.occlusion_filter = game.sound_manager.create_occlusion_filter()
-		self.occlusion_filter.connect(0, self.sound_source, 0)
+		self.sound_source = None
+		self.occlusion_filter = None
 		if sound is not None:
 			sound = self.play_sound(sound, looping=True)
 		self.sound = sound
@@ -69,7 +67,8 @@ class GameObject(object):
 	@position.setter
 	def position(self, position):
 		self.body.position = tuple(position)
-		self.set_sound_position()
+		if self.sound_source is not None:
+			self.set_sound_position()
 
 	@property
 	def velocity(self):
@@ -80,11 +79,12 @@ class GameObject(object):
 		self.body.linearVelocity = velocity
 
 	def set_sound_position(self):
-		if self.sound_source.head_relative.value:
+		if self.head_relative:
+			self.sound_source.head_relative.value = self.head_relative
+			self.sound_source.position = (0, 0, 0)
 			return
-		position = list(self.position)
-		position.append(0.0)
-		self.sound_source.position.value = position
+		position = self.position
+		self.sound_source.position.value = position[0], position[1], 0.0
 
 	@property
 	def facing(self):
@@ -146,8 +146,9 @@ class GameObject(object):
 		game.clock.schedule_once(lambda dt,: game.sound_manager.play_async(*args, **kwargs), delay)
 
 	def tick(self):
-		self.set_sound_position()
-		self.update_audio_occlusion()
+		if self.sound_source is not None:
+			self.set_sound_position()
+			self.update_audio_occlusion()
 
 	def update_audio_occlusion(self):
 		location = self.location
@@ -165,7 +166,16 @@ class GameObject(object):
 		self.occlusion_filter.dbgain.value = dbgain
 
 	def play_sound(self, sound, *args, **kwargs):
+		if self.sound_source is None:
+			self.setup_sound()
 		return game.sound_manager.play(sound, source=self.occlusion_filter, **kwargs)
+
+	def setup_sound(self):
+		self.sound_source = game.sound_manager.create_source()
+		self.sound_source.head_relative.value = self.head_relative
+		self.occlusion_filter = game.sound_manager.create_occlusion_filter()
+		self.occlusion_filter.connect(0, self.sound_source, 0)
+		self.set_sound_position()
 
 	def only_play_every(self, delay, sound, *args, **kwargs):
 		last_played = self.last_played_times[sound]

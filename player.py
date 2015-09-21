@@ -23,16 +23,16 @@ class Player(entity.Entity):
 	reach = 1.5
 	wall_collision_sound = 'wall.wav'
 
-	def __init__(self, world=None, position=None, shape='circle', size=(0.1, 0.1), damage_sound='hit', mass=100, *args, **kwargs):
+	def __init__(self, world=None, position=None, shape='circle', size=(0.1, 0.1), damage_sound='hit', mass=100, head_relative=True, *args, **kwargs):
 		#gun = weapon.ProjectileWeapon(world=world, name="Gun", ammo_type="bullet", use_sound='rifle', size=(1, 0.1), position=position, cooldown=0.5, mass=30, base_damage=50)
 		#gun = weapon.ProjectileWeapon(world=world, name="m240", ammo_type='bullet', use_sound='machine_gun', size=(1, 0.2), cooldown=0.04, mass=50,base_damage=10)
 		sword = weapon.BladedWeapon(world=world, name="Sword", use_sound='sword/swing', hit_sound='sword/hit', hit_wall_sound='sword/wall', mass=10, size=[1.0, 0.1], cooldown=0.4)
-		super(Player, self).__init__(world=world, position=position, shape=shape, size=size, mass=mass, damage_sound=damage_sound, weapon=sword, *args, **kwargs)
+		super(Player, self).__init__(world=world, position=position, shape=shape, size=size, mass=mass, damage_sound=damage_sound, weapon=sword, head_relative=head_relative, *args, **kwargs)
 		self.moving = False
 		self.turning = None
 		self.running = False
 		self.attacking = False
-		self.sound_source.head_relative = True
+
 		self.radar = radar.Radar(looker=self)
 		self.sweeping_radar = radar.SweepingRadar(self)
 		self.walking_toward = None
@@ -113,10 +113,11 @@ class Player(entity.Entity):
 
 	def equip(self, item):
 		super(Player, self).equip(item)
-		item.sound_source.head_relative = True
-		item.sound_source.position = (0, 0, 0)
+		item.head_relative = True
+		if item.sound_source:
+			item.set_sound_position()
 		if item.equip_sound is not None:
-			game.sound_manager.play(item.equip_sound, source=self.sound_source, position=self.position)
+			self.play_sound(item.equip_sound, position=self.position)
 
 	def get_footstep_sound(self):
 		return game.map.footstep

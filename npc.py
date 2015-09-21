@@ -16,7 +16,7 @@ class NPC(entity.Entity):
 		self.ambient_sound = None
 		self.turning_toward = None
 		if ambient is not None:
-			self.ambient_sound = game.sound_manager.play(self.ambient, source=self.occlusion_filter, looping=True)
+			self.ambient_sound = self.play_sound(self.ambient, looping=True)
 			self.ambient_sound.pause()
 		self.attack_sound = attack_sound
 		self.corpse_fall_sound = corpse_fall_sound
