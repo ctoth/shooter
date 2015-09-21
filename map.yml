@@ -57,8 +57,8 @@ weapons:
     hit_sound: plasma.wav
     hit_wall_sound: plasma.wav
     size: [0.5, 0.1]
-    base_damage: 15
-    cooldown: 1.5
+    base_damage: 8
+    cooldown: 0.5
     range: 15
 
 npcs:
@@ -68,23 +68,14 @@ npcs:
   Alien Grunt:
     ambient: monster/ambient
     destroy_sound: monster/death
-    hit_sound: hit
-    health: 35
+    damage_sound: hit
+    health: 30
     mass: 120
     weapon: Laser Rifle
 
-tile_types:
-  Decking:
-    footstep_sound: footsteps/metal
-
-rooms:
-  Laboratory:
-    objects:
-      Shelving with Glassware: wall
-
 map:
   name: Top Floor
-  x_rooms: 6
+  x_rooms: 4
   y_rooms: 6
   max_room_dimension: 8
   ambient: ambience.ogg

@@ -5,7 +5,7 @@ import game_object
 class Entity(game_object.GameObject):
 	turn_rate = 0.8
 
-	def __init__(self, health=100, speed=100, angle_of_visibility=180, hit_sound=None, weapon=None, *args, **kwargs):
+	def __init__(self, health=100, speed=100, angle_of_visibility=180, damage_sound=None, weapon=None, *args, **kwargs):
 		super(Entity, self).__init__(*args, **kwargs)
 		self.health = health
 		self.speed = speed
@@ -13,7 +13,7 @@ class Entity(game_object.GameObject):
 		self.weapon = None
 		if weapon is not None:
 			self.equip(weapon)
-		self.hit_sound = hit_sound
+		self.damage_sound = damage_sound
 
 	def create_body(self, position=None):
 		if position is None:
@@ -34,8 +34,8 @@ class Entity(game_object.GameObject):
 		if self.health <= 0:
 			self.destroy()
 		else:
-			if self.hit_sound is not None:
-				game.clock.schedule_once(self.play_hit_sound, 0.15)
+			if self.damage_sound is not None:
+				game.clock.schedule_once(self.play_damage_sound, 0.15, self.position)
 
-	def play_hit_sound(self, t):
-		game.sound_manager.play(self.hit_sound, source=self.sound_source, position=self.position)
+	def play_damage_sound(self, t, position):
+		game.sound_manager.play(self.damage_sound, source=self.sound_source, position=position)

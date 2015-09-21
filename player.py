@@ -23,11 +23,11 @@ class Player(entity.Entity):
 	reach = 1.5
 	wall_collision_sound = 'wall.wav'
 
-	def __init__(self, world=None, position=None, shape='circle', size=(0.1, 0.1), hit_sound='hit', mass=100, *args, **kwargs):
+	def __init__(self, world=None, position=None, shape='circle', size=(0.1, 0.1), damage_sound='hit', mass=100, *args, **kwargs):
 		#gun = weapon.ProjectileWeapon(world=world, name="Gun", ammo_type="bullet", use_sound='rifle', size=(1, 0.1), position=position, cooldown=0.5, mass=30, base_damage=50)
 		#gun = weapon.ProjectileWeapon(world=world, name="m240", ammo_type='bullet', use_sound='machine_gun', size=(1, 0.2), cooldown=0.04, mass=50,base_damage=10)
 		sword = weapon.BladedWeapon(world=world, name="Sword", use_sound='sword/swing', hit_sound='sword/hit', hit_wall_sound='sword/wall', mass=10, size=[1.0, 0.1], cooldown=0.4)
-		super(Player, self).__init__(world=world, position=position, shape=shape, size=size, mass=mass, hit_sound=hit_sound, weapon=sword, *args, **kwargs)
+		super(Player, self).__init__(world=world, position=position, shape=shape, size=size, mass=mass, damage_sound=damage_sound, weapon=sword, *args, **kwargs)
 		self.moving = False
 		self.turning = None
 		self.running = False
