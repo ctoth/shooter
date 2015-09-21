@@ -36,18 +36,18 @@ class GameScreen(Screen):
 			profile.show_profiler()
 		if symbol == key.I:
 			game.player.show_inventory()
-		if symbol == key.S:
+		if symbol == key.R:
 			if not game.player.sweeping_radar.sweeping:
 				game.player.sweeping_radar.start()
 			else:
 				game.player.sweeping_radar.stop()
-		if symbol == key.UP:
+		if symbol == key.UP or symbol == key.W:
 			if key.MOD_SHIFT & modifiers:
 				game.player.start_running()
 			game.player.start_forward()
-		if symbol == key.DOWN:
+		if symbol == key.DOWN or symbol == key.S:
 			game.player.start_backward()
-		if symbol == key.LEFT:
+		if symbol == key.LEFT :
 			if key.MOD_SHIFT & modifiers or key.MOD_ALT & modifiers:
 				if key.MOD_ALT & modifiers:
 					game.player.snap_left()
@@ -63,6 +63,10 @@ class GameScreen(Screen):
 					game.player.strafe_right()
 			else:
 				game.player.turn_right()
+		if symbol == key.A:
+			game.player.strafe_left()
+		if symbol == key.D:
+			game.player.strafe_right()
 		if symbol == key.C:
 			game.player.read_coordinates()
 		if symbol == key.F:
@@ -74,7 +78,7 @@ class GameScreen(Screen):
 		if symbol == key.P:
 			self.pause()
 			return True
-		if symbol == key.D:
+		if symbol == key.Z:
 			game.player.detect_exits()
 		if symbol == key.TAB:
 			if key.MOD_SHIFT & modifiers:
@@ -86,7 +90,7 @@ class GameScreen(Screen):
 				game.player.radar.stop_tracking()
 			else:
 				game.player.radar.start_tracking()
-		if symbol == key.R:
+		if symbol == key.X:
 			game.player.radar.summarize_room()
 		if symbol == key.H:
 			game.player.read_health()
@@ -101,7 +105,7 @@ class GameScreen(Screen):
 	def on_key_release(self, symbol, modifiers):
 		if symbol in (key.LCTRL, key.RCTRL):
 			game.player.stop_attacking()
-		if symbol == key.UP or symbol == key.DOWN and game.player.moving not in ('left', 'right'):
+		if symbol in (key.UP, key.DOWN, key.W, key.S) and game.player.moving not in ('left', 'right'):
 			game.player.stop_moving()
 			game.player.stop_running()
 		if symbol == key.LEFT or symbol == key.RIGHT:
@@ -112,6 +116,8 @@ class GameScreen(Screen):
 		if symbol in (key.LSHIFT, key.RSHIFT):
 			game.player.stop_strafing()
 			game.player.stop_running()
+		if symbol in (key.A, key.D):
+			game.player.stop_strafing()
 
 	def on_mouse_motion(self, x, y, dx, dy):
 		dx /= game.MOUSE_SENSITIVITY
@@ -120,6 +126,9 @@ class GameScreen(Screen):
 	def on_mouse_press(self, x, y, button, modifiers):
 		if button == mouse.LEFT:
 			game.player.start_attacking()
+		if button == mouse.RIGHT:
+			game.player.interact_with_target()
+
 
 	def on_mouse_release(self, x, y, button, modifiers):
 		if button == mouse.LEFT:
