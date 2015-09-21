@@ -10,7 +10,7 @@ from vector import Vector
 
 class GameObject(object):
 
-	def __init__(self, name="", world=None, shape='box', size=(0.5, 0.5), location=None, position=(2, 2), facing=0, mass=1, fixed=True, sound_source=None, sound=None, use_sound=None, destroy_sound=None, destructable=True, collide_sound=None, *args, **kwargs):
+	def __init__(self, name="", world=None, shape='box', size=(0.5, 0.5), location=None, position=(2, 2), facing=0, mass=1, fixed=True, solid=True, sound_source=None, sound=None, use_sound=None, destroy_sound=None, destructable=True, collide_sound=None, *args, **kwargs):
 		super(GameObject, self).__init__(*args, **kwargs)
 		self.world = world
 		self.world.add_object(self)
@@ -20,6 +20,7 @@ class GameObject(object):
 		self.location = location
 		self.contents = []
 		self.fixed = fixed
+		self.solid = solid
 		self.body = None
 		self.mass = mass
 		if location is None:
@@ -56,6 +57,7 @@ class GameObject(object):
 			self.fixture = self.body.CreateCircleFixture(radius=size[0], density=density, friction=friction, restitution=restitution)
 		elif self.shape == 'box':
 			self.fixture= self.body.CreatePolygonFixture(box=size, density=density, friction=friction, restitution=restitution)
+		self.fixture.sensor = not self.solid
 		self.body.mass = self.mass
 
 	@property
