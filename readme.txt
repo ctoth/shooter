@@ -4,14 +4,15 @@ Quick summary of commands:
 Turn: left or right arrow or mouse.
 Snap to next or previous 90 degree angle: alt+right or left.
 Strafe in a direction: shift+left or right.
+Walk forward, backward, left, right: WSAD
 Run: shift+up.
 Use weapon: control, mouse click, or joystick trigger.
 Current coordinates: c.
 Direction facing: f.
-Room summary: r. 
+Examine Room: x. 
 Explore with radar: tab and shift+tab. 
 Pick up / interact with selected item if it's close enough: enter.
-Sweeping radar: s
+Radar Sweep toggle: r
 look ahead: l
 Inventory Screen: i. (equip or use item with enter, exit with escape)
 Pause/Unpause game: p
