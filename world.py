@@ -37,9 +37,9 @@ class World(object):
 		self.objects_to_create_bodies_for[obj] = position
 
 	def tick(self):
+		self.world.Step(game.FRAMERATE, 3, 3)
+		self.world.ClearForces()
 		with game.sound_manager.sim:
-			self.world.Step(game.FRAMERATE, 3, 3)
-			self.world.ClearForces()
 			self.objects .update(self.objects_to_add)
 			self.objects_to_add.clear()
 			for o in self.to_destroy:
