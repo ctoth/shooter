@@ -121,7 +121,10 @@ def generate(cellsX, cellsY, cellSize=5):
     maxRetries = 10
     while extraConnections > 0 and maxRetries > 0:
         cell = random.choice(list(cells.values()))
-        neighbor = random.choice(list(getNeighborCells(cell)))
+        neighbors = list(getNeighborCells(cell))
+        if not neighbors:
+            break
+        neighbor = random.choice(neighbors)
         if cell in neighbor.connectedTo:
             maxRetries -= 1
             continue
