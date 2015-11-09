@@ -73,7 +73,8 @@ def create_map(map_template, world):
 	x_rooms = map_template.get('x_rooms', 0)
 	y_rooms = map_template.get('y_rooms', 0)
 	footstep=map_template['footstep']
-	loading = map.Map(world=world, name=name, x_cells=x_rooms, y_cells=y_rooms, cell_size=cell_size, ambience=map_template['ambient'], footstep=footstep)
+	ambience = map_template.get('ambient')
+	loading = map.Map(world=world, name=name, x_cells=x_rooms, y_cells=y_rooms, cell_size=cell_size, ambience=ambience, footstep=footstep)
 	for npc_template, density in map_template.get('npcs', {}).items():
 		if density != 'single':
 			loading.place_npcs(npc_template, density)
