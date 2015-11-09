@@ -157,6 +157,8 @@ class GameObject(object):
 			self.occlusion_filter.dbgain.value = dbgain
 			return
 		pos, playerpos = self.position, game.player.position
+		if pos == playerpos:
+			return
 		distance = sqrt((pos[0] - playerpos[0])**2+(pos[1]-playerpos[1])**2)
 		if distance  > game.MAX_AUDIO_DISTANCE:
 			return
