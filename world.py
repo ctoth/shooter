@@ -101,8 +101,7 @@ class World(object):
 		callback = self.ray_cast_callback
 		callback.fixtures = set()
 		self.world.RayCast(callback, p1, p2)
-		bodies = [i[1].body for i in callback.fixtures]
-		return len([i for i in bodies if i.position != p1 and i.position != p2])
+		return len([i for i in callback.fixtures if i[1].body.position not in {p1, p2}])
 
 	def is_visible(self, looker, target, max_distance=0):
 		start_point = looker.position
