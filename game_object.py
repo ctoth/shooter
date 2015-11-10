@@ -29,7 +29,6 @@ class GameObject(object):
 			self.create_fixture()
 		self.last_played_times = collections.defaultdict(int)
 		self.sound_source = None
-		self.occlusion_filter = None
 		if sound is not None:
 			sound = self.play_sound(sound, looping=True)
 		self.sound = sound
@@ -153,8 +152,8 @@ class GameObject(object):
 	def update_audio_occlusion(self):
 		location = self.location
 		if location is not None:
-			dbgain = location.occlusion_filter.dbgain.value
-			self.occlusion_filter.dbgain.value = dbgain
+			value = location.sound_source.occlusion.value
+			self.sound_source.occlusion.value = value
 			return
 		pos, playerpos = self.position, game.player.position
 		if pos == playerpos:
@@ -162,21 +161,18 @@ class GameObject(object):
 		distance = sqrt((pos[0] - playerpos[0])**2+(pos[1]-playerpos[1])**2)
 		if distance  > game.MAX_AUDIO_DISTANCE:
 			return
-		dbgain = 0
 		count = game.world.count_objects_between(pos, playerpos)
-		dbgain = -12.0 * count
-		self.occlusion_filter.dbgain.value = dbgain
+		value= min(1.0, 0.15 * count)
+		self.sound_source.occlusion.value = value
 
 	def play_sound(self, sound, *args, **kwargs):
 		if self.sound_source is None:
 			self.setup_sound()
-		return game.sound_manager.play(sound, source=self.occlusion_filter, **kwargs)
+		return game.sound_manager.play(sound, source=self.sound_source, **kwargs)
 
 	def setup_sound(self):
 		self.sound_source = game.sound_manager.create_source()
 		self.sound_source.head_relative.value = self.head_relative
-		self.occlusion_filter = game.sound_manager.create_occlusion_filter()
-		self.occlusion_filter.connect(0, self.sound_source, 0)
 		self.set_sound_position()
 
 	def only_play_every(self, delay, sound, *args, **kwargs):
