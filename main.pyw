@@ -35,12 +35,13 @@ def main():
 	game.player = player.Player(world=game.world, position=game.map.starting_coordinates)
 	game.map.enter(game.player)
 	game.tick = tick
+	game.screens = screens.ScreenStack()
 	if not getattr(sys, 'frozen', False):
 		faulthandler.enable()
 		import ingress
 		ingress.install(port=4263, env=game.__dict__)
 	screen = screens.GameScreen()
-	screen.activate()
+	game.screens.push(screen)
 	main_loop()
 	libaudioverse.shutdown()
 

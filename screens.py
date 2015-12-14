@@ -294,3 +294,20 @@ class InventoryScreen(MenuScreen):
 		if self.string_callback is not None:
 			return self.string_callback(item)
 		return unicode(item)
+
+class ScreenStack(object):
+	def __init__(self):
+		self.screens = []
+
+	def push(self, screen):
+		if self.screens:
+			self.screens[-1].deactivate()
+		self.screens.append(screen)
+		screen.activate()
+		game.screen = screen
+
+	def pop(self):
+		screen = self.screens.pop()
+		screen.deactivate()
+		self.screens[-1].activate()
+		game.screen = self.screens[-1]
