@@ -150,8 +150,7 @@ class GameScreen(Screen):
 			self.joystick.close()
  
 	def pause(self):
-		screen = PauseScreen()
-		screen.activate()
+		game.screens.push(PauseScreen())
 
 class PauseScreen(Screen):
 
@@ -165,8 +164,7 @@ class PauseScreen(Screen):
 
 	def on_key_press(self, symbol, modifiers):
 		if symbol == key.P:
-			screen = GameScreen()
-			screen.activate()
+			game.screens.pop()
 			return True
 
 class MenuScreen(Screen):
