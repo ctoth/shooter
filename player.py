@@ -246,5 +246,4 @@ class Player(entity.Entity):
 		game.output.output(str(self.health))
 
 	def show_inventory(self):
-		screen = screens.InventoryScreen(prompt="Inventory", choices=self.contents, selection_sound='menu/select.wav')
-		screen.activate()
+		game.screens.push(screens.InventoryScreen(prompt="Inventory", choices=self.contents, selection_sound='menu/select.wav'))

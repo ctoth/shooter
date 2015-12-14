@@ -282,9 +282,7 @@ class InventoryScreen(MenuScreen):
 			game.player.drop(item)
 			return
 		if symbol == key.ESCAPE:
-			self.deactivate()
-			screen = GameScreen()
-			screen.activate()
+			game.screens.pop()
 			return True
 		return super(InventoryScreen, self).on_key_press(symbol, modifiers)
 
