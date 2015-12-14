@@ -53,6 +53,7 @@ class Projectile(entity.Entity):
 		self.body.bullet = True
 
 	def handle_collision(self, other):
+		self.setup_sound()
 		self.set_sound_position()
 		self.weapon.did_hit(other, self.position)
 		try:
