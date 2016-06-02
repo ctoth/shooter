@@ -10,11 +10,11 @@ libaudioverse.initialize()
 class SoundManager(object):
 	SUPPORTED_EXTENSIONS = ('.wav', '.ogg')
 
-	def __init__(self, output_device=-1, sounds_path='sounds'):
-		self.sim = libaudioverse.Simulation()
-		self.sim.threads = multiprocessing.cpu_count() - 1 or 1
-		self.sim.set_output_device(output_device)
-		self.reverb = libaudioverse.FdnReverbNode(self.sim)
+	def __init__(self, output_device='default', sounds_path='sounds'):
+		self.server = libaudioverse.Server()
+		self.server.threads = multiprocessing.cpu_count() - 1 or 1
+		self.server.set_output_device(output_device)
+		self.reverb = libaudioverse.FdnReverbNode(self.server)
 		self.world = self.create_world()
 		self.reverb_send = self.world.add_effect_send(channels = 4, is_reverb = True, connect_by_default = True)
 		self.world.connect(self.reverb_send, self.reverb, 0)
@@ -24,8 +24,8 @@ class SoundManager(object):
 		self.last_random = {}
 
 	def start(self):
-		self.world.connect_simulation(0)
-		self.reverb.connect_simulation(0)
+		self.world.connect(0, self.server)
+		self.reverb.connect(0, self.server)
 
 	def stop(self):
 		self.world.disconnect(0)
@@ -35,7 +35,7 @@ class SoundManager(object):
 		if len(position) == 2:
 			position = list(position)
 			position.append(0)
-		sound = libaudioverse.BufferNode(self.sim)
+		sound = libaudioverse.BufferNode(self.server)
 		sound_buffer = self.get_buffer(filename)
 		sound.buffer = sound_buffer
 		sound.connect(0, source, 0)
@@ -50,10 +50,10 @@ class SoundManager(object):
 		return sound
 
 	def play_default(self, filename):
-		sound = libaudioverse.BufferNode(self.sim)
+		sound = libaudioverse.BufferNode(self.server)
 		sound_buffer = self.get_buffer(filename)
 		sound.buffer = sound_buffer
-		sound.connect_simulation(0)
+		sound.connect(0, self.server)
 		return Sound(sound)
 
 	play_UI_queue = play_default
@@ -68,7 +68,7 @@ class SoundManager(object):
 		return res
 
 	def create_source(self):
-		return libaudioverse.SourceNode(self.sim, self.world)
+		return libaudioverse.SourceNode(self.server, self.world)
 
 	def get_buffer(self, filename):
 		filename = os.path.join(self.sounds_path, filename)
@@ -76,7 +76,7 @@ class SoundManager(object):
 			filename = self.select_random_sound(filename)
 		sound_buffer = self.sounds.get(filename)
 		if not sound_buffer:
-			sound_buffer = libaudioverse.Buffer(self.sim)
+			sound_buffer = libaudioverse.Buffer(self.server)
 			filename = filename.encode('mbcs')
 			sound_buffer.load_from_file(filename)
 			self.sounds[filename] = sound_buffer
@@ -101,7 +101,7 @@ class SoundManager(object):
 		self.world.play_async(buffer, x=x, y=y, z=z, is_dry=dry)
 
 	def create_world(self):
-		world = libaudioverse.EnvironmentNode(self.sim, b'default')
+		world = libaudioverse.EnvironmentNode(self.server, b'default')
 		world.default_panning_strategy =libaudioverse.PanningStrategies.hrtf
 		world.default_max_distance = 20
 		world.default_distance_model = libaudioverse.DistanceModels.exponential
@@ -109,7 +109,7 @@ class SoundManager(object):
 		return world
 
 	def create_occlusion_filter(self):
-		filter = libaudioverse.BiquadNode(self.sim, 1)
+		filter = libaudioverse.BiquadNode(self.server, 1)
 		filter.filter_type = libaudioverse.BiquadTypes.highshelf
 		filter.frequency = 800
 		return filter

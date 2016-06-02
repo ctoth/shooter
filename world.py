@@ -39,7 +39,7 @@ class World(object):
 	def tick(self):
 		self.world.Step(game.FRAMERATE, 3, 3)
 		self.world.ClearForces()
-		with game.sound_manager.sim:
+		with game.sound_manager.server:
 			self.objects .update(self.objects_to_add)
 			self.objects_to_add.clear()
 			for o in self.to_destroy:
