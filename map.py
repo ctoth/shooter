@@ -34,7 +34,7 @@ class Map(object):
 		self.fill_wall_tiles()
 
 	def fill_wall_tiles(self):
-		tile_size = Vector(0.5, 0.5)
+		tile_size = Vector(0.495, 0.495)
 		physical_tile_size = tile_size* self.size_ratio
 		for tile_coord, tile_type in self.map.items():
 			tile_coord = Vector(*tile_coord)
