@@ -14,8 +14,6 @@ import sound
 import world
 import libaudioverse
 import sys
-import libloader.com
-libloader.com.prepare_gencache()
 from accessible_output2.outputs import auto
 import faulthandler
 #import profile
