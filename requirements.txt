@@ -1,0 +1,26 @@
+
+six
+
+#remote debug server
+ingress
+#Audio Output
+libaudioverse>=0.9.dev0
+
+
+pyglet
+#Physics
+Box2D
+
+singledispatch
+#YAML parser
+pyyaml
+
+#various python utilities for building desktop apps such as logging, path management, etc.
+https://hg.q-continuum.net/platform_utils/archive/tip.tar.gz
+https://hg.q-continuum.net/logger_setup/archive/tip.tar.gz
+https://hg.q-continuum.net/libloader/archive/tip.tar.gz
+
+#Speech output
+
+https://hg.q-continuum.net/accessible_output2/archive/tip.tar.gz
+pypiwin32
